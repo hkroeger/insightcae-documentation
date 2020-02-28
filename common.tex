@@ -1,0 +1,86 @@
+\usepackage{listings}
+\usepackage{menukeys}
+\usepackage{nameref}
+\usepackage{csquotes}
+
+\setcounter{tocdepth}{4}
+
+\NewDocumentCommand{\seenameref}{sm}{%
+  see \enquote{%
+    \IfBooleanTF{#1}{\nameref*{#2}}{\nameref{#2}}%
+  }%
+}
+
+\newcommand{\of}{OpenFOAM\textsuperscript{\textregistered}\xspace} 
+\newcommand{\insight}{\texttt{Insight CAE}\xspace} 
+%\newcommand{\cmd}[1]{\texttt{#1}}
+\newcommand{\file}[1]{\texttt{#1}}
+\newcommand{\pfeil}{$\Rightarrow$}
+
+\definecolor{antiquewhite}{rgb}{0.98, 0.92, 0.84}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\newcommand{\td}[1]{\textcolor{dynamics}{#1}}
+\newcommand{\tb}[1]{\textcolor{blue}{#1}}
+
+\lstset{
+language=c++,
+basicstyle=\scriptsize\ttfamily,
+columns=fullflexible,breaklines=true,
+keywordstyle=\color{red},
+backgroundcolor=\color{antiquewhite},
+numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+numbersep=2pt,                   % how far the line-numbers are from the code
+numberstyle=\tiny\color{mygray},
+literate=%
+  {Ö}{{\"O}}1
+  {Ä}{{\"A}}1
+  {Ü}{{\"U}}1
+  {ß}{{\ss}}1
+  {ü}{{\"u}}1
+  {ä}{{\"a}}1
+  {ö}{{\"o}}1
+}
+
+
+
+\lstnewenvironment{ofdict}[1][]
+  {\lstset{
+%     title=\texttt{Code\_Aster},
+    escapechar=@,language=C++,
+    backgroundcolor=\color{lgray},
+    rulecolor=\color{black},
+    keywordstyle=\color{blue},
+    columns=fullflexible,
+    numbers=left,numbersep=2pt,numberstyle=\tiny\color{black}\noncopynumber,
+    basicstyle=\scriptsize\ttfamily,
+    #1
+    }}
+  {}
+  
+\lstnewenvironment{python}[1][]
+  {\lstset{
+%     title=\texttt{Code\_Aster},
+    escapechar=@,language=Python,
+    backgroundcolor=\color{lgray},
+    rulecolor=\color{black},
+    keywordstyle=\color{blue},
+    columns=fullflexible,
+    numbers=left,numbersep=2pt,numberstyle=\tiny\color{black}\noncopynumber,
+    basicstyle=\scriptsize\ttfamily,
+    #1
+    }}
+  {}
+  
+\lstnewenvironment{consoleout}[1][]
+{\lstset{
+%     title=\texttt{Code\_Aster},
+  escapechar=@,
+  backgroundcolor=\color{lgray},
+  rulecolor=\color{black},
+  keywordstyle=\color{black},
+  columns=fullflexible,
+  numbers=left,numbersep=2pt,numberstyle=\tiny\color{black}\noncopynumber,
+  basicstyle=\tiny\ttfamily,
+  #1
+  }}
+{}

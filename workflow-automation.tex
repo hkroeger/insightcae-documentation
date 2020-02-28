@@ -1,0 +1,265 @@
+\section{Automation of Simulation Workflows}
+
+\subsection{Building Bricks}
+
+\subsubsection{Input: Parameter Sets}
+
+Parameter sets are a hierarchical collection of parameters. Parameters can be of different type, see table \ref{tab:parameters} for a list.
+
+A parameter set constitutes the full input data set for an analysis.
+
+Beyond these primitive parameter types, there can be compounds, namely:
+\begin{itemize}
+\item \texttt{subset}
+
+a subdirectory in a parameter set
+
+\item \texttt{selectablesubset}
+
+a \texttt{subset} that switches its content based on a \texttt{selection} parameter
+
+\item \texttt{array}
+
+an array of either a compound parameter or a primitve parameter
+\end{itemize}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ll}
+\hline
+Type & Description \\
+\hline\hline
+\texttt{double} & a scalar floating point value\\
+\texttt{int} & an integer value\\
+\texttt{bool} & a boolean value\\
+\texttt{vector} & a 3-tuple of doubles\\
+\texttt{string} & a simple text\\
+\texttt{selection} & a selection from a predefined set\\
+\texttt{path} & a file path, relative to the input file\\
+\texttt{matrix} & a matrix with arbitrary number of rows and cols\\
+\texttt{doublerange} & an array of double values\\
+\hline
+\end{tabular}
+\caption{Available primitive parameter types in a parameter set}
+\label{tab:parameters}
+\end{table}
+
+\subsubsection{Output: Results Sets}
+
+The output of an analysis is stored in a result set. 
+It may contain elements like charts, images, tables, number etc.
+A result set can be saved to a XML file and/or rendered into a PDF report.
+
+\subsubsection{Analyses: the Simulation Procedure}
+
+The procedure of a simulation is contained in a so-called analyses or workflow module.
+You may think of it as an app for executing a certain type of simulation.
+It is essentially a program.
+Oftentimes, people create scripts or macros for speeding up their simulation workflows.
+The InsightCAE workflow modules serve a similar purpose, though the intention is to fully cover the whole simulation including all pre and post processing steps.
+
+There is a GUI available which provides an editor for the input parameter set (see section \ref{sec:workbench}).
+The GUI is also capable of displaying a 3D preview of the involved geometry and other elements, which are displayable.
+The analysis module is responsible of creating the 3D preview elements.
+Creation of the preview is optional and not every analysis module produces a preview.
+
+The GUI also includes a viewer for the result set. From that viewer, the reports may be exported.
+
+InsightCAE holds a runtime-extensible list of available analyses.
+This list can be extended at run time either by providing shared libraries containing more analysis modules or by python scripts.
+
+The analyses can be programmed essentially in C++ or in Python.
+InsightCAE is essentially written in C++. Python wrappers for the relevant functions and objects are created using SWIG. So the API can also be accessed from Python.
+
+If a new analysis shall be created, this parameter editing and result viewing infrastructure is easily reusable:
+\begin{itemize}
+\item The new analysis module just needs to provide the parameter set layout by returning the default parameter set (a parameter set filled with suitable default values),
+\item it has to provide a function for executing the analysis.
+\item This function needs to return a result set.
+\end{itemize}
+
+The analysis modules may group themselves into categories. This is used in the initial analysis creation dialog in the GUI.
+
+\paragraph{Python Script}
+
+A python based analysis comprises a single dedicated python script file.
+The InsightCAE functions are included by an initial statement like \verb!from Insight.toolkit import *!.
+
+This script needs to define three standalone functions:
+\begin{enumerate}
+\item \verb!category()!
+
+This functions returns a plain string with the category of the analysis. Multiple hierarchy levels are supported and have to be separated by slashes.
+
+\item \verb!defaultParameters()!
+
+This function shall return an object of type \texttt{ParameterSet}, containing the default values of all the needed parameters. The user cannot add or delete parameters, just modify their values. So this defines the layout.
+
+\item \verb!executeAnalysis(parameters, workdir)!
+
+This function finally runs the simulation.
+It gets an object of type \verb!ParameterSet!, containing all the input parameters and the string \texttt{workdir}, which contains the execution directory.
+
+\end{enumerate}
+
+Upon loading, the InsightCAE base library searches in 
+\begin{itemize}
+\item \texttt{\$INSIGHT\_GLOBALSHAREDDIRS/python\_modules} and
+\item \texttt{\$INSIGHT\_USERSHAREDDIRS/python\_modules}
+\end{itemize}  for files named \texttt{*.py}. 
+Each of these files will be loaded and their defined analyses will become available in the GUI and all other InsightCAE tools.
+
+
+\paragraph{C++}
+
+In C++, a new analysis is derived from the common base class \texttt{Analysis}.
+The necessary functions have to be overridden.
+The new analysis should be put into a dedicated shared library.
+
+Upon loading, the InsightCAE base library searches in 
+\begin{itemize}
+\item \texttt{\$INSIGHT\_GLOBALSHAREDDIRS/modules.d} and
+\item \texttt{\$INSIGHT\_USERSHAREDDIRS/modules.d}
+\end{itemize}
+for files named \texttt{*.module}. 
+Each of these files has to contain a statement \verb!library <FILENAME>!, where FILENAME is the name of the shared library file. These libraries will all be loaded and their defined analyses will become available in the GUI and all other InsightCAE tools.
+
+\subsection{User Front Ends}
+
+\subsubsection{GUI: workbench}
+\label{sec:workbench}
+
+The GUI for editing analysis parameters, run analyses and monitor their progress and to review the result sets is called \texttt{workbench}.
+
+It can be started from the command line by executing
+\begin{lstlisting}[language=bash]
+$ workbench
+\end{lstlisting}
+or from the global application menu.
+
+The workbench can open and handle multiple analyses at a time. For each analysis, a sub window is opened (analysis form).
+
+An analysis can either be created from scratch (\seenameref{par:workbench:new_analysis}) or by opening an existing analysis input file (select \menu{Analysis>Open...} in the menu).
+
+The analysis form has three tabs. From left to right: the input parameter edit tab, the progress display tab and the result viewer tab.
+
+\paragraph{Editing the Input Parameters}
+The parameter input tab is shown in figure \ref{fig:workbench_parameters}. On the left, there is a tree view showing all the available parameters of the analysis.
+The font display style of the parameter entry denotes the importance of the parameter:
+\begin{itemize}
+
+\item highlighted yellow background: these parameters have no reasonable default values and need to be changed for every case. The displayed default values are only chosen to demonstrate some functional value, e.g. for speeds or rpms. But for parameters like file names, for  example, there is no reasonable default at all.
+
+\item normal black text color: these parameters have reasonable default values, with which an analysis can be started. Though it is quite normal, that these parameters might need to be adapted from case to case.
+
+\item dimmed gray text color: these parameters should normally be left at their default values. But it for rather rare special cases, it might become necessary to adapt them.
+\end{itemize}
+
+The parameters can be selected my mouse click and edited (\seenameref{par:workbench:change_parameter}).
+
+Some analyses (this is optional) support a 3D preview of the configured case.
+When an analysis is loaded, which supports 3D preview, a 3D view and a 3D element tree appears right of the parameter edit column.
+All views in the Input tab are shown in a horizontal splitter and their width can be adapted by dragging the splitter handle between them. It is also possible to hide the 3D preview widgets by collapsing their width to zero using the splitter handle (This might also occur accidentally). The collapsing can be undone by locating the splitter handle of the collapsed widget and dragging it back to some non-zero width.
+The layout of the splitter is saved on program exit and restored on the next start.
+
+\paragraph{Saving Parameters}
+Once all parameters are edited, the parameter set can be saved to a file.
+Very often, external files are referenced from a parameter set.
+Since it is also often necessary, to relocate parameter sets from one computer to another or between directories, InsightCAE parameter sets provide some special features which shall simplify relocation of parameter sets:
+\begin{itemize}
+\item file paths are always stored as relative paths inside the parameter set file.
+
+Even if the workbench editor displays an absolute path, the paths are made relative to the saving location of the parameter set file. It is still possible to insert absolute paths into a parameter set file. But when it is loaded and saved again, these will be made relative.
+
+If a parameter set is moved around together with the files it references, they will be found, as long as they remain in the same relative location, e.g. side by side with the parameter file or in a sub directory.
+
+\item external files can be embedded into the parameter file.
+
+This is the preferred option, when parameter files shall be moved across computers. Upon saving, the files will be base-64 encoded (not compressed) and stored in the XML file.
+When the analysis is run, the files are extracted to a temporary location.
+The extraction is aware of the case, that different files with the same name might exist in different directories and extracts them to different locations.
+By default, the files are extracted to the system temporary location.
+When the InsightCAE application, which triggered the extraction of the parameter, exits, the files are deleted again from the temporary location. Note that this might not be achieved, if the application crashes.
+
+Packing of external files can be enabled by checking \menu{Parameters>Pack external files into parameter file} or by checking the appropriate option in the "Save Parameters" dialog.
+Once, a parameter file was saved as packed or unpacked, the selection state is saved and used for all subsequent save operations.
+
+\end{itemize}
+
+\paragraph{Running the Analysis}
+With a properly edited parameter set, the analysis run can be started.
+This is achieved by clicking on the button "Run" on the right side or by selecting \menu{Actions>Run Analysis} in the menu.
+This analysis form switches automatically to the "Run" tab (see figure \ref{fig:workbench_progress}).
+In the lower half, the log message are displayed.
+Sometimes, errors in an external program occur and are not correctly reported. 
+It is therefore a good practice to watch the log messages for errors or warnings.
+
+When the simulation solver runs, InsightCAE shows progress variables graphically.
+The plots are shown above the log widget.
+The number and meaning of the progress variables depend on the analysis conducted.
+
+Especially for OpenFOAM-bases analyses, a number of quantities are extracted from solver output and forwarded to the GUI as progress variables:
+\begin{itemize}
+\item continuity errors
+\item equation residuals
+\item forces
+\item moments
+\item execution time (per timestep)
+\end{itemize}
+
+\paragraph{Cancel a Simulation}
+To cancel a simulation run, click on the button "Kill" on the right side or by select \menu{Actions>Stop Analysis} in the menu.
+
+\paragraph{Viewing the Results}
+Once the simulation run is finished (that means that the solver has finished and that all post processing steps are done), a result set is created and loaded into the workbench.
+It is displayed in the "output" tab (see figure \ref{fig:workbench_result}).
+The result set can be rendered into a report (\seenameref{par:workbench:create_report}).
+
+
+\paragraph{Rendering Results into a Report}\label{par:workbench:create_report}
+
+
+\paragraph{Modifying a Parameter}\label{par:workbench:change_parameter}
+
+\paragraph{Creating a New Analysis}\label{par:workbench:new_analysis}
+A new analysis is created by selecting in the menu \menu{Analysis>New...}. Then a new dialog appears, in which the list of available analyses is displayed (figure \ref{fig:workbench_new_analysis}).
+The required analysis should be selected and confirmed by clicking "Ok".
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=0.5\linewidth]{figs/workbench/workbench_new_analysis}
+\caption{Dialog for selection of the type of a new analysis}
+\label{fig:workbench_new_analysis}
+\end{figure}
+
+
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{figs/workbench/workbench_airfoil_parameters}
+\caption{Parameter editing tab of the workbench}
+\label{fig:workbench_parameters}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{figs/workbench/workbench_airfoil_run}
+\caption{Solution progress tab of the workbench}
+\label{fig:workbench_progress}
+\end{figure}
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{figs/workbench/workbench_airfoil_result}
+\caption{Result explorer tab of the workbench}
+\label{fig:workbench_result}
+\end{figure}
+
+\subsubsection{Console on Headless Computers: analyze}\label{sec:analyze}
+
+
+\subsection{Available Simulation Workflows}
+
+\subsubsection{Numerical Wind Tunnel}
+
+\subsubsection{Internal Pressure Loss}

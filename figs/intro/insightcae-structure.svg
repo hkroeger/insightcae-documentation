@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="324.16962mm"
+   height="194.20682mm"
+   viewBox="0 0 324.16962 194.20682"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="insightcae-structure.svg"
+   inkscape:export-filename="/home/hannes/Projekte/insight-doc/insightcae-structure.png"
+   inkscape:export-xdpi="62.68"
+   inkscape:export-ydpi="62.68">
+  <defs
+     id="defs2">
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path1164"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-7"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1164-8"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-7-5"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1164-8-0"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-7-6"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1164-8-1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-7-63"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path1164-8-2"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="49.940503"
+     inkscape:cy="377.67822"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="3800"
+     inkscape:window-height="2065"
+     inkscape:window-x="1920"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(20.158589,-97.877384)">
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#999999;stroke-width:0.98909867;stroke-miterlimit:4;stroke-dasharray:1.97819749, 1.97819749;stroke-dashoffset:0"
+       id="rect4423"
+       width="323.18051"
+       height="137.20851"
+       x="-19.66404"
+       y="98.371933"
+       ry="9.0716372" />
+    <rect
+       style="opacity:1;fill:#ececec;fill-opacity:1;stroke:#000000;stroke-width:0.47432756;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect812"
+       width="153.24808"
+       height="44.092911"
+       x="-10.870954"
+       y="183.9955" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot824"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,-78.241083,25.011903)"><flowRegion
+         id="flowRegion826"><rect
+           id="rect828"
+           width="510"
+           height="56.428555"
+           x="293.57144"
+           y="625.12933" /></flowRegion><flowPara
+         id="flowPara832">InsightCAE toolkit library</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot844"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,-72.949417,37.144939)"><flowRegion
+         id="flowRegion846"
+         style="font-size:16px"><rect
+           id="rect848"
+           width="245.00008"
+           height="85.000069"
+           x="255.71428"
+           y="639.4151"
+           style="font-size:16px" /></flowRegion><flowPara
+         id="flowPara850">* handling of </flowPara><flowPara
+         id="flowPara854"> - ParameterSets</flowPara><flowPara
+         id="flowPara852"> - ResultSets</flowPara><flowPara
+         id="flowPara4437"> - workflow modules</flowPara><flowPara
+         id="flowPara858" /></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot844-3"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,-14.006679,36.640477)"><flowRegion
+         id="flowRegion846-6"
+         style="font-size:16px"><rect
+           id="rect848-7"
+           width="303.57147"
+           height="104.28575"
+           x="255.71428"
+           y="639.4151"
+           style="font-size:16px" /></flowRegion><flowPara
+         id="flowPara858-2">* APIs and common algorithms to </flowPara><flowPara
+         id="flowPara912"> interface CAE software </flowPara></flowRoot>    <rect
+       style="opacity:1;fill:#ececec;fill-opacity:1;stroke:#000000;stroke-width:0.4234747;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect812-9"
+       width="121.92709"
+       height="44.173492"
+       x="172.37999"
+       y="184.00996" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot824-1"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,101.29091,25.182559)"><flowRegion
+         id="flowRegion826-2"><rect
+           id="rect828-7"
+           width="510"
+           height="56.428555"
+           x="293.57144"
+           y="625.12933" /></flowRegion><flowPara
+         id="flowPara832-0">extensions collection</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot844-3-9"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,109.81838,38.530361)"><flowRegion
+         id="flowRegion846-6-3"
+         style="font-size:16px"><rect
+           id="rect848-7-6"
+           width="441.5658"
+           height="77.38401"
+           x="255.71428"
+           y="639.4151"
+           style="font-size:16px" /></flowRegion><flowPara
+         id="flowPara4431">* extensions and add-ons for thirdparty software,</flowPara><flowPara
+         id="flowPara4435"> e.g. boundary conditions, models, ....</flowPara><flowPara
+         id="flowPara984">(bundled along with InsightCAE) </flowPara></flowRoot>    <rect
+       style="opacity:1;fill:#aaffee;fill-opacity:1;stroke:#000000;stroke-width:0.27374431;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect812-9-2"
+       width="68.626259"
+       height="32.794952"
+       x="119.78537"
+       y="259.15237" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot824-1-6"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,46.268588,103.69345)"><flowRegion
+         id="flowRegion826-2-1"><rect
+           id="rect828-7-8"
+           width="510"
+           height="56.428555"
+           x="293.57144"
+           y="625.12933" /></flowRegion><flowPara
+         id="flowPara832-0-7">OpenFOAM</flowPara></flowRoot>    <rect
+       style="opacity:1;fill:#aaffee;fill-opacity:1;stroke:#000000;stroke-width:0.27374655;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect812-9-2-9"
+       width="68.698845"
+       height="32.76083"
+       x="191.89394"
+       y="259.15057" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot824-1-6-2"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,118.1597,103.67456)"><flowRegion
+         id="flowRegion826-2-1-0"><rect
+           id="rect828-7-8-2"
+           width="510"
+           height="56.428555"
+           x="293.57144"
+           y="625.12933" /></flowRegion><flowPara
+         id="flowPara832-0-7-3">Code_Aster</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot824-1-6-2-7"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,192.81672,106.11117)"><flowRegion
+         id="flowRegion826-2-1-0-5"><rect
+           id="rect828-7-8-2-9"
+           width="510"
+           height="56.428555"
+           x="293.57144"
+           y="625.12933" /></flowRegion><flowPara
+         id="flowPara832-0-7-3-2">.....</flowPara></flowRoot>    <rect
+       style="opacity:1;fill:#ececec;fill-opacity:1;stroke:#000000;stroke-width:0.45249194;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect812-2"
+       width="166.49908"
+       height="36.933197"
+       x="88.162659"
+       y="115.0587" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot824-8"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,14.507569,-44.743036)"><flowRegion
+         id="flowRegion826-9"><rect
+           id="rect828-73"
+           width="602.14282"
+           height="52.142815"
+           x="293.57144"
+           y="625.12933" /></flowRegion><flowPara
+         id="flowPara832-6">InsightCAE analysis modules</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot844-1"
+       style="font-style:normal;font-weight:normal;font-size:16px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       transform="matrix(0.26458333,0,0,0.26458333,29.258606,-31.962199)"><flowRegion
+         id="flowRegion846-2"
+         style="font-size:16px"><rect
+           id="rect848-9"
+           width="262.85721"
+           height="49.285767"
+           x="255.71428"
+           y="639.4151"
+           style="font-size:16px" /></flowRegion><flowPara
+         id="flowPara852-9">* custom-made workflows for specific problems</flowPara><flowPara
+         id="flowPara858-4" /></flowRoot>    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 161.39583,257.50149 17.00893,-26.64733"
+       id="path1159"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Lend-7)"
+       d="m 227.31555,258.10558 -4.91369,-26.64733"
+       id="path1159-4"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Lend-7-5)"
+       d="m 211.81942,181.58709 -4.91369,-26.64733"
+       id="path1159-4-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Lend-7-6)"
+       d="m 110.33281,183.09899 7.74851,-28.7262"
+       id="path1159-4-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Lend-7-63)"
+       d="m 142.68601,207.15506 28.72619,-1e-5"
+       id="path1159-4-06"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="12.095236"
+       y="276.96729"
+       id="text4421"><tspan
+         sodipodi:role="line"
+         id="tspan4419"
+         x="12.095236"
+         y="276.96729"
+         style="stroke-width:0.26458332">3rd party software</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="-12.473215"
+       y="109.52382"
+       id="text4427"><tspan
+         sodipodi:role="line"
+         id="tspan4425"
+         x="-12.473215"
+         y="109.52382"
+         style="fill:#b3b3b3;stroke-width:0.26458332">InsightCAE project</tspan></text>
+  </g>
+</svg>
