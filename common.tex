@@ -16,6 +16,7 @@
 %\newcommand{\cmd}[1]{\texttt{#1}}
 \newcommand{\file}[1]{\texttt{#1}}
 \newcommand{\pfeil}{$\Rightarrow$}
+\newcommand{\param}[1]{\textless #1 \textgreater}
 
 \definecolor{antiquewhite}{rgb}{0.98, 0.92, 0.84}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
@@ -24,7 +25,8 @@
 
 \lstset{
 language=c++,
-basicstyle=\scriptsize\ttfamily,
+%basicstyle=\scriptsize\ttfamily,
+basicstyle=\ttfamily,
 columns=fullflexible,breaklines=true,
 keywordstyle=\color{red},
 backgroundcolor=\color{antiquewhite},
@@ -80,7 +82,8 @@ literate=%
   keywordstyle=\color{black},
   columns=fullflexible,
   numbers=left,numbersep=2pt,numberstyle=\tiny\color{black}\noncopynumber,
-  basicstyle=\tiny\ttfamily,
+  %basicstyle=\tiny\ttfamily,
+  basicstyle=\ttfamily,
   #1
   }}
 {}
