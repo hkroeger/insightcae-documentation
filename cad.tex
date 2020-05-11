@@ -33,17 +33,12 @@ deduced from the defining expression.
 Beyond their geometry representation, geometry feature objects are containers for scalar, vector, datum and feature objects. 
 These symbols can be accessed in the model script but are read-only.
 
-It is possible to load another model into the current one by the "loadmodel" command (see section "Features"). 
-In this case, the loaded model represents a subassembly, i.e. a compound of features.
-Since not all defined geometry objects in the submodel may represent assembly components, marking of components is supported by the feature definition syntax and needs to be utilized properly in the definition script of the submodel. 
-Also, when loading models (subassemblies), parameters can be passed to the submodel. 
-These can be scalars, vectors, datums or features.
 
 In a model script, after the definition of the aforementioned symbols,
 an optional section with postprocessing actions can follow. 
 These can be e.g. file export, drawing export or others.
 
-\subsection{Syntax}
+\paragraph{General CAD Model Script Syntax}
 
 The general model script layout begins with a mandatory symbol defining
 section, followed by an optional postprocessing section, started by
@@ -61,6 +56,14 @@ section, followed by an optional postprocessing section, started by
 
 Comments are lines starting with "\#" or text regions enclosed by "/*"
 and "*/" (C-style).
+
+\subsection{Submodels and Subassemblies}
+
+It is possible to load another model into the current one by the "loadmodel" command (see section "Features"). 
+In this case, the loaded model represents a subassembly, i.e. a compound of features.
+Since not all defined geometry objects in the submodel may represent assembly components, marking of components is supported by the feature definition syntax and needs to be utilized properly in the definition script of the submodel. 
+Also, when loading models (subassemblies), parameters can be passed to the submodel. 
+These can be scalars, vectors, datums or features.
 
 \subsection{Symbol Definition}
 
@@ -81,10 +84,10 @@ be overridden during the loadmodel command.
 Supported operations are listed in table \ref{tab:iscad_algebra}.
 
 \begin{table}[h!]
-\centering
 \begin{tabular}{ll}
-InsightCAD script & Description \\
 \hline
+InsightCAD script & Description \\
+\hline\hline
   + - * /                                         & basic algebra \\
   mag(\param{vector})                              & magnitude of vector \\
   sqrt(\param{scalar})                             & square root \\
@@ -106,6 +109,7 @@ InsightCAD script & Description \\
   \param{vector}.z                                 & z component of vector \\
   \param{feature} \$ \param{identifier}            & scalar property of feature \\
   \param{vector} \& \param{vector}                  & Scalar product \\
+\hline
 \end{tabular}
 \caption{Algebraic operations in ISCAD scripts}
 \label{tab:iscad_algebra}
@@ -113,19 +117,9 @@ InsightCAD script & Description \\
 
 
 
-There are scalars predefined in each model. They are listed in table \ref{tab:iscad_scalars}.
+There are scalars predefined in each model. They are included in table \ref{tab:iscad_datums}.
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{ll}
-InsightCAD script & Description \\
-\hline
-  M\_PI                    & pi \\
-  deg                     & 180/pi \\
-\end{tabular}
-\caption{Predefined scalar symbols in ISCAD scripts}
-\label{tab:iscad_scalars}
-\end{table}
+\FloatBarrier
 
 \subsubsection{Vectors}
 
@@ -144,42 +138,31 @@ be overridden during the loadmodel command.
 Supported operations are listed in table \ref{tab:iscad_vectorOps}.
 
 \begin{table}[h!]
-\centering
 \begin{tabular}{ll}
-InsightCAD script & Description \\
 \hline
+InsightCAD script & Description \\
+\hline\hline
 + -                                         & basic algebra \\
   {[}\param{x}, \param{y}, \param{z}{]}            & vector from components \\
   \param{feature}@\param{vector}               & vector property of feature \\
   \param{scalar}*\param{vector}               & scaled vector \\
   \param{vector}/\param{scalar}                & scaled vector \\
-  \param{vector:a}\textasciicircum\param{vector:b}            & a x b \\
+  \param{vector:a}\textasciicircum\param{vector:b}            & Cross product $\vec a \times \vec b$ \\
   bbmin(\param{feature})                       & minimum corner of feature bounding box \\
   bbmax(\param{feature})                       & maximum corner of feature bounding box \\
   cog(\param{feature})                         & center of gravity coordinates of feature \\
   refpt(\param{datum})                         & reference point of datum (base point of axis or plane) \\
   refdir(\param{datum})                        & reference direction of datum (direction of axis or normal of plane) \\
+\hline
 \end{tabular}
 \caption{Vector operations and functions in ISCAD scripts}
 \label{tab:iscad_vectorOps}
 \end{table}
 
 
-There are vectors predefined in each model. They are listed in table \ref{tab:iscad_vector}.
+There are vectors predefined in each model. They are included in table \ref{tab:iscad_datums}.
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{ll}
-InsightCAD script & Description \\
-\hline
- EX                                &  $\vec e_x = (1  0  0)^T$\\
- EY                                &  $\vec e_y = (0  1  0)^T$\\
- EZ                                &  $\vec e_z = (0  0  1)^T$\\
- O                                 &  $\vec O = (0  0  0)^T$\\
-\end{tabular}
-\caption{Vector operations and functions in ISCAD scripts}
-\label{tab:iscad_vector}
-\end{table}
+\FloatBarrier
 
 \subsubsection{Datums}
 
@@ -200,12 +183,12 @@ be overridden during the loadmodel command.
 Supported operations are listed in table \ref{tab:iscad_datumOps}.
 
 \begin{table}[h!]
-\centering
 \begin{tabular}{ll}
-InsightCAD script & Description \\
 \hline
+InsightCAD script & Description \\
+\hline\hline
   \param{feature}\%\param{identifier}              &  Access datum inside another feature.\\
-  \param{datum} \textless\textless \param{vector}               &  Copy of datum, translated by $\vec\Delta$\\
+  \param{datum} \textless\textless{ } \param{vector:$\vec\Delta$}               &  Copy of datum, translated by $\vec\Delta$\\
   \multicolumn{2}{l}{Plane(\param{vector:p0}, \param{vector:n})}\\
         &  Datum plane with origin p0 and normal n.\\
   \multicolumn{2}{l}{SPlane(\param{vector:p0}, \param{vector:n}, \param{vector:e\_up})}\\
@@ -218,26 +201,36 @@ InsightCAD script & Description \\
      &  Datum axis at intersection between plane pl1 and pl2\\
   \multicolumn{2}{l}{xsec\_ppp(\param{datum:pl1}, \param{datum:pl2}, \param{datum:pl3})}\\
      &  Datum point at intersection between three planes\\
+\hline
 \end{tabular}
 \caption{Vector operations and functions in ISCAD scripts}
 \label{tab:iscad_datumOps}
 \end{table}
 
 
-There are datums predefined in each model. They are listed in table \ref{tab:iscad_datum}.
+There are datums predefined in each model. They are listed in table \ref{tab:iscad_datums}.
 
 \begin{table}[h!]
-\centering
 \begin{tabular}{ll}
-InsightCAD script & Description \\
 \hline
+InsightCAD script & Description \\
+\hline\hline
+  M\_PI                    & $\pi$ \\
+  deg                     & Conversion factor from degrees to radians: $=180/\pi$ \\
+ EX                                &  Unit vector in X direction: $\vec e_x = (1 ~~ 0 ~~ 0)^T$\\
+ EY                                &  Unit vector in Y direction: $\vec e_y = (0 ~~ 1 ~~ 0)^T$\\
+ EZ                                &  Unit vector in Z direction: $\vec e_z = (0 ~~ 0 ~~ 1)^T$\\
+ O                                 &  Origin: $\vec O = (0 ~~ 0 ~~ 0)^T$\\
   XY                      & X-Y-Plane\\
   XZ                      & X-Z-Plane\\
   YZ                      & Y-Z-Plane\\
+\hline
 \end{tabular}
-\caption{Vector operations and functions in ISCAD scripts}
-\label{tab:iscad_datum}
+\caption{Predefined symbols (scalars, vectors and datums) in ISCAD scripts}
+\label{tab:iscad_datums}
 \end{table}
+
+\FloatBarrier
 
 \subsubsection{Features}
 
@@ -277,13 +270,16 @@ InsightCAD script & Description \\
   \param{feature:a} - \param{feature:b}      &   Boolean subtract of feature b from feature a\\
   \param{feature:a} $|$ \param{feature:b} &   Boolean unite of feature a and feature b\\
   \param{feature:a} \& \param{feature:b}      &   Boolean intersection of feature a and feature b\\
-  \param{feature} \textless\textless \param{vector:delta}    &   Copy of feature, translated by vector delta\\
+  \param{feature} \textless\textless{ } \param{vector:delta}    &   Copy of feature, translated by vector delta\\
   \param{feature} * \param{scalar:s}         &   Copy of feature, scaled by s (relative to global origin O)\\
   \param{feature}.\param{identifier:subfeatname} & Access of subfeature\\
 \end{tabular}
 \caption{Vector operations and functions in ISCAD scripts}
 \label{tab:iscad_datum}
 \end{table}
+
+\FloatBarrier
+
 
 \subsection{Feature Commands}
 
@@ -407,19 +403,26 @@ these boolean expressions, quantity functions can be used. The available
 set of query functions and quantity functions depends on the type of
 shape which shall be queried.
 
+Boolean expressions available for all kinds of lower dimensional shapes are listed in table \ref{tab:iscad_feat_general_bool}.
+
+Quantity functions available for all kinds of lower dimensional shapes are listed in table \ref{tab:iscad_feat_general_qty}.
+
+
+
 \begin{table}[h!]
-\centering
 \begin{tabular}{ll}
-Command & Description \\
 \hline
+Command & Description \\
+\hline\hline
 ==, \textless, \textgreater, {\textgreater}=, {\textless}=            & value comparison\\
 !                                       & not\\
 \&\&									  & and\\
 \textbar\textbar                         & or\\
-\param{value 1} \textasciitilde \param{value 2} \{ \param{tolerance} \} & approximate equality\\
+\param{value 1} \textasciitilde{ } \param{value 2} \{ \param{tolerance} \} & approximate equality\\
 in(\param{selection set})               & true if shape is in other selection\\
 maximal(\param{quantity})               & true for the shape with maximum quantity\\
 minimal(\param{quantity})               & true for the shape with minimum quantity\\
+\hline
 \end{tabular}
 \caption{General boolean functions and operators available for all kinds of lower dimensional shape}
 \label{tab:iscad_feat_general_bool}
@@ -427,50 +430,57 @@ minimal(\param{quantity})               & true for the shape with minimum quanti
 
 
 \begin{table}[h!]
-\centering
 \begin{tabular}{ll}
-Command & Description \\
 \hline
+Command & Description \\
+\hline\hline
 angleMag(\param{vec 1}, \param{vec 2})  & angle between vec 1 and vec 2\\
 angle(\param{vec 1}, \param{vec 2})     & angle between vec 1 and vec 2\\
 \%d\param{index}                         & parameter \param{index} as scalar\\
 \%m\param{index}                         & parameter \param{index} as vector\\
 \%\param{index}                          & parameter \param{index} as selection set\\
+\hline
 \end{tabular}
 \caption{General quantity functions available for all kinds of lower dimensional shape}
 \label{tab:iscad_feat_general_qty}
 \end{table}
 
-General functions available for all kinds of lower dimensional shapes (Q: returns quantity, B: returns boolean):
 
-Specialized functions:
-
-
+\FloatBarrier
 
 
 \subsubsection{Vertices}
 
+There are no special boolean functions or operators for vertices.
+
+The available quantity functions for vertices are listed in table \ref{tab:iscad_feat_vertex_qty}.
+
 \begin{table}[h!]
-\centering
 \begin{tabular}{ll}
-Command & Description \\
 \hline
+Command & Description \\
+\hline\hline
 loc                        & location of the vertex\\
+\hline
 \end{tabular}
 \caption{Quantity functions available for vertex selections}
-\label{tab:iscad_feat_general_qty}
+\label{tab:iscad_feat_vertex_qty}
 \end{table}
 
-
+\FloatBarrier
 
 
 \subsubsection{Edges}
 
+Boolean functions for edges are listed in table \ref{tab:iscad_feat_edges_bool}.
+
+The available quantity functions for edges are listed in table \ref{tab:iscad_feat_edges_qty}.
+
 \begin{table}[h!]
-\centering
 \begin{tabular}{ll}
-Command & Description \\
 \hline
+Command & Description \\
+\hline\hline
     isLine                           & true, if edge is straight\\
     isCircle                         & true, if edge is circular\\
     isEllipse                        & true, if edge is elliptical\\
@@ -486,6 +496,7 @@ Command & Description \\
     isIdentical(\param{set})         & true, if edge is identical with one of the edges in set\\
     \multicolumn{2}{l}{projectionIsCoincident(\param{set}, \param{vec:p0}, \param{vec:n}, \param{vec:up}, \param{scalar:tol}) }\\
     									& true, if projection of edge is coincident with some edge in set\\
+\hline
 \end{tabular}
 \caption{Boolean functions available for edge selections}
 \label{tab:iscad_feat_edges_bool}
@@ -494,31 +505,36 @@ Command & Description \\
 
 
 \begin{table}[h!]
-\centering
 \begin{tabular}{ll}
-Command & Description \\
 \hline
+Command & Description \\
+\hline\hline
     len                                     & length of edge\\
     \multicolumn{2}{l}{radialLen(\param{vec:ax}, \param{vec:p0})}\\
        & radial distance between ends with respect to axis (p0,ax)\\
     CoG                                     & center of gravity of edge\\
     start                                   & start point coordinates\\
     end                                     & end point coordinates\\
+\hline
 \end{tabular}
 \caption{Quantity functions available for edge selections}
 \label{tab:iscad_feat_edges_qty}
 \end{table}
 
 
-
+\FloatBarrier
 
 \subsubsection{Faces}
 
+Boolean functions for faces are listed in table \ref{tab:iscad_feat_faces_bool}.
+
+The available quantity functions for faces are listed in table \ref{tab:iscad_feat_faces_qty}.
+
 \begin{table}[h!]
-\centering
 \begin{tabular}{ll}
-Command & Description \\
 \hline
+Command & Description \\
+\hline\hline
     
     isPlane                                 & true, if is a plane\\
     isCylinder                              & true, if is a cylindrical surface\\
@@ -536,20 +552,22 @@ Command & Description \\
     isIdentical(\param{set})                & \\
     adjacentToEdges(\param{set})            & \\
     adjacentToFaces(\param{set})            & \\
- \end{tabular}
+\hline
+\end{tabular}
 \caption{General boolean functions available for face selections}
 \label{tab:iscad_feat_faces_bool}
 \end{table}   
     
 \begin{table}[h!]
-\centering
 \begin{tabular}{ll}
-Command & Description \\
 \hline
+Command & Description \\
+\hline\hline
     area                                    & area of the face\\
     CoG                                     & center of gravity of the face\\
     cylRadius                               & radius of a cylindrical face\\
     cylAxis                                 & axis direction of a cylindrical face\\
+\hline
 \end{tabular}
 \caption{Quantity functions available for face selections}
 \label{tab:iscad_feat_faces_qty}
@@ -557,26 +575,34 @@ Command & Description \\
 
 
 
-
+\FloatBarrier
 
 \subsubsection{Solids}
 
+There are no special boolean functions or operators for solids.
+
+The available quantity functions for solids are listed in table \ref{tab:iscad_feat_solids_qty}.
+
 \begin{table}[h!]
-\centering
 \begin{tabular}{ll}
-Command & Description \\
 \hline
+Command & Description \\
+\hline\hline
     CoG                                     & center of gravity\\
     volume                                  & volume of the solid\\
+\hline
 \end{tabular}
 \caption{Quantity functions available for solid selections}
 \label{tab:iscad_feat_solids_qty}
 \end{table}
 
 
+\FloatBarrier
+
 \subsection{Postprocessing Actions}
 
-\paragraph{DXF(\param{path:outputfile}) \textless\textless { }\param{feature:f} \param{view\_definition} [, \param{view\_definition}, ... ]}
+\subsubsection{Drawing Export}
+\texttt{DXF(\param{path:outputfile}) \textless\textless{ } \param{feature:f} \param{view\_definition} [, \param{view\_definition}, ... ]}
 
 The DXF postprocessing action creates a DXF file for further use in
 drawings. Several views are derived from the feature f. A
@@ -623,7 +649,8 @@ DXF("c.dxf") << c
 \end{lstlisting}
 
 
-\paragraph{gmsh(\param{path:outputfile}) \textless\textless { }\param{feature:f} as \param{identifier:l} \param{mesh\_parameters}}
+\subsubsection{Mesh Creation}
+\texttt{gmsh(\param{path:outputfile}) \textless\textless { }\param{feature:f} as \param{identifier:l} \param{mesh\_parameters}}
 
 Generates a (triangular or tetrahedral) mesh for an FEA analysis of the
 feature f. Gmsh is used as a meshing backend. The mesh format is
