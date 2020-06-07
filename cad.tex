@@ -215,12 +215,12 @@ There are datums predefined in each model. They are listed in table \ref{tab:isc
 \hline
 InsightCAD script & Description \\
 \hline\hline
-  M\_PI                    & $\pi$ \\
-  deg                     & Conversion factor from degrees to radians: $=180/\pi$ \\
- EX                                &  Unit vector in X direction: $\vec e_x = (1 ~~ 0 ~~ 0)^T$\\
- EY                                &  Unit vector in Y direction: $\vec e_y = (0 ~~ 1 ~~ 0)^T$\\
- EZ                                &  Unit vector in Z direction: $\vec e_z = (0 ~~ 0 ~~ 1)^T$\\
- O                                 &  Origin: $\vec O = (0 ~~ 0 ~~ 0)^T$\\
+  M\_PI                   & $\pi$ \\
+  deg                     & Conversion factor from degrees to radians ($180/\pi$) \\
+  EX                      & Unit vector in X direction $\vec e_x = (1 ~~ 0 ~~ 0)^T$\\
+  EY                      & Unit vector in Y direction $\vec e_y = (0 ~~ 1 ~~ 0)^T$\\
+  EZ                      & Unit vector in Z direction $\vec e_z = (0 ~~ 0 ~~ 1)^T$\\
+  O                       & Origin $\vec O = (0 ~~ 0 ~~ 0)^T$\\
   XY                      & X-Y-Plane\\
   XZ                      & X-Z-Plane\\
   YZ                      & Y-Z-Plane\\
@@ -309,15 +309,15 @@ filename extension. Supported formats are IGS, STP, BREP.
 
 \texttt{Sketch(\param{datum:pl}, \param{path:file}, \param{string:name} [, \param{identifier}=\param{scalar}, ... ])}
 
-Reads a sketch (i.e. a closed contur) from a file. The geometry in the
-sketch is expected to be in the X-Y-Plane. It is placed on the given
-plane pl. Sketch file format is recognized from the file name
-extension. Supported are ".dxf" and ".fcstd" (FreeCAD). The name is
-interpreted as layer name in DXF and sketch name in FreeCAD files.
+Reads a sketch (i.e. a singly closed contour) from a file. The geometry in the
+sketch is expected to be drawn in the X-Y-Plane.
+It is placed on the given plane pl. 
+Sketch file format is recognized from the file name extension. 
+Supported are ".dxf" and ".fcstd" (FreeCAD). 
+The name is interpreted as layer name in DXF and sketch name in FreeCAD files.
 
-For FreeCAD sketches, a list of parameter values can optionally be
-supplied. Upon loading, the sketch will be regenerated through FreeCAD
-with these values.
+For FreeCAD sketches, a list of parameter values can optionally be supplied. 
+Upon loading, the sketch will be regenerated through FreeCAD with these values.
 
 \texttt{loadmodel( \param{identifier:modelname} [, \param{identifier} = \param{feature}$|$\param{datum}$|$ \param{vector}$|$\param{scalar}, ... ] )}
 
