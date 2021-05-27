@@ -1,13 +1,36 @@
-
 \section{Introduction}
 
 \subsection{License and Copyright}
 
 InsightCAE is free software; you can redistribute it and/or modify it under the terms of version 2 of the GNU General Public License\footnote{\url{http://www.gnu.org/licenses/old-licenses/gpl-2.0.html}} as published by the Free Software Foundation. You accept the terms of this license by distributing or using this software.
 
-This manual is Copyright (c) 2017 silentdynamics GmbH.
+This manual is Copyright (c) 2017-2021 silentdynamics GmbH.
 
 Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled "GNU Free Documentation License".
+
+\subsection{About InsightCAE}
+
+InsightCAE is a framework for building automated analysis and design workflows in Computer-Aided Engineering with a preference for open source tools.
+
+Individual open source projects often meet only subtasks in an analysis process and have very different APIs. To conduct computational tasks, a combination of several software tools is often required. In order to use open source software productive and efficient for everyday tasks, the analysis automation framework InsightCAE was created.
+
+InsightCAE serves as a framework for the implementation of analysis procedures. The objective is to provide adapters and interfaces to the tools and simulation programs that are needed for a specific computing task.
+
+Some common use cases are:
+\begin{itemize}
+\item create a simulation app
+
+InsightCAE's toolkit library is used to build a simulation app. The workbench or the web interface can be used to present the parameter form to the user and display a 3D preview of the setup. The app generates a result set. InsightCAE contains a viewer to display result sets or compare data from different result sets. The simulation app can be stored in a custom library or in a python script.
+
+\item assist in creation of OpenFOAM cases
+
+InsightCAE contains a GUI (called "Case Builder") to build OpenFOAM cases by putting features together into an OpenFOAM case.
+
+\item build parametric, script-based CAD models
+
+InsightCAE contains an interpreter for script-based CAD models. The underlying CAD kernel is OpenCASCADE (a BREP kernel). 
+This can utilized to produce geometry in the course of optimizations, for example.
+\end{itemize}
 
 \subsection{Contributors}
 
@@ -24,12 +47,6 @@ If you want to get involved in the development, please feel invited to do so!
 We greatly appreciate any contribution and we would very much like to add you to the above list.
 
 If you made some modification or addition to the code, which you would like to be merged into the main development line, please consider to send us a pull request\footnote{\url{https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests}}.
-
-\subsection{About InsightCAE}
-
-InsightCAE is a workbench for Computer-Aided Engineering. Individual open source projects often meet only subtasks in analysis process. To automate repetitive computational tasks, a combination of several open source engineering software tools is often required. In order to use open source software productive and efficient for everyday tasks, the analysis automation framework InsightCAE was created.
-
-InsightCAE serves as a framework for the implementation of analysis procedures. The objective is to provide interfaces to the tools and simulation programs that are needed for a specific computing task.
 
 \subsection{Features and Highlights}
 
@@ -83,9 +100,13 @@ Here are two useful hints to solve this issue:
 \end{enumerate}
 
 
-\subsection{Resources}
 
-\subsubsection{In the Web}
+
+
+
+\section{Resources}
+
+\subsection{In the Web}
 
 \begin{itemize}
 \item Source Code Repository \url{https://github.com/hkroeger/insightcae}
@@ -93,23 +114,27 @@ Here are two useful hints to solve this issue:
 \item Web Forum \url{https://groups.google.com/forum/#!forum/insightcae}
 \end{itemize}
 
-\subsubsection{Reporting Bugs and Feature Requests}
+\subsection{Reporting Bugs and Feature Requests}
 
 Please use the issue tracker \url{https://github.com/hkroeger/insightcae/issues} to report any bugs.
 
 We also monitor the web forum \url{https://groups.google.com/forum/#!forum/insightcae} for questions or feature requests.
 
-\subsubsection{Getting Professional Help and Support}
+\subsection{Getting Professional Help and Support}
 
 Beyond the web resources above, silentdynamics GmbH offers commercial support\footnote{\url{http://silentdynamics.de/en/oss-cae/}} for professional users of InsightCAE. Automated analyses according to customer needs and specifications are implemented  by creating new specialized modules for Insight CAE.
 Typical support contracts include also user training and continuous customization and updating of InsightCAE and its add-ons.
+
+
+
+
 
 
 \section{Obtaining InsightCAE}
 
 \subsection{Installation using Linux Package Manager}
 
-We provide installation packages for Ubuntu-based Linux distributions. We specifically support the latest Ubuntu LTS distibution.
+We provide binary installation packages for Ubuntu-based Linux distributions. We specifically support the latest Ubuntu LTS distibution.
 
 The packages are held in our repository. To install them, first add the silentdynamics apt repository and the associated key by executing:
 
@@ -122,97 +147,50 @@ $ sudo apt-get update
 Then, install the software by executing
 
 \begin{lstlisting}[language=bash]
-$ sudo apt-get install insightcae-base
+$ sudo apt-get install insightcae-ce
 \end{lstlisting}
 
-
-Note:
-in Ubuntu 18.04 LTS, the file \file{/etc/ImageMagick-6/policy.xml} needs to be modified. Otherwise the charts in the reports will not be created properly.
-Find the line
-\begin{lstlisting}[language=xml]
-<policy domain="coder" rights="none" pattern="PDF" />
-\end{lstlisting}
-
-and change it to
-\begin{lstlisting}[language=xml]
-<policy domain="coder" rights="read|write" pattern="PDF" />
-\end{lstlisting}
+Continue with preparing the environment according to section \ref{sec:setupenvironment}
 
 \subsection{Installation on Windows}
-Currently, there is no native Windows version of InsightCAE available.
-However, it can be run in Windows 10 Enterprise (64 bit only) or Windows Server using the "Linux Subsystem for Windows" (WSL). This should be preferred over virtualization solutions like VirtualBox, because it offers the best parallel performance. The processes share the memory with the Windows processes and the files are stored in the Windows file system. Various X servers are available for graphical output under Windows; Xming is used below.
+Our software as well as OpenFOAM and Code\_Aster are currently pure Linux software. 
+However, it can also be run under Windows 10 (64 bit only) using the "Linux Subsystem for Windows".
+Virtualization is not used. 
+The processes share the memory with the Windows processes and the files are stored in the Windows file system. 
+For graphical output under Windows, a X server has to be installed. 
+Various X servers are available.
 
-To use this solution, the Linux subsystem must first be activated. Adminstration privileges are required. It is done by the following steps:
+For the comfortable installation of InsightCAE and OpenFOAM under Windows we provide an installer:
 
-Start Windows PowerShell as an administrator (right-click on Start menu \textgreater "PowerShell (Admin)") and execute:
-\begin{lstlisting}[language=bash]
-> Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
-\end{lstlisting}
-Restart the computer when prompted.
+\url{https://sourceforge.net/projects/insightcae/files/install_InsightCAE.exe}
 
-Download the Linux image:
-\begin{lstlisting}[language=bash]
-> Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile ~/Ubuntu.zip -UseBasicParsing
-\end{lstlisting}
+Download the EXE file from this link and execute it:
 
-Unpack:
-\begin{lstlisting}[language=bash]
-> Expand-Archive ~/Ubuntu.zip c:\Distros\Ubuntu
-\end{lstlisting}
-
-Configuring the Linux System:
-Switch to user "root":
-\begin{lstlisting}[language=bash]
-> c:\Distros\Ubuntu\ubuntu.exe config --default-user root
-\end{lstlisting}
-
-Set the password of the user "user":
-\begin{lstlisting}[language=bash]
-> c:\Distros\Ubuntu\ubuntu.exe
-# passwd user
-\end{lstlisting}
-
-Install InsightCAE with OpenFOAM:
-
-\begin{lstlisting}[language=bash]
-# echo deb http://downloads.silentdynamics.de/ubuntu bionic main > /etc/apt/sources.list.d/sd.list
-# apt-key adv --fetch-keys http://downloads.silentdynamics.de/SD_REPOSITORIES_PUBLIC_KEY.gpg
-# apt-get update
-# apt-get install insightcae-base
-\end{lstlisting}
-
-Switch back to standard user ("user"):
-
-\begin{lstlisting}[language=bash]
-> c:\Distros\Ubuntu\ubuntu.exe config --default-user user
-\end{lstlisting}
-
-Add the file \file{c:{\textbackslash}Distros{\textbackslash}Ubuntu{\textbackslash}ubuntu.exe} to the start bar
-
-Then install the Xming server for graphical output:
-
-Download Xming-Installer\footnote{e.g. \url{https://sourceforge.net/projects/xming/files/Xming/6.9.0.31/Xming-6-9-0-31-setup.exe}}, then execute the installer:
 \begin{itemize}
-\item Check: "Install quick launch icon"
-\item Allow network access after installation
+\item It will activate the Windows subsystem for Linux, if it is not already activated
+\item Then Ubuntu 18.04 is installed in the WSL environment
+\item Afterwards, the current version of InsightCAE and OpenFOAM is downloaded from the Internet and installed in the WSL environment. 
+For this purpose, about 500MB are transferred over the Internet and about 3GB of hard disk space is required.
+\item Finally the X-Server vcXsrv is installed.
+\item Please note:
+\begin{itemize}
+\item For the activation of WSL and the installation of vcXsrv administrator rights are required
+\item The WSL system is set up for the user running the installer. Other users of the system cannot use the installation.
+\end{itemize}
 \end{itemize}
 
-Set the DISPLAY variable in the Bash environment
-\begin{lstlisting}[language=bash]
-$ sudo -i
-# echo "export DISPLAY=:0" >> /etc/profile.d/xming.sh
-# exit
-\end{lstlisting}
-
 \paragraph{Usage}
-First start "Xming" X-Server,
-then start Ubuntu Bash command line.
+First launch "Xming" X-Server.
+
+Then start Ubuntu Bash command line.
 Execute the application in the shell, e.g. the InsightCAE Workbench:
 \begin{lstlisting}[language=bash]
 $ workbench
 \end{lstlisting}
 
 \subsection{Building from Sources}
+
+\subsubsection{Getting the Source Code}
 
 The source code of InsightCAE is hosted at Github. 
 Cloning a working copy constitutes the best way to get updates and the latest bug fixes.
@@ -224,6 +202,43 @@ First, get the the sources by cloning the git repository:
 \begin{lstlisting}[language=bash]
 $ git clone https://github.com/hkroeger/insightcae.git insight-src
 \end{lstlisting}
+
+
+\subsubsection{Dependencies}
+
+The InsightCAE project depends on a number of other projects.
+Some of the dependencies are optional and only required, if certain features are enabled.
+The dependencies are listed in table \ref{tab:dependencies}.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{lll}
+\hline
+Project & tested version & required for\\
+\hline
+
+Armadillo & 9.800.4 & (always)\\
+Gnu Scientific Library & 2.6 & (always)\\
+Boost & 1.65.1 &(always) \\
+VTK & 9 & (always)\\
+Python (Lib) & 3.6 & (always)\\
+OpenCASCADE & 7.4 & (always)\\
+DXFlib & 3.7.5 & (always)\\
+libpoppler & 0.86 & (always) \\
+Qt & 5.15 & for GUIs\\
+Gmsh & 4.8 & only for analyses with tet/tri meshing\\
+Wt toolkit & 4.1 & only for client/server execution\\
+OpenFOAM & ESI1806, 4.1 extend & only for OpenFOAM based analyses\\
+Code\_Aster & 14 & only for FEM analyses \\
+SWIG & 4 & only for python bindings \\
+\hline
+\end{tabular}
+\caption{Required dependencies for building InsightCAE}
+\label{tab:dependencies}
+\end{table}
+
+\subsubsection{Building}
+
 
 CMake is utilized for managing the build. 
 The preferred way is to build the software out of source in a separate build directory. Create a build directory, then configure the build using e.g. ccmake and finally build using make:
@@ -246,3 +261,20 @@ To work with InsightCAE, some environment variables are needed to be set up. A s
 \begin{lstlisting}[language=bash]
 source /path/to/insight/bin/insight_setenv.sh
 \end{lstlisting}
+
+
+
+\subsection{Setting up the Environment}
+\label{sec:setupenvironment}
+
+To set up the environment variables and search paths required by the InsightCAE components, a script needs to be parsed.
+This is conveniently added to the shell startup script file \file{\textasciitilde/.bashrc}.
+Add the following line to the \emph{beginning} of the \file{\textasciitilde/.bashrc} file:
+
+\begin{lstlisting}
+source /opt/insightcae/bin/insight_setenv.sh
+\end{lstlisting}
+
+Note that the default contents of this file differs between linux distributions.
+Sometimes it contains statements which prematurely end its evaluation for non-interactive shells.
+This

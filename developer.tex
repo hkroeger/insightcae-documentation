@@ -1,1 +1,108 @@
 \section{Developer Documentation}
+
+InsightCAE is a toolbox for the creation of custom workflows.
+It is therefore very natural to use its API in own extensions.
+
+There are different developer perspectives:
+\begin{enumerate}
+\item Creating extensions (own workflow modules).
+
+To write own workflow modules, just a plain binary installation of InsightCAE is required. 
+It brings header files for its libraries and a CMake configuration which enables the developer to build his own extensions.
+It is recommended to create a custom library containing the additions (plug-in).
+See section \ref{sec:plugins} for a guide.
+
+\item Modifying and extending the InsightCAE base project itself.
+
+Since InsightCAE is free and open software, it is perfectly possible to take it and apply extensions or corrections or any other modification or improvement.
+Please note that silentdynamics GmbH develops InsightCAE primarily with its own applications in mind so there are almost certainly features missing in the API which third party users might need.
+If you implement something which might be of public interest, please think about sharing it with us and the rest of the community. 
+We are very open to integrate foreign contributions into the project.
+
+Now, modifying the InsightCAE project requires to build the project from its sources. 
+Please see section \ref{sec:insightcae_dev} for a guide to set up a self-built working copy of the sources.
+\end{enumerate}
+
+\subsection{Plug-In Development}
+\label{sec:plugins}
+
+
+\subsection{InsightCAE Development}
+\label{sec:insightcae_dev}
+
+\subsubsection{Dependencies}
+
+The InsightCAE toolkit requires a number of dependencies. 
+Not all versions have been tested, of course. 
+The following list contains the major dependencies along with the versions, which are currently utilized in binary packages:
+\begin{itemize}
+\item boost, \url{http://www.boost.org}, 1.65.0
+\item python, 3.6
+\item gsl
+\item armadillo
+\item OpenCASCADE
+\item dxflib
+\item Gmsh
+\item Qt, 5.
+\item Wt
+\item OpenFOAM
+\item Code\_Aster
+\end{itemize}
+
+
+
+\subsubsection{OpenFOAM Analysis}
+
+
+\begin{figure}[h!]
+\centering
+\digraph{openfoamanalysis}{
+ rankdir=LR;
+ "insight::OpenFOAMAnalysis" -> "insight::Analysis";
+}
+\caption{Inheritance of OpenFOAMAnalysis class}
+\label{fig:}
+\end{figure}
+
+\begin{sequencediagram}
+\newthread{t}{:Thread}
+\newinst[1]{o}{OpenFOAMAnalysis}{:}{}
+\newinst[2]{c}{OpenFOAMCase}{:}{}
+\begin{call}{t}{operator()()}{o}{}
+  \begin{callself}{o}{createCaseOnDisk()}{}
+	\begin{callself}{o}{createCase()}{}\end{callself}
+ 	\begin{callself}{o}{createCaseDictsInMemory()}{}\end{callself}
+ 	\begin{callself}{o}{applyCustomOptions()}{}\end{callself}
+ 	\begin{callself}{o}{if not outputTimesPresent}{}
+		\begin{call}{o}{modifyMeshOnDisk()}{c}{}\end{call}
+ 		\begin{callself}{o}{writeDictsToDisk()}{}
+			\begin{call}{o}{createCaseOnDisk()}{c}{}\end{call}
+			\begin{call}{o}{modifyCaseOnDisk()}{c}{}\end{call}
+ 		\end{callself}
+	\begin{callself}{o}{applyCustomPreprocessing()}{}\end{callself}
+ 	\end{callself}
+  \end{callself}
+  \begin{callself}{o}{initializeSolverRun()}{}\end{callself}
+  \begin{callself}{o}{runSolver()}{}\end{callself}
+  \begin{callself}{o}{finalizeSolverRun()}{}\end{callself}
+  \begin{callself}{o}{evaluateResults()}{}\end{callself}
+\end{call}
+\end{sequencediagram}
+%
+%\begin{itemize}
+%\item 
+%\end{itemize}
+%1. createCaseOnDisk
+%a. createCase
+%b. createCaseDictsInMemory
+%c. applyCustomOptions
+%d. if (!outputTimesPresent)
+%1. case.modifyMeshOnDisk
+%2. writeDictsToDisk
+%a. case.createOnDisk
+%b. case.modifyCaseOnDisk
+%3. applyCustomPreprocessing
+%2. initializeSolverRun
+%3. runSolver
+%4. finalizeSolverRun
+%5. evaluateResults
