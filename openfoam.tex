@@ -21,6 +21,7 @@ These are utilized by the workbench frontend but can also be used to modify case
 
 \paragraph{Trigger Output Independently from the Configured Output Interval}
 \label{par:trigger_output_of}
+\label{par:wnow}
 
 The solver monitors the files in its case directory.
 If it finds a file named \verb!wnow!, immediate output is triggered and this signal file is removed by the solver.
@@ -36,7 +37,7 @@ $ touch wnow
 Note: you might need to change to working directory to the case directory first.
 
 \paragraph{Trigger Immediate Output and Stop Solver Afterwards Without Raising an Error}
-
+\label{par:wnowandstop}
 The solver monitors the files in its case directory.
 If it finds a file named \verb!wnowandstop!, immediate output is triggered, this signal file is removed by the solver and the solvers.
 
@@ -53,6 +54,7 @@ Note: you might need to change to working directory to the case directory first.
 
 
 \paragraph{Inspecting a Running Case Using Paraview}
+\label{par:isPVpy}
 
 Some of the relevant numerical figures of a case are displayed in live updated charts in the GUI.
 But it is a very good habit to check the mesh and also the solution as soon as possible and well before valuable computing resource are wasted to compute inadequate solutions on bad meshes.

@@ -1,6 +1,6 @@
-\section{Automation of Simulation Workflows}
+\section{Simulation Apps}
 
-\subsection{Building Bricks}
+\subsection{Explanation of Building Bricks}
 
 \subsubsection{Input: Parameter Sets}
 
@@ -124,7 +124,7 @@ Upon loading, the InsightCAE base library searches in
 for files named \texttt{*.module}. 
 Each of these files has to contain a statement \verb!library <FILENAME>!, where FILENAME is the name of the shared library file. These libraries will all be loaded and their defined analyses will become available in the GUI and all other InsightCAE tools.
 
-\subsection{User Front Ends}
+\subsection{Usage}
 
 \subsubsection{GUI: workbench}
 \label{sec:workbench}
@@ -254,6 +254,48 @@ The required analysis should be selected and confirmed by clicking "Ok".
 \caption{Result explorer tab of the workbench}
 \label{fig:workbench_result}
 \end{figure}
+
+\subsubsection{Special Features for OpenFOAM-based Simulation Apps}
+
+Simulation apps which are based on an OpenFOAM simulation provide some special features which is documented in this section.
+
+\paragraph{Restart Behavior}
+Since OpenFOAM-based simulations often run for a long time. 
+It frequently appears that the procedure is interrupted and needs to be restarted.
+
+There is not explicit function for a restart.
+It happens implicitly, when the analysis is re-launched in an existing working directory.
+
+Depending on the state of the data, the behaviour will be as follows:
+\begin{itemize}
+
+\item the mesh exists (in folder "constant/polyMesh/") and a time directory exists (e.g. "0/"): it is assumed that the case is ready for execution and the solver will be restarted,
+
+\item only the mesh exists ("constant/polyMesh/") and no time directory: mesh creation will be skipped but the dictionaries will be recreated.
+
+\end{itemize}
+
+Depending on where the interruption happened, the state might be inconsistent and invalid behavior might result.
+For example:
+\begin{itemize}
+\item the interruption appeared within a meshing procedure which includes intermediate meshes $\Rightarrow$ a mesh will be present but invalid
+\item the interruption appeared during the field initialization $\Rightarrow$ a time directory is present but the fields are invalid,
+\item the interruption appeared during writing of a time directory $\Rightarrow$ a time directory is present but invalid and the solver restart will fail.
+\end{itemize}
+
+If you are unsure about the validity of the case data, please consider to clean the case directory first and restart everything from the beginning.
+
+\paragraph{Cleaning the Case Directory}
+
+\paragraph{Launching Graphical Postprocessor ParaView}
+
+To inspect the results of a OpenFOAM simulation beyond the figure which the InsightCAE simulation extracts automatically from the simulation case, the independent graphical postprocessor Paraview can be used.
+
+It can be launched from the command line using a script as explained in \ref{par:isPVpy}.
+
+Alternatively, this can be done also from the workbench. On the right border of the analysis form, there is a button labelled "ParaView".
+For OpenFOAM-based simulation apps, this is enabled.
+Once it is pressed, Paraview will be launched in the selected working directory.
 
 \subsubsection{Console on Headless Computers: analyze}\label{sec:analyze}
 
