@@ -3,6 +3,7 @@
 \subsection{Explanation of Building Bricks}
 
 \subsubsection{Input: Parameter Sets}
+\label{sec:parametersets}
 
 Parameter sets are a hierarchical collection of parameters. Parameters can be of different type, see table \ref{tab:parameters} for a list.
 
@@ -22,6 +23,11 @@ a \texttt{subset} that switches its content based on a \texttt{selection} parame
 
 an array of either a compound parameter or a primitve parameter
 \end{itemize}
+
+Throughout this manual and also e.g. in the command line parameters, the parameters are commonly specified in a file path-like format, where subsections are separated by slashes.
+For example, the parameter \texttt{evaluateonly} in the subsection \texttt{run} is meant by the expression \texttt{run/evaluateonly}.
+
+For arrays elements, the index of the element is inserted after the array parameter name. For example, the parameter \texttt{mesh/refinementZones/0/lx} refers to the parameter \texttt{lx} inside the first array element of the array of subsections \texttt{refinementZones} in the subsection \texttt{mesh}.
 
 \begin{table}[h!]
 \centering
@@ -163,6 +169,7 @@ All views in the Input tab are shown in a horizontal splitter and their width ca
 The layout of the splitter is saved on program exit and restored on the next start.
 
 \paragraph{Saving Parameters}
+\label{par:save_parameters}
 Once all parameters are edited, the parameter set can be saved to a file.
 Very often, external files are referenced from a parameter set.
 Since it is also often necessary, to relocate parameter sets from one computer to another or between directories, InsightCAE parameter sets provide some special features which shall simplify relocation of parameter sets:
@@ -257,21 +264,21 @@ The required analysis should be selected and confirmed by clicking "Ok".
 
 \subsubsection{Special Features for OpenFOAM-based Simulation Apps}
 
-Simulation apps which are based on an OpenFOAM simulation provide some special features which is documented in this section.
+Simulation apps which are based on an OpenFOAM simulation provide some special features and also some implicit behavior and conventions which is documented in this section.
 
 \paragraph{Restart Behavior}
-Since OpenFOAM-based simulations often run for a long time. 
-It frequently appears that the procedure is interrupted and needs to be restarted.
+OpenFOAM-based simulations often run for a long time. 
+It frequently appears that the simulation procedure is interrupted, either accidentally or intentional, and needs to be restarted.
 
-There is not explicit function for a restart.
-It happens implicitly, when the analysis is re-launched in an existing working directory.
+There is no explicit function for a restart.
+It happens implicitly, when the analysis is re-launched in an existing working directory and some preconditions are met.
 
-Depending on the state of the data, the behaviour will be as follows:
+Depending on the state of the data, the behavior will be as follows:
 \begin{itemize}
 
-\item the mesh exists (in folder "constant/polyMesh/") and a time directory exists (e.g. "0/"): it is assumed that the case is ready for execution and the solver will be restarted,
+\item if a mesh exists (in folder "constant/polyMesh/") and a time directory exists (e.g. "0/"): it is assumed that the case is ready for execution and the solver will be restarted,
 
-\item only the mesh exists ("constant/polyMesh/") and no time directory: mesh creation will be skipped but the dictionaries will be recreated.
+\item if only the mesh exists ("constant/polyMesh/") and no time directory: mesh creation will be skipped. But all the dictionaries in \texttt{constant/} and \texttt{system/} and field files in the initial time directory will be recreated.
 
 \end{itemize}
 
@@ -283,9 +290,39 @@ For example:
 \item the interruption appeared during writing of a time directory $\Rightarrow$ a time directory is present but invalid and the solver restart will fail.
 \end{itemize}
 
-If you are unsure about the validity of the case data, please consider to clean the case directory first and restart everything from the beginning.
+If you are unsure about the validity of the case data, please consider to clean the case directory first and restart everything from the beginning (see \ref{sec:cleancase}).
 
 \paragraph{Cleaning the Case Directory}
+\label{sec:cleancase}
+
+When an OpenFOAM-based simulation run was performed, a number of directories and files are created in the working directory.
+If another run shall be performed and no restart is desired, then these directories and files need to be removed first.
+For this task, there is the standalone tool \texttt{isofCleanCase}, see section \ref{sec:isofcleancase}.
+
+This tool can be launched in the selected workspace directory from within the GUI via the button "Clean" on the right side of the analysis form. Please see section \ref{sec:isofcleancase} for details on the usage.
+
+In some OpenFOAM-based simulation apps, auxiliary OpenFOAM case are created in subdirectories of the workspace directory.
+Currently, these can only be deleted or cleaned manually via a file manager and the command line tool \texttt{isofCleanCase}.
+
+
+
+\paragraph{Performing only the Evaluation without Running the Solver}
+\label{sec:evaluateonly_workbench}
+
+This is needed, if the solver was manually restarted, e.g. after manual changes of the numerical settings became necessary due to stability problems and ran until completion in the case directory which the corresponding InsightCAE simulation app has created.
+
+It is then possible to execute only the evaluation part of the simulation app alone.
+This will not do any modifications to the simulation setup and it will not start any solver.
+To do this, the following is needed:
+\begin{enumerate}
+\item in the parameter set, set the switch \texttt{run/evaluateonly} to \texttt{true},
+\item set the working directory to the existing case directory, where the case was created (this will be done automatically, if an existing input file was opened),
+\item then start the simulation by clicking the "Run" button.
+\end{enumerate}
+
+Please note, that all parameters in the input file are assumed to match the simulation setup. 
+No checks are done and there is no possibility for the Simulation app to restore them from an existing simulation folder.
+Thus it is up to the user to ensure validity.
 
 \paragraph{Launching Graphical Postprocessor ParaView}
 
@@ -295,10 +332,54 @@ It can be launched from the command line using a script as explained in \ref{par
 
 Alternatively, this can be done also from the workbench. On the right border of the analysis form, there is a button labelled "ParaView".
 For OpenFOAM-based simulation apps, this is enabled.
-Once it is pressed, Paraview will be launched in the selected working directory.
+Once it is pressed, Paraview will be launched in the selected working directory. 
+If a local run is configured, it will just read the case from the selected working directory.
+If a remote run is selected, a client-server pair will be launched and the connection to the remote side is set up via SSH tunnels.
+
+
 
 \subsubsection{Console on Headless Computers: analyze}\label{sec:analyze}
 
+It is possible to launch an analysis from an existing input file (*.ist) without the graphical user interface in a batch mode.
+This is useful to integrate InsightCAE into workflows with other third-party software.
+The input file can be saved from the workbench (see \ref{par:save_parameters}) or created by a script or with any text editor.
+
+To launch a simulation in batch mode, the executable \texttt{analyze} is available.
+It can be launched like this from the command line:
+
+\begin{lstlisting}[language=bash]
+$ analyze inputfile.ist
+\end{lstlisting}
+
+The executable understands additional options.
+These are explanined in the following paragraphs.
+
+\paragraph{Changing parameters}
+The values of parameters in the input file can be overridden from the command line by specifying an arbitrary number of the following parameters:
+\begin{itemize}
+\item \texttt{-b [ --bool ] arg}\\ boolean variable assignment
+\item \texttt{-l [ --selection ] arg }\\selection variable assignment
+\item \texttt{-s [ --string ] arg}\\string variable assignment
+\item \texttt{-p [ --path ] arg}\\path variable assignment
+\item \texttt{-d [ --double ] arg}\\double variable assignment
+\item \texttt{-v [ --vector ] arg}\\vector variable assignment
+\item \texttt{-i [ --int ] arg}\\integer variable assignment
+\end{itemize}
+
+The argument \texttt{arg} for all these options has the form:
+\texttt{path:value}.
+The path is the file path-like specification of the parameter (see \ref{sec:parametersets}) and the value is appended to the name, separated by a colon.
+If any spaces are inside the value, e.g. when strings or path names are to be specified, then the entire \texttt{arg} should be set in qoutes at the command line. For example:
+\begin{lstlisting}[language=bash]
+$ analyze --path "run/mapFrom:/a/path/with spaces" inputfile.ist
+\end{lstlisting}
+
+\paragraph{General Behaviour}
+
+The simulation working directory can be set explicitly by the parameter \texttt{--workdir} (short \texttt{-w}). 
+The default is to use the current directory as the working directory.
+
+The finally applied input parameter set is optionally saved to a file, when the file is specified with the parameter \texttt{--savecfg} (short \texttt{-c}).
 
 \subsection{Available Simulation Workflows}
 
