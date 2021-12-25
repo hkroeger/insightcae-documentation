@@ -144,7 +144,7 @@ $ sudo add-apt-repository http://downloads.silentdynamics.de/ubuntu
 $ sudo apt-get update
 \end{lstlisting}
 
-Then, install the software by executing
+Then, install the community-edition package by executing
 
 \begin{lstlisting}[language=bash]
 $ sudo apt-get install insightcae-ce
@@ -152,41 +152,101 @@ $ sudo apt-get install insightcae-ce
 
 Continue with preparing the environment according to section \ref{sec:setupenvironment}
 
+Note: for customers who receive supported, tailored simulation apps from silentdynamics, these apps are bundled into add-ons and the add-ons are included in the installation package.
+For each customer, a separate package repository is maintained (with a unique URL, different from the one above) and the name of the installation package is \texttt{insightcae} instead of \texttt{insightcae-ce}.
+
+Note: besides the standard repository at \url{http://downloads.silentdynamics.de/ubuntu} which includes the package built from the "master" branch in the git source code version management system, silentdynamics provides a second package repository with a development package built form the branch "next-release".
+
 \subsection{Installation on Windows}
 Our software as well as OpenFOAM and Code\_Aster are currently pure Linux software. 
-However, it can also be run under Windows 10 (64 bit only) using the "Linux Subsystem for Windows".
+However, it can also be run under Windows 10 (64 bit only) or later with the help of the "Linux Subsystem for Windows" (WSL).
 Virtualization is not used. 
 The processes share the memory with the Windows processes and the files are stored in the Windows file system. 
-For graphical output under Windows, a X server has to be installed. 
-Various X servers are available.
+
+Graphical output from the WSL environment has turned out to be error-prone and poor, thus the software is split into a frontend part, which runs natively in Windows and a backend part which controls the simulation solvers and runs in the WSL environment.
+The communication between both is over the network stack.
 
 For the comfortable installation of InsightCAE and OpenFOAM under Windows we provide an installer:
 
-\url{https://sourceforge.net/projects/insightcae/files/install_InsightCAE.exe}
+\url{http://downloads.silentdynamics.de/ubuntu_dev/}
 
-Download the EXE file from this link and execute it:
+The installers for the different versions X.Y.Z are named in the form 
+
+\texttt{InsightCAEInstaller-X.Y.Z.exe}
+
+Note: for customers who receive supported, tailored simulation apps from silentdynamics, the installer is downloaded from the customers dedicated repository URL instead of the one above.
+
+Download the latest EXE file from this link and execute it:
 
 \begin{itemize}
 \item It will activate the Windows subsystem for Linux, if it is not already activated
-\item Then Ubuntu 18.04 is installed in the WSL environment
-\item Afterwards, the current version of InsightCAE and OpenFOAM is downloaded from the Internet and installed in the WSL environment. 
-For this purpose, about 500MB are transferred over the Internet and about 3GB of hard disk space is required.
-\item Finally the X-Server vcXsrv is installed.
+\item The installer bundles the necessary third party programs (ParaView, gnuplot, MiKTeX, Putty)
+\item The WSL backend is not immediately created during installation but upon the first start of the workbench GUI.
 \item Please note:
 \begin{itemize}
-\item For the activation of WSL and the installation of vcXsrv administrator rights are required
-\item The WSL system is set up for the user running the installer. Other users of the system cannot use the installation.
+\item For the installation, administrator rights are required
 \end{itemize}
 \end{itemize}
 
 \paragraph{Usage}
-First launch "Xming" X-Server.
 
-Then start Ubuntu Bash command line.
-Execute the application in the shell, e.g. the InsightCAE Workbench:
-\begin{lstlisting}[language=bash]
-$ workbench
-\end{lstlisting}
+Appropriate start menu entries are created.
+
+To complete the setup, perform a system reboot and launch the InsightCAE "Workbench" from the start menu.
+
+Upon the first launch, two things need to be completed:
+\begin{enumerate}
+\item Set paths to commonly required executables.
+
+The executables are searched and some will not be found since their location is not included in the executable search path environment variable PATH.
+If some of the required executables are not found, the configuration dialog shown in figure \ref{fig:set_paths} is brought up.
+Click on a row, where no "Path to executable" is printed and click on "Select path...". 
+In the dialog box, find the appropriate executable and click "ok".
+Repeat this for every executable, which was not found.
+
+\item The presence and the version of the WSL backend is checked.
+
+If there is no WSL existing (as after a fresh install), a message appears and the user should select "Create" to create one.
+The form as shown in figure \ref{fig:create_wsl} should appear.
+
+The URL should be properly preset according from which source the installer was downloaded.
+For support customers, it is important to enter their credentials into the appropriate fields.
+
+When everything is set, click the button "Ok".
+Then the image is downloaded from the server and installed.
+The image is approximately 1.5GB so the download takes some time and also the unpacking takes several minutes.
+When the creation is done, the creation dialog is closed and the workbench GUI is shown.
+
+\end{enumerate}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.5\textwidth]{figs/workbench/set_paths}
+\caption{Configuration dialog to set the paths to commonly used third party executables}
+\label{fig:set_paths}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.7\textwidth]{figs/workbench/create_wsl}
+\caption{Create WSL backend form}
+\label{fig:create_wsl}
+\end{figure}
+
+\paragraph{Updating}
+
+To update to a newer version, just download the newer installer from the location described above and execute it.
+
+Only the last component (InsightCAE) needs to be checked in the installation wizard.
+If the third party tools were already installed, they may be skipped.
+
+On the first launch of the workbench after the update is done, the version of the WSL backend(s) is checked.
+They will now be different than that of the updated workbench and it is offered to trigger an update.
+This should be done since it is important to keep the versions of the frontend and the backend equal.
+
+When the backend update is started, a log window appears and shows the output of the update command.
+The update takes several minutes since the updated package will be downloaded and unpacked. 
+It is finished when the message "=== Update finished ===" appears in the log.
 
 \subsection{Building from Sources}
 
