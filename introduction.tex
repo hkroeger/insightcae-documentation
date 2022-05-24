@@ -166,7 +166,12 @@ The processes share the memory with the Windows processes and the files are stor
 Graphical output from the WSL environment has turned out to be error-prone and poor, thus the software is split into a frontend part, which runs natively in Windows and a backend part which controls the simulation solvers and runs in the WSL environment.
 The communication between both is over the network stack.
 
-For the comfortable installation of InsightCAE and OpenFOAM under Windows we provide an installer:
+For the comfortable installation of InsightCAE and OpenFOAM under Windows we provide an installer.
+For the stable version (master branch in the git repository) you find the installer in this directory:
+
+\url{http://downloads.silentdynamics.de/ubuntu/}
+
+or for the development version (next-release branch in the repository) you find it here:
 
 \url{http://downloads.silentdynamics.de/ubuntu_dev/}
 
@@ -198,7 +203,8 @@ Upon the first launch, two things need to be completed:
 \begin{enumerate}
 \item Set paths to commonly required executables.
 
-The executables are searched and some will not be found since their location is not included in the executable search path environment variable PATH.
+The executables are searched in the executable search path defined by the system. 
+Some will not be found since their location is not included in the executable search path environment variable PATH.
 If some of the required executables are not found, the configuration dialog shown in figure \ref{fig:set_paths} is brought up.
 Click on a row, where no "Path to executable" is printed and click on "Select path...". 
 In the dialog box, find the appropriate executable and click "ok".

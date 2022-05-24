@@ -1,3 +1,115 @@
 \section{Extensions to Back-End-Tools}
 
 \subsection{OpenFOAM}
+
+InsightCAE bundles a number of extensions to OpenFOAM which are used in cases created by the toolkit.
+
+\subsubsection{FieldDataProvider}
+\label{sec:FieldDataProvider}
+
+The FieldDataProvider class provides a swiss-army-knife-like source for field data.
+It is used in a number of places, where field data is required as a parameter.
+Some examples are described in the next section.
+
+The field data is described by a single line of text.
+The provided data can be steady or unsteady and homogeneous or inhomogeneous.
+
+The syntax of the input line is:
+\begin{lstlisting}[language=c++]
+<provider type> [additional input for some provider types] <steady|unsteady>   <time instance 1 data>  <time instance 2 data> ...
+\end{lstlisting}
+
+The different provider types together with their required value data are described in the following.
+
+The keywords \texttt{unsteady} or \texttt{steady} select whether the input is time dependent.
+The \texttt{steady} keyword is the default and can be omitted.
+For unsteady input, the time instance data is a pair of a scalar time value and the value data.
+In the steady case, only the value data is required.
+
+These provider types are known:
+
+\paragraph{uniform}
+The value data is single value.
+
+Example:
+\begin{lstlisting}[language=c++]
+uniform (1 0 0)
+\end{lstlisting}
+
+\paragraph{nonuniform}
+The value data is a list of values. 
+The required number of entries is dependent on the context in which the FieldDataProvider is used.
+For a boundary condition for example, it needs to match the number of faces.
+
+Example:
+\begin{lstlisting}[language=c++]
+nonuniform 7(0 0 0 1 1 2 3)
+\end{lstlisting}
+
+\paragraph{linearProfile}
+The value data is the name of a file which contains table of coordinate/value pairs, one per row.
+Between the lines is linearly interpolated.
+
+This type requires additional input data:
+\begin{enumerate}
+\item the origin of the coordinate axis,
+\item the direction of the coordinate axis.
+\end{enumerate}
+Note: For vector and tensor values, the table file needs to contain one column per component in addition to the first column which contains the coordinate.
+The components are used as they are and are not transformed.
+For coordinates beyond the bounds of the table, the corresponding values at the bounds of the table are used ("clamp" behaviour).
+
+Example:
+
+\begin{lstlisting}[language=c++]
+linearProfile (0 0 0) (0 1 0) "$FOAM_CASE/umean.txt"
+\end{lstlisting}
+
+This defines a linear profile starting at the global origin and the coordinate running along the y axis.
+The table file content could look like this (for a vector field):
+
+\begin{lstlisting}[language=c++]
+1 0 0 0
+0.9 1 0 0
+-0.9 1 0 0
+-1 0 0 0
+\end{lstlisting}
+
+\paragraph{radialProfile}
+
+\paragraph{fittedProfile}
+
+\paragraph{vtkField}
+
+\subsubsection{extendedFixedValue}
+
+The \texttt{extendedFixedValue} boundary condition uses the \texttt{FieldDataProvider} class (see section \ref{sec:FieldDataProvider}) to apply the provided fields as a Dirichlet boundary condition in OpenFOAM cases.
+
+The following settings need to be set in an OpenFOAM cases that uses this BC:
+
+\begin{enumerate}
+\item the library containing the BC needs to be added in the \texttt{system/controlDict}
+
+\begin{lstlisting}[language=c++]
+libs ( "libextendedFixedValueBC.so" );
+\end{lstlisting}
+
+\item use the \texttt{extendedFixedValue} boundary condition type in some field file:
+
+\begin{lstlisting}[language=c++]
+boundary
+{
+   dirichletPatch
+   {
+	type extendedFixedValue;
+	source uniform 3;
+	value uniform 3;
+   }
+}
+\end{lstlisting}
+
+\end{enumerate}
+
+The \texttt{source} entry in the boundary section of the field file defines the actual FieldDataProvider input (see \ref{sec:FieldDataProvider} for the syntax of the input statement). 
+
+The \texttt{value} statement needs to be present but will be replaced upon solver start with the value(s) evaluated from the FieldDataProvider machinery.
