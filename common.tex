@@ -5,6 +5,12 @@
 \usepackage[pdf]{graphviz}
 \usepackage{pgf-umlsd}
 \usepackage[abspath]{currfile}
+\usepackage{marginnote}
+%\usepackage{tabto} %%symbol in left margin
+%\def\warningsymbol{\protect\marginsymbolhelper}
+%\def\marginsymbolhelper{\tabto*{-2cm} {\includegraphics[width=5mm]{danger}} %\tabto*{\TabPrevPos}}
+\reversemarginpar
+\def\warningsymbol{\marginpar{\hfill\includegraphics[width=5mm]{danger}}}
 
 \setcounter{tocdepth}{4}
 

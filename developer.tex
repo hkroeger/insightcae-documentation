@@ -49,7 +49,124 @@ The following list contains the major dependencies along with the versions, whic
 \item Code\_Aster
 \end{itemize}
 
+\subsubsection{Building InsightCAE from the Sources}
 
+The InsightCAE sources are prepared to be built in a Posix environment.
+The developers use Ubuntu Linux in the latest LTS version.
+The Windows version is cross-compiled using the MXE cross compiling suite.
+
+\subsubsection{Building in Linux}
+
+Some prerequisites:
+\begin{itemize}
+\item GCC 10 should be used. Newer version were found to have buggy optimizers. \warningsymbol
+\item For Ubuntu, there is a package containing all the important dependencies. 
+Install it by
+\begin{lstlisting}[language=bash]
+$ sudo apt install insightcae-dependencies
+\end{lstlisting}
+\end{itemize}
+
+\paragraph{CMake Configuration and Building}
+
+An out-of-source build is recommended.
+If the aforementioned dependencies package is used, the following variables need to be added to the CMake configuration:
+\begin{itemize}
+\item INSIGHT\_SUPERBUILD=/opt/insightcae
+\end{itemize}
+
+Once configured, the project is built either by
+\begin{lstlisting}[language=bash]
+$ make 
+\end{lstlisting}
+or
+\begin{lstlisting}[language=bash]
+$ ninja
+\end{lstlisting}
+depending on the chosen generator.
+
+\paragraph{Execution}
+Once built, the InsightCAE programs can be executed directly from the build folder, provided that the environment is set.
+
+To setup the environment, add the appropriate script to the beginning of the ~/.bashrc file:
+\begin{lstlisting}[language=bash]
+source /path/to/build/directory/bin/insight_setenv.sh
+\end{lstlisting}
+
+\subsubsection{Building the Windows Version}
+
+\paragraph{Cross-Compiler}
+First, an installation of MXE is required.
+There is Ubuntu installation package in the InsightCAE development repository (see section \ref{obtaining_insightcae}).
+It contains all the required dependencies plus some additional packages (i.e. dxflib and python 3.6) and a number of patches. 
+It can be installed using:
+
+\begin{lstlisting}[language=bash]
+$ sudo apt install mxe
+\end{lstlisting}
+
+On other Linux distributions, MXE probably needs to be built from its sources.
+The following command should do the build of all required packages:
+
+\begin{lstlisting}[language=bash]
+$ make -j10 MXE_TARGETS=i686-w64-mingw32.shared MXE_PLUGIN_DIRS="plugins/gcc10 plugins/boost_1_66_0" pe-util cgal gettext gcc glew glfw3 mesa harfbuzz armadillo boost dxflib freetype libgcrypt glib gsl hdf5 libiconv libidn libidn2 vtk oce openssl jpeg qt5 cryptopp poppler libntlm openssl wt tiff libgsasl
+\end{lstlisting}
+
+
+\paragraph{Setup QtCreator IDE}
+
+First, edit the "Kit" settings in QtCreator and create a Kit for MXE.
+Therefore, add:
+\begin{enumerate}
+\item GCC compiler "GCC MXE32 shared", select /opt/mxe/usr/bin/i686-w64-mingw32.shared-gcc
+\item C++ compiler "GCC MXE32 shared", select /opt/mxe/usr/bin/i686-w64-mingw32.shared-g++
+\item Qt installation "Qt MXE32 shared", select /opt/mxe/usr/i686-w64-mingw32.shared/qt5/bin/
+qmake
+\item In section "CMake", add "CMake MXE shared", select /opt/mxe/usr/bin/i686-w64-mingw32.shared-cmake
+\item Finally add a Kit "Desktop MXE32 shared" and select all the previously added entities
+\end{enumerate}
+
+\paragraph{Configure the Project for MXE}
+
+Some variables need to be added to the CMake configuration:
+\begin{itemize}
+\item PYTHON\_INCLUDE\_DIRS=/opt/mxe/usr/i686-w64-mingw32.shared/python36/include
+\item PYTHON\_LIBRARIES=/opt/mxe/usr/i686-w64-mingw32.shared/python36/python36.dll
+\item VTK\_ONSCREEN\_DIR=/opt/mxe/usr/i686-w64-mingw32.shared/lib/cmake/vtk-8.2
+\item CMAKE\_WRAPPER=/opt/mxe/usr/bin/i686-w64-mingw32.shared-cmake
+\end{itemize}
+
+With these variables manually added, it should be possible to build the project with QtCreator.
+
+\paragraph{Executing the Built Binaries in a Windows Machine}
+
+Install a SAMBA server and export the following paths as shares:
+\begin{itemize}
+\item the build directory (e.g. build-insight-Desktop\_MXE32\_shared-Release) as share "insightwin"
+\end{itemize}
+Make sure to include the option \texttt{acl allow execute always = True} for the share.
+Otherwise there will be an error 0xc0000022 when it is attempted to execute an EXE file from the share.\warningsymbol
+
+Prepare a windows machine with the following steps:
+\begin{itemize}
+\item install python3.6.8rc1.exe (32bit version is required!)
+
+Make sure to enable the option "add Python executable to PATH"! \warningsymbol
+
+\item map the share "insightwin" $\Rightarrow$ drive I:
+\end{itemize}
+
+Set the following environment variables:
+\begin{itemize}
+\item INSIGHT\_GLOBALSHAREDDIRS=i:\textbackslash{}share\textbackslash{}insight
+\item append to PATH: 
+\begin{itemize}
+\item i:\textbackslash{}bin
+\item i:\textbackslash{}lib
+\end{itemize}
+\end{itemize}
+
+Once this is done, it should be possible to execute the EXE files directly from the network drive I:\textbackslash{}bin
 
 \subsubsection{OpenFOAM Analysis}
 
