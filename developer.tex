@@ -166,7 +166,49 @@ Set the following environment variables:
 \end{itemize}
 \end{itemize}
 
+
+
 Once this is done, it should be possible to execute the EXE files directly from the network drive I:\textbackslash{}bin
+
+
+
+To run flow simulations or finite element analyses, the Windows installation needs a linux environment since the backend tools are mostly only available for Linux.
+Therefore, a WSL container is required with an InsightCAE linux version inside.
+For development purposes, it is beneficial to have the InsightCAE linux build from the same source available inside the WSL container as was used to create the Windows version.
+The following steps can be made to achieve this goal:
+\begin{enumerate}
+\item Export the build folder (when QtCreator is used, it may be named like "build-insight-Desktop\_superbuild-Debug") of the Linux build as an additional share by the Samba server (e.g. named "insightlin").
+\item Create an Ubuntu WSL container, e.g. execute in a Power Shell:
+
+\begin{lstlisting}[language=bash]
+> wsl.exe --install --distribution=Ubuntu-22.04
+\end{lstlisting}
+\item Launch a shell in the newly created container:
+\begin{lstlisting}[language=bash]
+> wsl.exe
+\end{lstlisting}
+and install the \texttt{insightcae-dependencies} package (compare section \ref{sec:install_apt}).
+
+The following commands at the WSL containers bash prompt are required:
+\begin{lstlisting}[language=bash]
+$ sudo apt-key adv --fetch-keys http://downloads.silentdynamics.de/SD_REPOSITORIES_PUBLIC_KEY.gpg
+$ sudo add-apt-repository http://downloads.silentdynamics.de/ubuntu_dev
+$ sudo apt-get update
+$ sudo apt-get install insightcae-dependencies
+\end{lstlisting}
+
+Then mount the share and add the environment setup script to the users' bashrc file:
+\begin{lstlisting}[language=bash]
+$ sudo mkdir -p /opt/build-insightcae
+$ echo '\\<server>\insightlin /opt/build-insightcae drvfs defaults 0 0' | sudo tee /etc/fstab
+$ sudo mount -a
+$ sed -i '1i source /opt/build-insightcae/bin/insight_setenv.sh' ~/.bashrc
+$ sed -i '1i source /opt/insightcae/bin/insight_setthirdpartyenv.sh' ~/.bashrc
+\end{lstlisting}
+
+\end{enumerate}
+
+Note: \warningsymbol File I/O from within the WSL container is slowed down considerably by the Windows Defender Services. To improve performance, consider to disable this service and/or add exceptions where possible.
 
 \subsubsection{OpenFOAM Analysis}
 
