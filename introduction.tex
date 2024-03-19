@@ -148,13 +148,13 @@ $ sudo apt-get update
 Then, install the community-edition package by executing
 
 \begin{lstlisting}[language=bash]
-$ sudo apt-get install insightcae-ce
+$ sudo apt-get install insightcae
 \end{lstlisting}
 
 Continue with preparing the environment according to section \ref{sec:setupenvironment}
 
 Note: for customers who receive supported, tailored simulation apps from silentdynamics, these apps are bundled into add-ons and the add-ons are included in an installation package.
-For each customer, a separate package repository is maintained (with a unique URL, different from the one above) and the name of the installation package is \texttt{insightcae} instead of \texttt{insightcae-ce}.
+For each customer, a separate package repository is maintained (with a unique URL, different from the one above).
 
 Note: besides the standard repository at \url{http://downloads.silentdynamics.de/ubuntu} which includes the package built from the "master" branch in the git source code version management system, silentdynamics provides a second package repository with a development package built form the branch "next-release".
 To use this repository, just switch the URL in the instructions above to
@@ -170,11 +170,11 @@ Graphical output from the WSL environment has turned out to be error-prone and p
 The communication between both is over the network stack.
 
 For the comfortable installation of InsightCAE and OpenFOAM under Windows we provide an installer.
-For the stable version (master branch in the git repository) you find the installer in this directory:
+The installer for the stable version (master branch in the git repository) can be found in this directory:
 
 \url{http://downloads.silentdynamics.de/ubuntu/}
 
-or for the development version (next-release branch in the repository) you find it here:
+or for the development version (next-release branch in the repository) the installer is located here:
 
 \url{http://downloads.silentdynamics.de/ubuntu_dev/}
 
@@ -189,6 +189,10 @@ Download the latest EXE file from this link and execute it:
 \begin{itemize}
 \item It will activate the Windows subsystem for Linux, if it is not already activated
 \item The installer bundles the necessary third party programs (ParaView, gnuplot, MiKTeX, Putty)
+
+Note: it is required that the python runtime library (python36.dll) is in the library search path (PATH environment variable). There is an option in the python installer which should be enabled by the user (it is disabled by default). \warningsymbol
+
+If this is missed, the PATH variable needs to be manually edited after the installation.
 \item The WSL backend is not immediately created during installation but upon the first start of the workbench GUI.
 \item Please note:
 \begin{itemize}
@@ -215,7 +219,11 @@ Repeat this for every executable, which was not found.
 
 \item The presence and the version of the WSL backend is checked.
 
-If there is no WSL existing (as after a fresh install), a message appears and the user should select "Create" to create one.
+The installer package includes a WSL image matching the version of the installer.
+This image is installed, when the installation is performed.
+Thus this check should be silently successful.
+
+If there is no WSL existing, a message appears and the user should select "Create" to create one.
 The form as shown in figure \ref{fig:create_wsl} should appear.
 
 The URL should be properly preset according from which source the installer was downloaded.
@@ -256,6 +264,7 @@ This should be done since it is important to keep the versions of the frontend a
 When the backend update is started, a log window appears and shows the output of the update command.
 The update takes several minutes since the updated package will be downloaded and unpacked. 
 It is finished when the message "=== Update finished ===" appears in the log.
+
 
 \subsection{Building from Sources}
 

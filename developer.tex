@@ -131,9 +131,12 @@ qmake
 Some variables need to be added to the CMake configuration:
 \begin{itemize}
 \item PYTHON\_INCLUDE\_DIRS=/opt/mxe/usr/i686-w64-mingw32.shared/python36/include
+\item PYTHON\_INCLUDE\_DIR=/opt/mxe/usr/i686-w64-mingw32.shared/python36/include
 \item PYTHON\_LIBRARIES=/opt/mxe/usr/i686-w64-mingw32.shared/python36/python36.dll
+\item PYTHON\_LIBRARY=/opt/mxe/usr/i686-w64-mingw32.shared/python36/python36.dll
 \item VTK\_ONSCREEN\_DIR=/opt/mxe/usr/i686-w64-mingw32.shared/lib/cmake/vtk-8.2
 \item CMAKE\_WRAPPER=/opt/mxe/usr/bin/i686-w64-mingw32.shared-cmake
+\item INSIGHT\_BUILD\_MEDREADER:BOOL=OFF
 \end{itemize}
 
 With these variables manually added, it should be possible to build the project with QtCreator.
