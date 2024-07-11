@@ -77,9 +77,36 @@ The table file content could look like this (for a vector field):
 
 \paragraph{radialProfile}
 
+\paragraph{circumferentialProfile}
+
+The input for each instant is a file containing a table of components vs. angle.
+The coordinate system specification requires the base point, the axis direction and the direction of angle 0.
+The mapping is done this way: for each face, the angle is computed, the values for the angle are interpolated from the table and applied to the boundary.
+If the value is a tensor, it is transformed according to the current angle.
+
+Example:
+
+\begin{lstlisting}[language=c++]
+circumferentialProfile (0 0 0) (0 0 1)  (1 0 0) steady "$FOAM_CASE/T_vs_phi.txt"
+\end{lstlisting}
+
+In this example, die coordinate system has its origin at $(0 0 0)^T$, the axis points along the global Z direction and the angle 0 is along the global X direction.
+The profile points are read from the file \verb!T_vs_phi.txt! in the case directory.
+
 \paragraph{fittedProfile}
 
 \paragraph{vtkField}
+
+The data is read from a VTK file and interpolated to the CFD grid.
+The VTK grid needs to geometricall coincide with the target CFD mesh.
+There may be many fields in the VTK dataset and the one to be used has to be specified.
+%Also the mapping of tensor components may be configured.
+
+Example:
+
+\begin{lstlisting}[language=c++]
+vtkField "$FOAM_CASE/data.vtk" "U"
+\end{lstlisting}
 
 \subsubsection{extendedFixedValue}
 
