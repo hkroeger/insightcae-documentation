@@ -145,7 +145,7 @@ $ sudo add-apt-repository http://downloads.silentdynamics.de/ubuntu
 $ sudo apt-get update
 \end{lstlisting}
 
-Then, install the community-edition package by executing
+Then, you can install the community-edition package by executing
 
 \begin{lstlisting}[language=bash]
 $ sudo apt-get install insightcae
@@ -153,8 +153,13 @@ $ sudo apt-get install insightcae
 
 Continue with preparing the environment according to section \ref{sec:setupenvironment}
 
-Note: for customers who receive supported, tailored simulation apps from silentdynamics, these apps are bundled into add-ons and the add-ons are included in an installation package.
+Note: for customers who receive supported, tailored simulation apps from silentdynamics, these apps are bundled into add-ons and the add-ons are included in a tailored installation package.
 For each customer, a separate package repository is maintained (with a unique URL, different from the one above).
+This needs to be included additionally to the one above.
+These packages are then named \texttt{insighcae-<customername>} and the install command changes to:
+\begin{lstlisting}[language=bash]
+$ sudo apt-get install insightcae-<customername>
+\end{lstlisting}
 
 Note: besides the standard repository at \url{http://downloads.silentdynamics.de/ubuntu} which includes the package built from the "master" branch in the git source code version management system, silentdynamics provides a second package repository with a development package built form the branch "next-release".
 To use this repository, just switch the URL in the instructions above to
@@ -193,7 +198,7 @@ Download the latest EXE file from this link and execute it:
 Note: it is required that the python runtime library (python36.dll) is in the library search path (PATH environment variable). There is an option in the python installer which should be enabled by the user (it is disabled by default). \warningsymbol
 
 If this is missed, the PATH variable needs to be manually edited after the installation.
-\item The WSL backend is not immediately created during installation but upon the first start of the workbench GUI.
+
 \item Please note:
 \begin{itemize}
 \item For the installation, administrator rights are required
@@ -254,16 +259,8 @@ When the creation is done, the creation dialog is closed and the workbench GUI i
 
 To update to a newer version, just download the newer installer from the location described above and execute it.
 
-Only the last component (InsightCAE) needs to be checked in the installation wizard.
-If the third party tools were already installed, they may be skipped.
-
-On the first launch of the workbench after the update is done, the version of the WSL backend(s) is checked.
-They will now be different than that of the updated workbench and it is offered to trigger an update.
-This should be done since it is important to keep the versions of the frontend and the backend equal.
-
-When the backend update is started, a log window appears and shows the output of the update command.
-The update takes several minutes since the updated package will be downloaded and unpacked. 
-It is finished when the message "=== Update finished ===" appears in the log.
+Only the last two components (``WSL Distribution'' and ``InsightCAE Windows Client'') needs to be checked in the installation wizard.
+If the third party tools were already installed, they should be skipped.
 
 
 \subsection{Building from Sources}

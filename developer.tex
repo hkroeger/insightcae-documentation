@@ -1,5 +1,3 @@
-\section{Developer Documentation}
-
 InsightCAE is a toolbox for the creation of custom workflows.
 It is therefore very natural to use its API in own extensions.
 
@@ -23,14 +21,14 @@ Now, modifying the InsightCAE project requires to build the project from its sou
 Please see section \ref{sec:insightcae_dev} for a guide to set up a self-built working copy of the sources.
 \end{enumerate}
 
-\subsection{Plug-In Development}
+\section{Plug-In Development}
 \label{sec:plugins}
 
 
-\subsection{InsightCAE Development}
+\section{InsightCAE Development}
 \label{sec:insightcae_dev}
 
-\subsubsection{Dependencies}
+\subsection{Dependencies}
 
 The InsightCAE toolkit requires a number of dependencies. 
 Not all versions have been tested, of course. 
@@ -49,7 +47,7 @@ The following list contains the major dependencies along with the versions, whic
 \item Code\_Aster
 \end{itemize}
 
-\subsubsection{Building InsightCAE from the Sources}
+\subsection{Building InsightCAE from the Sources}
 
 The InsightCAE sources are prepared to be built in a Posix environment.
 The developers use Ubuntu Linux in the latest LTS version.
@@ -212,43 +210,130 @@ $ sed -i '1i source /opt/insightcae/bin/insight_setthirdpartyenv.sh' ~/.bashrc
 
 Note: \warningsymbol File I/O from within the WSL container is slowed down considerably by the Windows Defender Services. To improve performance, consider to disable this service and/or add exceptions where possible.
 
-\subsubsection{OpenFOAM Analysis}
+
+\subsection{Structure of the InsightCAE Project}
+
+The core of InsightCAE consists of a number of libraries. 
+There is a core library (libtoolkit) which contains the basic functions.
+Other, optional features are found in a number of other libraries which differ in their build dependencies.
+
+Overview over the component libraries:
+\begin{itemize}
+\item \texttt{toolkit} (depends on VTK, Boost, Armadillo, GSL)
+
+i.e. depends only on the basic dependencies (including VTK)
+\begin{itemize}
+\item \texttt{insightcad} (depends on toolkit, OpenCASCADE, DXFlib)
+
+i.e. depends on the basic features plus CAD kernel
+
+Provides all the CAD functions but excluding CAD-related GUI classes.
+
+\item \texttt{tookit\_remote} (depends on toolkit, Wt)
+
+Contains classes for remote execution client that require Wt
+
+\item \texttt{tookit\_cad} (depends on toolkit, insightcad)
+
+Contains extensions to basic classes that require CAD (e.g. visualization of block mesh templates) but not GUI-related classes.
+
+\item \texttt{toolkit\_gui} (depends on toolkit, toolkit\_cad, insightcad, toolkit\_remote, Qt)
+
+Extends all the above with Qt-GUI support.
+\end{itemize}
+\end{itemize}
 
 
-\begin{figure}[h!]
-\centering
-\digraph{openfoamanalysis}{
- rankdir=LR;
- "insight::OpenFOAMAnalysis" -> "insight::Analysis";
-}
-\caption{Inheritance of OpenFOAMAnalysis class}
-\label{fig:}
-\end{figure}
 
-\begin{sequencediagram}
-\newthread{t}{:Thread}
-\newinst[1]{o}{OpenFOAMAnalysis}{:}{}
-\newinst[2]{c}{OpenFOAMCase}{:}{}
-\begin{call}{t}{operator()()}{o}{}
-  \begin{callself}{o}{createCaseOnDisk()}{}
-	\begin{callself}{o}{createCase()}{}\end{callself}
- 	\begin{callself}{o}{createCaseDictsInMemory()}{}\end{callself}
- 	\begin{callself}{o}{applyCustomOptions()}{}\end{callself}
- 	\begin{callself}{o}{if not outputTimesPresent}{}
-		\begin{call}{o}{modifyMeshOnDisk()}{c}{}\end{call}
- 		\begin{callself}{o}{writeDictsToDisk()}{}
-			\begin{call}{o}{createCaseOnDisk()}{c}{}\end{call}
-			\begin{call}{o}{modifyCaseOnDisk()}{c}{}\end{call}
- 		\end{callself}
-	\begin{callself}{o}{applyCustomPreprocessing()}{}\end{callself}
- 	\end{callself}
-  \end{callself}
-  \begin{callself}{o}{initializeSolverRun()}{}\end{callself}
-  \begin{callself}{o}{runSolver()}{}\end{callself}
-  \begin{callself}{o}{finalizeSolverRun()}{}\end{callself}
-  \begin{callself}{o}{evaluateResults()}{}\end{callself}
-\end{call}
-\end{sequencediagram}
+\subsection{Creating and Distributing Snapshots of a Build}
+
+\subsubsection{Linux Build}
+
+\paragraph{Creation} Move into the build directory and execute CPack, e.g.:
+
+\begin{lstlisting}[language=bash]
+$ cd ~/Projekte/build-insight-Desktop_superbuild-Debug
+$ cpack -G TGZ
+\end{lstlisting}
+
+
+\paragraph{Installation}
+
+The resulting archive has to be copied to the target and unpacked. For example:
+
+\begin{lstlisting}[language=bash]
+$ tar xzf insightcae_5.0.139-gf41a2d2c~ubuntu24.04_amd64.tar.gz
+\end{lstlisting}
+
+Then change the path to the environment setup script in \$HOME/.bashrc:
+\begin{lstlisting}[language=bash]
+source <UNPACK PATH>/insightcae_5.0.139-gf41a2d2c~ubuntu24.04_amd64/usr/local/bin/insight_setenv.sh
+\end{lstlisting}
+
+(Replace <UNPACK PATH> with the path, in which the tar xzf command was executed. Also the version number in the archive will be different)
+
+A new shell needs to be opened to apply the changes.
+
+\subsubsection{Windows Build using MXE}
+
+\paragraph{Creation}
+
+There is a script for creating the MSI installer which also copied the required dependencies from the MXE installation.
+It is intended to be executed from the build directory.
+For example:
+\begin{lstlisting}[language=bash]
+cd ~/Projekte/build-insight-Desktop_MXE32_shared-Release
+../insight/generateInsightCAEWindowsMSI.py  -s ../insight -v 5.0.139
+\end{lstlisting}
+
+(The correct version number should be inserted after "-v")
+
+This will yield an installation package "insightcae.msi".
+
+\paragraph{Installation}
+
+The resulting MSI package has to be copied to the target and installed using the Windows tools (double click in the explorer window on the file).
+
+\section{OpenFOAM Analysis}
+
+%
+%\begin{figure}[h!]
+%\centering
+%\digraph{openfoamanalysis}{
+% rankdir=LR;
+% "insight::OpenFOAMAnalysis" -> "insight::Analysis";
+%}
+%\caption{Inheritance of OpenFOAMAnalysis class}
+%\label{fig:}
+%\end{figure}
+%
+%\begin{sequencediagram}
+%\newthread{t}{:Thread}
+%\newinst[1]{o}{OpenFOAMAnalysis}{:}{}
+%\newinst[2]{c}{OpenFOAMCase}{:}{}
+%\begin{call}{t}{operator()()}{o}{}
+%  \begin{callself}{o}{createCaseOnDisk()}{}
+%	\begin{callself}{o}{createCase()}{}\end{callself}
+% 	\begin{callself}{o}{createCaseDictsInMemory()}{}\end{callself}
+% 	\begin{callself}{o}{applyCustomOptions()}{}\end{callself}
+% 	\begin{callself}{o}{if not outputTimesPresent}{}
+%		\begin{call}{o}{modifyMeshOnDisk()}{c}{}\end{call}
+% 		\begin{callself}{o}{writeDictsToDisk()}{}
+%			\begin{call}{o}{createCaseOnDisk()}{c}{}\end{call}
+%			\begin{call}{o}{modifyCaseOnDisk()}{c}{}\end{call}
+% 		\end{callself}
+%	\begin{callself}{o}{applyCustomPreprocessing()}{}\end{callself}
+% 	\end{callself}
+%  \end{callself}
+%  \begin{callself}{o}{initializeSolverRun()}{}\end{callself}
+%  \begin{callself}{o}{runSolver()}{}\end{callself}
+%  \begin{callself}{o}{finalizeSolverRun()}{}\end{callself}
+%  \begin{callself}{o}{evaluateResults()}{}\end{callself}
+%\end{call}
+%\end{sequencediagram}
+
+
+
 %
 %\begin{itemize}
 %\item 
