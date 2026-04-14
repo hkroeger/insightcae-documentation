@@ -262,7 +262,33 @@ To update to a newer version, just download the newer installer from the locatio
 Only the last two components (``WSL Distribution'' and ``InsightCAE Windows Client'') needs to be checked in the installation wizard.
 If the third party tools were already installed, they should be skipped.
 
+\FloatBarrier
+\paragraph{Updating Dependencies -- MikTeX}
 
+MikTeX is independent from InsightCAE and used by InsightCAE for generating PDF reports and also for rendering charts.
+Sometimes it might be required to update it.
+This is done using the following steps:
+
+\begin{enumerate}
+\item Open the MikTeX console, e.g. by typing the Windows key and then the command "miktex console" until the icon appears. See figure \ref{fig:update_miktex1}.
+
+\item Change to the tab "Updates". First click on "Search for Updates". When updates are found, click on "Update Now" and follow the instructions. See figure \ref{fig:update_miktex2}.
+
+\end{enumerate}
+
+\begin{figure}[ht]
+\includegraphics[width=0.5\linewidth]{figs/update/miktex1}
+\caption{Updating MikTeX, finding the MikTeX console}
+\label{fig:update_miktex1}
+\end{figure}
+
+\begin{figure}[ht]
+\includegraphics[width=0.5\linewidth]{figs/update/miktex3}
+\caption{Updating MikTeX, executing the update}
+\label{fig:update_miktex2}
+\end{figure}
+
+\FloatBarrier
 \subsection{Building from Sources}
 
 \subsubsection{Getting the Source Code}
