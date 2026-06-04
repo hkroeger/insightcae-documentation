@@ -2,25 +2,13 @@
 
 ## Concept and Parts of the Project
 
-The InsightCAE builds on top of available open-source engineering
-analysis tools (though closed-source tools could be used as well). The
-most used tool by far is the CFD software OpenFOAM.
+The InsightCAE builds on top of available open-source engineering analysis tools (though closed-source tools could be used as well). The most used tool by far is the CFD software OpenFOAM.
 
-For certain tasks, custom extensions to these tools are required.
-InsightCAE contains a selection of extensions, which are included in the
-distribution packages, when these are created.
+For certain tasks, custom extensions to these tools are required. InsightCAE contains a selection of extensions, which are included in the distribution packages, when these are created.
 
-The core of the project is the toolkit library. It contains the
-implementation of core classes in workflow management as the parameter
-set storage and tools and result set storage classes and handling tools.
-The toolkit library also maintains a list of available analysis modules,
-which is dynamically extensible by loadable add-ons.
+The core of the project is the toolkit library. It contains the implementation of core classes in workflow management as the parameter set storage and tools and result set storage classes and handling tools. The toolkit library also maintains a list of available analysis modules, which is dynamically extensible by loadable add-ons.
 
-Finally, on top of the toolkit library, custom analysis modules can be
-created. The InsightCAE base distribution contains a number of generic
-analysis modules as the \"Numerical Wind Tunnel\" module and some
-generic test case analyses like flat plate, channel flow, pipe flow and
-so on. These might serve as examples for custom implementations.
+Finally, on top of the toolkit library, custom analysis modules can be created. The InsightCAE base distribution contains a number of generic analysis modules as the "Numerical Wind Tunnel" module and some generic test case analyses like flat plate, channel flow, pipe flow and so on. These might serve as examples for custom implementations.
 
 ![Structure of the InsightCAE project](insightcae-structure.svg){#fig:insightcae-structure width="75%"}
 
@@ -28,52 +16,27 @@ so on. These might serve as examples for custom implementations.
 
 #### Simulation App, Analysis
 
-InsightCAE bundles tools to create automated simulation procedures.
-These procedures can be written in Python or C++. The term **analysis**,
-**workflow module** or **Simulation App** is used for such a procedure.
+InsightCAE bundles tools to create automated simulation procedures. These procedures can be written in Python or C++. The term **analysis**, **workflow module** or **Simulation App** is used for such a procedure.
 
-Actually, an analysis is like a function in programming: it gets input
-parameters, executed some actions (e.g. a numeric simulation) and
-returns a results data structure.
+Actually, an analysis is like a function in programming: it gets input parameters, executed some actions (e.g. a numeric simulation) and returns a results data structure.
 
-InsightCAE provides a GUI to edit the parameter sets and also tools to
-work with the result sets. E.g. convert the result set into a PDF
-report.
+InsightCAE provides a GUI to edit the parameter sets and also tools to work with the result sets. E.g. convert the result set into a PDF report.
 
 #### Parameter Set
 
-The analysis modules need input data, i.e. parameters. All parameters
-for a module are grouped together in a parameter set. Parameter sets are
-stored in XML files in human readable format (extension \*.ist). They
-can also be edited in a GUI editor (application workbench).
+The analysis modules need input data, i.e. parameters. All parameters for a module are grouped together in a parameter set. Parameter sets are stored in XML files in human readable format (extension \*.ist). They can also be edited in a GUI editor (application workbench).
 
-Many analysis modules need external files (like CAD data in STL or any
-other format). These files can simply be referred in a parameter set by
-their relative path (relative to the \*.ist-file containing the
-reference) or absolute path. It is also possible to embed the external
-files into the XML file in an base64-encoded form. This simplifies
-transfer of analysis setup from one computer to another, e.g. for remote
-execution.
+Many analysis modules need external files (like CAD data in STL or any other format). These files can simply be referred in a parameter set by their relative path (relative to the \*.ist-file containing the reference) or absolute path. It is also possible to embed the external files into the XML file in an base64-encoded form. This simplifies transfer of analysis setup from one computer to another, e.g. for remote execution.
 
 #### Result Set
 
-The result of an analysis is returned in a **result set**. This is a
-hierarchical data structure which contains nodes like scalar values,
-charts, contour plots, images, tables or similar entities. It can be
-stored on disk in XML format. There is also a renderer which converts a
-result set into a PDF report.
+The result of an analysis is returned in a **result set**. This is a hierarchical data structure which contains nodes like scalar values, charts, contour plots, images, tables or similar entities. It can be stored on disk in XML format. There is also a renderer which converts a result set into a PDF report.
 
 #### Case Element
 
-The setup of CFD-runs is put together from a number of so-called **case
-elements**. Each case element represents some functional feature. It
-might be a boundary condition or a turbulence model or something
-similar. A case element is not necessarily associated with a certain
-configuration file but can modify multiple configuration files of a CFD
-case configuration.
+The setup of CFD-runs is put together from a number of so-called **case elements**. Each case element represents some functional feature. It might be a boundary condition or a turbulence model or something similar. A case element is not necessarily associated with a certain configuration file but can modify multiple configuration files of a CFD case configuration.
 
-There is also an editor for composing OpenFOAM cases from the available
-case elements: the OpenFOAM Case Builder.
+There is also an editor for composing OpenFOAM cases from the available case elements: the OpenFOAM Case Builder.
 
 -   Solver extensions
 
@@ -95,23 +58,20 @@ A parameter set constitutes the full input data set for an analysis.
 
 Beyond these primitive parameter types, there can be compounds, namely:
 
-* subset 
+* subset
 
   a subdirectory in a parameter set
 * selectablesubset
-  
-  a `subset` that switches its content based on a `selection`
-    parameter
+
+  a `subset` that switches its content based on a `selection` parameter
 
 * array
 
   an array of either a compound parameter or a primitve parameter
 
-Throughout this manual and also e.g. in the command line parameters, the parameters are commonly specified in a file path-like format, where
-subsections are separated by slashes. For example, the parameter `evaluateonly` in the subsection `run` is meant by the expression `run/evaluateonly`.
+Throughout this manual and also e.g. in the command line parameters, the parameters are commonly specified in a file path-like format, where subsections are separated by slashes. For example, the parameter `evaluateonly` in the subsection `run` is meant by the expression `run/evaluateonly`.
 
-For arrays elements, the index of the element is inserted after the array parameter name. For example, the parameter `mesh/refinementZones/0/lx` refers to the parameter `lx` inside the
-first array element of the array of subsections `refinementZones` in the subsection `mesh`.
+For arrays elements, the index of the element is inserted after the array parameter name. For example, the parameter `mesh/refinementZones/0/lx` refers to the parameter `lx` inside the first array element of the array of subsections `refinementZones` in the subsection `mesh`.
 
 | Type | Description |
 |---|---|
@@ -133,9 +93,7 @@ The output of an analysis is stored in a result set. It may contain elements lik
 
 #### Analyses: the Simulation Procedure
 
-The procedure of a simulation is contained in a so-called analyses or workflow module. You may think of it as an app for executing a certain
-type of simulation. It is essentially a program. Oftentimes, people create scripts or macros for speeding up their simulation workflows. The
-InsightCAE workflow modules serve a similar purpose, though the intention is to fully cover the whole simulation including all pre and post processing steps.
+The procedure of a simulation is contained in a so-called analyses or workflow module. You may think of it as an app for executing a certain type of simulation. It is essentially a program. Oftentimes, people create scripts or macros for speeding up their simulation workflows. The InsightCAE workflow modules serve a similar purpose, though the intention is to fully cover the whole simulation including all pre and post processing steps.
 
 There is a GUI available which provides an editor for the input parameter set (see section [1.2.1](#sec:workbench)). The GUI is also capable of displaying a 3D preview of the involved geometry and other elements, which are displayable. The analysis module is responsible of creating the 3D preview elements. Creation of the preview is optional and not every analysis module produces a preview.
 
@@ -232,19 +190,18 @@ Once all parameters are edited, the parameter set can be saved to a file. Very o
 - file paths are always stored as relative paths inside the parameter set file.
 
   Even if the workbench editor displays an absolute path, the paths are made relative to the saving location of the parameter set file. It is still possible to insert absolute paths into a parameter set file. But when it is loaded and saved again, these will be made relative.
-  
+
   If a parameter set is moved around together with the files it references, they will be found, as long as they remain in the same relative location, e.g. side by side with the parameter file or in a sub directory.
 
 - external files can be embedded into the parameter file.
 
   This is the preferred option, when parameter files shall be moved across computers. Upon saving, the files will be base-64 encoded (not compressed) and stored in the XML file. When the analysis is run, the files are extracted to a temporary location. The extraction is aware of the case, that different files with the same name might exist in different directories and extracts them to different locations. By default, the files are extracted to the system  temporary location. When the InsightCAE application, which triggered the extraction of the parameter, exits, the files are deleted again from the temporary location. Note that this might not be achieved, if the application crashes.
-  
-  Packing of external files can be enabled by checking or by checking the appropriate option in the \"Save Parameters\" dialog. Once, a parameter file was saved as packed or unpacked, the selection state is saved and used for all subsequent save operations.
+
+  Packing of external files can be enabled by checking or by checking the appropriate option in the "Save Parameters" dialog. Once, a parameter file was saved as packed or unpacked, the selection state is saved and used for all subsequent save operations.
 
 ##### Running the Analysis
 
-With a properly edited parameter set, the analysis run can be started. This is achieved by clicking on the button \"Run\" on the right side or by selecting in the menu. This analysis form switches automatically to the \"Run\" tab (see figure [10](#fig:workbench_progress)). In the lower half, the log message
-are displayed. Sometimes, errors in an external program occur and are not correctly reported. It is therefore a good practice to watch the log messages for errors or warnings.
+With a properly edited parameter set, the analysis run can be started. This is achieved by clicking on the button "Run" on the right side or by selecting in the menu. This analysis form switches automatically to the "Run" tab (see figure [10](#fig:workbench_progress)). In the lower half, the log message are displayed. Sometimes, errors in an external program occur and are not correctly reported. It is therefore a good practice to watch the log messages for errors or warnings.
 
 When the simulation solver runs, InsightCAE shows progress variables graphically. The plots are shown above the log widget. The number and meaning of the progress variables depend on the analysis conducted.
 
@@ -262,11 +219,11 @@ Especially for OpenFOAM-bases analyses, a number of quantities are extracted fro
 
 ##### Cancel a Simulation
 
-To cancel a simulation run, click on the button \"Kill\" on the right side or by select in the menu.
+To cancel a simulation run, click on the button "Kill" on the right side or by select in the menu.
 
 ##### Viewing the Results
 
-Once the simulation run is finished (that means that the solver has finished and that all post processing steps are done), a result set is created and loaded into the workbench. It is displayed in the \"output\" tab (see figure [11](#fig:workbench_result)). The result set can be rendered into a report ().
+Once the simulation run is finished (that means that the solver has finished and that all post processing steps are done), a result set is created and loaded into the workbench. It is displayed in the "output" tab (see figure [11](#fig:workbench_result)). The result set can be rendered into a report ().
 
 ##### Rendering Results into a Report {#par:workbench:create_report}
 
@@ -274,7 +231,7 @@ Once the simulation run is finished (that means that the solver has finished and
 
 ##### Creating a New Analysis {#par:workbench:new_analysis}
 
-A new analysis is created by selecting in the menu . Then a new dialog appears, in which the list of available analyses is displayed (figure [8](#fig:workbench_new_analysis)). The required analysis should be selected and confirmed by clicking \"Ok\".
+A new analysis is created by selecting in the menu . Then a new dialog appears, in which the list of available analyses is displayed (figure [8](#fig:workbench_new_analysis)). The required analysis should be selected and confirmed by clicking "Ok".
 
 ![Dialog for selection of the type of a new analysis](workbench_new_analysis.png){#fig:workbench_new_analysis width="50%"}
 
@@ -296,9 +253,9 @@ There is no explicit function for a restart. It happens implicitly, when the ana
 
 Depending on the state of the data, the behavior will be as follows:
 
--   if a mesh exists (in folder \"constant/polyMesh/\") and a time directory exists (e.g. \"0/\"): it is assumed that the case is ready for execution and the solver will be restarted,
+-   if a mesh exists (in folder "constant/polyMesh/") and a time directory exists (e.g. "0/"): it is assumed that the case is ready for execution and the solver will be restarted,
 
--   if only the mesh exists (\"constant/polyMesh/\") and no time directory: mesh creation will be skipped. But all the dictionaries in `constant/` and `system/` and field files in the initial time directory will be recreated.
+-   if only the mesh exists ("constant/polyMesh/") and no time directory: mesh creation will be skipped. But all the dictionaries in `constant/` and `system/` and field files in the initial time directory will be recreated.
 
 Depending on where the interruption happened, the state might be inconsistent and invalid behavior might result. For example:
 
@@ -314,7 +271,7 @@ If you are unsure about the validity of the case data, please consider to clean 
 
 When an OpenFOAM-based simulation run was performed, a number of directories and files are created in the working directory. If another run shall be performed and no restart is desired, then these directories and files need to be removed first. For this task, there is the standalone tool `isofCleanCase`, see section [3.4](#sec:isofcleancase).
 
-This tool can be launched in the selected workspace directory from within the GUI via the button \"Clean\" on the right side of the analysis form. Please see section [3.4](#sec:isofcleancase) for details on the usage.
+This tool can be launched in the selected workspace directory from within the GUI via the button "Clean" on the right side of the analysis form. Please see section [3.4](#sec:isofcleancase) for details on the usage.
 
 In some OpenFOAM-based simulation apps, auxiliary OpenFOAM case are created in subdirectories of the workspace directory. Currently, these can only be deleted or cleaned manually via a file manager and the command line tool `isofCleanCase`.
 
@@ -328,7 +285,7 @@ It is then possible to execute only the evaluation part of the simulation app al
 
 2.  set the working directory to the existing case directory, where the case was created (this will be done automatically, if an existing input file was opened),
 
-3.  then start the simulation by clicking the \"Run\" button.
+3.  then start the simulation by clicking the "Run" button.
 
 Please note, that all parameters in the input file are assumed to match the simulation setup. No checks are done and there is no possibility for the Simulation app to restore them from an existing simulation folder. Thus it is up to the user to ensure validity.
 
@@ -338,7 +295,7 @@ To inspect the results of a OpenFOAM simulation beyond the figure which the Insi
 
 It can be launched from the command line using a script as explained in [3.5.1.3](#par:isPVpy).
 
-Alternatively, this can be done also from the workbench. On the right border of the analysis form, there is a button labelled \"ParaView\". For OpenFOAM-based simulation apps, this is enabled. Once it is pressed, Paraview will be launched in the selected working directory. If a local run is configured, it will just read the case from the selected working directory. If a remote run is selected, a client-server pair will be launched and the connection to the remote side is set up via SSH tunnels.
+Alternatively, this can be done also from the workbench. On the right border of the analysis form, there is a button labelled "ParaView". For OpenFOAM-based simulation apps, this is enabled. Once it is pressed, Paraview will be launched in the selected working directory. If a local run is configured, it will just read the case from the selected working directory. If a remote run is selected, a client-server pair will be launched and the connection to the remote side is set up via SSH tunnels.
 
 #### Console on Headless Computers: analyze {#sec:analyze}
 
@@ -415,7 +372,7 @@ Result sets can be
 
 1.  stored in a file (extension \*.isr),
 
-2.  displayed with a viewer program. A viewer is embedded into the workbench (tab \"output\") and a standalone viewer is available with the program `isResultTools`
+2.  displayed with a viewer program. A viewer is embedded into the workbench (tab "output") and a standalone viewer is available with the program `isResultTools`
 
 3.  or rendered into a PDF report.
 
@@ -423,7 +380,7 @@ Result sets can be
 
 #### Rendering of a Result Set
 
-Result sets are displayed in the \"output\" tab of the workbench. When there are results displayed, those can be rendered or saved into an ISR file by selecting
+Result sets are displayed in the "output" tab of the workbench. When there are results displayed, those can be rendered or saved into an ISR file by selecting
 
 Whether a PDF report is rendered or a ISR file is written, depends on the file extension which is entered in the file dialog.
 
@@ -439,15 +396,15 @@ Alternatively, the tool `isResultTool` can be executed with the command line arg
 
 A set of filters can be defined to render a report with some result elements excluded. A filter is just a path-like text which represents the location of the result element in the result set hierarchy. The concept is very similar to the specification of parameters, see section [1.1.1](#sec:parametersets) above. Every result element, where the label path matches one of the filter expressions, is excluded. The filter expressions, which are already defined, are shown in the list in the bottom left corner of the Result Set Viewer window, see figure [12](#fig:isresulttoolmainwindow)a. The result set content directory, which is displayed in figure [12](#fig:isresulttoolmainwindow)b, shows the result set contents with all filters already applied.
 
-To add filter expressions, click on the button \"Add\...\". The result element paths to filter out can be directly typed into the text field, one per line. Instead of typing, result elements can be select from the full content of the result set after clicking the \"\...\" button.
+To add filter expressions, click on the button "Add\...". The result element paths to filter out can be directly typed into the text field, one per line. Instead of typing, result elements can be select from the full content of the result set after clicking the "\..." button.
 
-By default, a direct match of the entered text with the result element path is required. Alternatively, the text entered in the input field can be treated as a regular expression[^5][^6]. If a regular expression was entered and shall be treated as such, the selection below the input field has to be changed to \"regular expression\".
+By default, a direct match of the entered text with the result element path is required. Alternatively, the text entered in the input field can be treated as a regular expression[^5][^6]. If a regular expression was entered and shall be treated as such, the selection below the input field has to be changed to "regular expression".
 
 Once a set of filter expressions is defined, it can saved to a file by selecting.
 
 Vice versa, a previously saved set of filter expressions can be loaded by .
 
-When the a report is rendered or saved into a ISR file, there is a switch on the bottom of the file dialog (\"Save filtered result set\"). This is by default checked. If this is unchecked, the filter is skipped and the full report is rendered or saved.
+When the a report is rendered or saved into a ISR file, there is a switch on the bottom of the file dialog ("Save filtered result set"). This is by default checked. If this is unchecked, the filter is skipped and the full report is rendered or saved.
 
 ### Supporting Simulations with OpenFOAM
 
@@ -493,7 +450,7 @@ Note: you might need to change to working directory to the case directory first.
 
 ###### Inspecting a Running Case Using Paraview {#par:isPVpy}
 
-Some of the relevant numerical figures of a case are displayed in live updated charts in the GUI. But it is a very good habit to check the mesh and also the solution as soon as possible and well before valuable computing resource are wasted to compute inadequate solutions on bad meshes. If problems with the mesh or the solutions become obvious, it is possible to stop the analysis (e.g. by the \"Kill\" button in the workbench or by pressing CTRL+C in the terminal, where the analyze command line tool is running) and revise the settings.
+Some of the relevant numerical figures of a case are displayed in live updated charts in the GUI. But it is a very good habit to check the mesh and also the solution as soon as possible and well before valuable computing resource are wasted to compute inadequate solutions on bad meshes. If problems with the mesh or the solutions become obvious, it is possible to stop the analysis (e.g. by the "Kill" button in the workbench or by pressing CTRL+C in the terminal, where the analyze command line tool is running) and revise the settings.
 
 The OpenFOAM cases can be loaded into Paraview as soon as they were created by one of the InsightCAE modules. It is perfectly possible to do this while the solver is running. It is also possible to trigger extra output if it is not yet available (see first paragraph of this section).
 
@@ -509,11 +466,11 @@ The OpenFOAM cases can be loaded into Paraview as soon as they were created by o
 
     2.  Select the case type: either
 
-        -   \"Reconstructed Case\", if you performed a serial run or if the output has been already reconstructed from the processor directories (usually done for the last time step during the evaluation step)
+        -   "Reconstructed Case", if you performed a serial run or if the output has been already reconstructed from the processor directories (usually done for the last time step during the evaluation step)
 
-        -   \"Decomposed Case\", if you want to monitor a parallel run.
+        -   "Decomposed Case", if you want to monitor a parallel run.
 
-    When all settings are right, click on \"Apply\".
+    When all settings are right, click on "Apply".
 
     ![image](paraview_load_case.png){width="75%"}
 
@@ -523,7 +480,7 @@ The OpenFOAM cases can be loaded into Paraview as soon as they were created by o
 
 -   Now, the scene can be set up using all the Paraview filters[^8].
 
-    Often, fields on boundary regions (e.g. walls) are of interest. These can be extracted using the \"Extract Block\" filter. To apply this filter, select from the menu . Make sure that the OpenFOAM case source is selected in the pipeline browser when the filter is added. When all the boundaries of interest are selected, click on \"Apply\".
+    Often, fields on boundary regions (e.g. walls) are of interest. These can be extracted using the "Extract Block" filter. To apply this filter, select from the menu . Make sure that the OpenFOAM case source is selected in the pipeline browser when the filter is added. When all the boundaries of interest are selected, click on "Apply".
 
     ![image](paraview_extract_block.png){width="75%"}
 
@@ -551,7 +508,7 @@ Here, it is described how to extract feature curves using the open source softwa
 
     ![image](03_stl_imported.png){width="75%"}
 
-4.  switch to \"Edit Mode\", either by pressing the \"Tab\" key or by  selecting the mode in the combo box in the upper left corner.
+4.  switch to "Edit Mode", either by pressing the "Tab" key or by  selecting the mode in the combo box in the upper left corner.
 
     Next, switch to edge selection mode (second button right from the edit mode combo box)
 
@@ -575,19 +532,19 @@ Here, it is described how to extract feature curves using the open source softwa
 
     ![image](07_select_last_edge.png){width="75%"}
 
-8.  next create a new object from the selected edges by typing the key \"P\".
+8.  next create a new object from the selected edges by typing the key "P".
 
-    Then select \"Selection\" to create the new part from the current selection.
+    Then select "Selection" to create the new part from the current selection.
 
     Once the selection is split off, another chain of edges can be selected by repeating the steps from [\[pt:begin_sel\]](#pt:begin_sel).
 
     ![image](08_export_selection.png){width="75%"}
 
-9.  switch back to \"Object Mode\"
+9.  switch back to "Object Mode"
 
-    either by pressing the Tab key or by selecting \"Object Mode\" in the combo box in the upper left corner.
+    either by pressing the Tab key or by selecting "Object Mode" in the combo box in the upper left corner.
 
-    When multiple lines had been split into multiple new objects, these should be joined into a single one. To do so, select the objects in the object browser (upper right), then type \"Ctrl+J\".
+    When multiple lines had been split into multiple new objects, these should be joined into a single one. To do so, select the objects in the object browser (upper right), then type "Ctrl+J".
 
     Note: the mouse should be over the 3D viewport for Blender to accept the keyboard shortcut.
 
@@ -603,11 +560,11 @@ Here, it is described how to extract feature curves using the open source softwa
 
 11. check the export settings. Make sure, the following is set:
 
-    -   \"Selection only\" is checked
+    -   "Selection only" is checked
 
         (Otherwise also the surface will be included in the exported file)
 
-    -   In \"Transform\", \"Forward\" is set to \"Y Forward\"
+    -   In "Transform", "Forward" is set to "Y Forward"
 
         (Otherwise the geometry will be wrongly oriented after export)
 
@@ -617,8 +574,6 @@ Here, it is described how to extract feature curves using the open source softwa
 
     ![image](12_view_paraview.png){width="75%"}
 
-13. Finally, the OBJ files can be converted into OpenFOAM's eMesh format. There is a tool called \"surfaceFeatureConvert\" in the OpenFOAM toolbox, which can perform this task. The file type is recognized from the extension. If not already done, the OpenFOAM environment needs to be loaded (here using the alias of1806):
+13. Finally, the OBJ files can be converted into OpenFOAM's eMesh format. There is a tool called "surfaceFeatureConvert" in the OpenFOAM toolbox, which can perform this task. The file type is recognized from the extension. If not already done, the OpenFOAM environment needs to be loaded (here using the alias of1806):
 
-        $ of1806
-        $ surfaceFeatureConvert roof_rail_feat.obj roof_rail_feat.eMesh
-
+        $ of1806 $ surfaceFeatureConvert roof_rail_feat.obj roof_rail_feat.eMesh

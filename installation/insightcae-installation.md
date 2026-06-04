@@ -14,7 +14,7 @@ $ sudo apt-get update
 
 Then, you can install the community-edition package by executing
 
-``` 
+```
 $ sudo apt-get install insightcae
 ```
 
@@ -22,7 +22,7 @@ Continue with preparing the environment according to section [Setting up the Env
 
 Note: for customers who receive supported, tailored simulation apps from silentdynamics, these apps are bundled into add-ons and the add-ons are included in a tailored installation package. For each customer, a separate package repository is maintained (with a unique URL, different from the one above). This needs to be included additionally to the one above. These packages are then named `insighcae-<customername>` and the install command changes to:
 
-``` 
+```
 $ sudo apt-get install insightcae-<customername>
 ```
 
@@ -51,13 +51,12 @@ Note: for customers who receive supported, tailored simulation apps from silentd
 Download the latest EXE file from this link and execute it:
 
 * It will activate the Windows subsystem for Linux, if it is not already activated
-* The installer bundles the necessary third party programs (ParaView, gnuplot, MiKTeX, Putty) 
+* The installer bundles the necessary third party programs (ParaView, gnuplot, MiKTeX, Putty)
 
   Note: it is required that the python runtime library (python36.dll) is in the library search path (PATH environment variable). There is an option in the python installer which should be enabled by the user (it is disabled by default).
-  
+
   If this is missed, the PATH variable needs to be manually edited after the installation.
-* Please note:
-  For the installation, administrator rights are required
+* Please note: For the installation, administrator rights are required
 
 # Usage
 
@@ -69,15 +68,13 @@ Upon the first launch, two things need to be completed:
 
 1. Set paths to commonly required executables.
 
-    The executables are searched in the executable search path defined by the system. Some will not be found since their location is not
-    included in the executable search path environment variable PATH. If some of the required executables are not found, the configuration dialog shown below is brought up. Click on a row, where no "Path to executable_ is printed and click on _Select path\..._. In the dialog box, find the appropriate executable and click _ok_. Repeat this for every executable, which was not found.
+    The executables are searched in the executable search path defined by the system. Some will not be found since their location is not included in the executable search path environment variable PATH. If some of the required executables are not found, the configuration dialog shown below is brought up. Click on a row, where no "Path to executable_ is printed and click on _Select path\..._. In the dialog box, find the appropriate executable and click _ok_. Repeat this for every executable, which was not found.
 
     ![Configuration dialog to set the paths to commonly used third party executables](set_paths.png){#fig:set_paths}
 
 2. The presence and the version of the WSL backend is checked.
 
-    The installer package includes a WSL image matching the version of the installer. This image is installed, when the installation is
-    performed. Thus this check should be silently successful.
+    The installer package includes a WSL image matching the version of the installer. This image is installed, when the installation is performed. Thus this check should be silently successful.
 
     If there is no WSL existing, a message appears and the user should select _Create_ to create one. The form as shown in the figure below should appear.
 
@@ -101,9 +98,8 @@ MikTeX is independent from InsightCAE and used by InsightCAE for generating PDF 
 
   ![Updating MikTeX, finding the MikTeX console](miktex1.png){#fig:update_miktex1}
 
-2. Change to the tab _Updates_. First click on _Search for Updates_. When updates are found, click on _Update Now_ and
-    follow the instructions. 
-    
+2. Change to the tab _Updates_. First click on _Search for Updates_. When updates are found, click on _Update Now_ and follow the instructions.
+
     ![Updating MikTeX, executing the update](miktex3.png){#fig:update_miktex2}
 
 # Building from Sources
@@ -116,7 +112,7 @@ Alternatively, you can download snapshot archives from github, if you don't want
 
 First, get the the sources by cloning the git repository:
 
-``` 
+```
 $ git clone https://github.com/hkroeger/insightcae.git insight-src
 ```
 
@@ -145,7 +141,7 @@ The InsightCAE project depends on a number of other projects. Some of the depend
 
 CMake is utilized for managing the build. The preferred way is to build the software out of source in a separate build directory. Create a build directory, then configure the build using e.g. ccmake and finally build using make:
 
-``` 
+```
 $ mkdir insight && cd insight
 $ ccmake ../insight-src
 ```
@@ -172,5 +168,4 @@ To set up the environment variables and search paths required by the InsightCAE 
 $ source /opt/insightcae/bin/insight_setenv.sh
 ```
 
-Note that the default contents of this file differs between linux distributions. Sometimes it contains statements which prematurely end
-its evaluation for non-interactive shells. This
+Note that the default contents of this file differs between linux distributions. Sometimes it contains statements which prematurely end its evaluation for non-interactive shells. This

@@ -16,13 +16,9 @@ InsightCAE serves as a framework for the implementation of analysis procedures. 
 
 Some common use cases are:
 
-- create a simulation app
-  InsightCAE’s toolkit library is used to build a simulation app. The workbench or the web interface can be used to present the parameter
-  form to the user and display a 3D preview of the setup. The app generates a result set. InsightCAE contains a viewer to display result sets or compare data from different result sets. The simulation app can be stored in a custom library or in a python script.
-- assist in creation of OpenFOAM cases
-  InsightCAE contains a GUI (called "Case Builder") to build OpenFOAM cases by putting features together into an OpenFOAM case.
-- build parametric, script-based CAD models
-  InsightCAE contains an interpreter for script-based CAD models. The underlying CAD kernel is OpenCASCADE (a BREP kernel). This utilized to produce geometry in the course of optimizations, for example.
+- create a simulation app InsightCAE’s toolkit library is used to build a simulation app. The workbench or the web interface can be used to present the parameter form to the user and display a 3D preview of the setup. The app generates a result set. InsightCAE contains a viewer to display result sets or compare data from different result sets. The simulation app can be stored in a custom library or in a python script.
+- assist in creation of OpenFOAM cases InsightCAE contains a GUI (called "Case Builder") to build OpenFOAM cases by putting features together into an OpenFOAM case.
+- build parametric, script-based CAD models InsightCAE contains an interpreter for script-based CAD models. The underlying CAD kernel is OpenCASCADE (a BREP kernel). This utilized to produce geometry in the course of optimizations, for example.
 
 # Contributors
 
@@ -45,7 +41,6 @@ InsightCAE’s objective is to create automated analysis workflows. The high lev
 * OpenFOAM add-ons (schemes, boundary conditions, models, ...)
 * Pre- & Postprocessing tool (OpenFOAM Case Builder)
 * analysis workflow automation tools (GUI)
-
 
 # Sources of Information
 
@@ -71,9 +66,8 @@ Sometimes it is necessary to execute tools in a bash shell, e.g. because no GUI 
 
 Here are two useful hints to solve this issue:
 
-1. The KDE file manager **dolphin** offers the possibility to display a console in the lower half of the window. The working directory is synchronized with the directory shown in the graphical window by injection of **cd** commands. Vice versa, when the working directory
-    is changed in the shell, the graphical display is updated as well.
-    
+1. The KDE file manager **dolphin** offers the possibility to display a console in the lower half of the window. The working directory is synchronized with the directory shown in the graphical window by injection of **cd** commands. Vice versa, when the working directory is changed in the shell, the graphical display is updated as well.
+
     ![Dolphin file manager with embedded terminal](dolphin_with_terminal.png){#fig:dolphin}
 
 2. There is a Norton-Commander-like file manager named **krusader**. It offers the same functionality regarding the embedded terminal but a more flexible way of displaying multiple folders. In addition to the two list view on the left and right, multiple tabs for folders can be added in each list view. And there is also a rich interface to define custom commands and file associations.
