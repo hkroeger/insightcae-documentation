@@ -123,22 +123,23 @@ $ git clone https://github.com/hkroeger/insightcae.git insight-src
 ## Dependencies
 
 The InsightCAE project depends on a number of other projects. Some of the dependencies are optional and only required, if certain features are enabled. The dependencies are listed in the table below.
-| Project  |tested version   |   required for |
+
+| Project | tested version | required for |
 |---|---|---|
- | Armadillo  | 9.800.4 |  (always) |
-  | Gnu Scientific Library | 2.6 |   (always) |
-  | Boost       |   1.65.1    |   (always) |
-  | VTK       | 9    |     (always) |
-  | Python (Lib)   |  3.6   |       (always) |
-  | OpenCASCADE   |  7.4   |  (always) |
-  | DXFlib | 3.7.5  |  (always) |
-  | libpoppler | 0.86  |  (always) |
-  | Qt   | 5.15 |  for GUIs |
-  | Gmsh  |  4.8  |  only for analyses with tet/tri meshing |
-  | Wt toolkit | 4.1 |   only for client/server execution |
-  | OpenFOAM  | ESI2112, 4.1 extend  |   only for OpenFOAM based analyses |
-  | Code_Aster | 14   |  only for FEM analyses |
-  | SWIG | 4 | only for python bindings |
+| Armadillo | 9.800.4 | (always) |
+| Gnu Scientific Library | 2.6 | (always) |
+| Boost | 1.65.1 | (always) |
+| VTK | 9 | (always) |
+| Python (Lib) | 3.6 | (always) |
+| OpenCASCADE | 7.4 | (always) |
+| DXFlib | 3.7.5 | (always) |
+| libpoppler | 0.86 | (always) |
+| Qt | 5.15 | for GUIs |
+| Gmsh | 4.8 | only for analyses with tet/tri meshing |
+| Wt toolkit | 4.1 | only for client/server execution |
+| OpenFOAM | ESI2112, 4.1 extend | only for OpenFOAM based analyses |
+| Code_Aster | 14 | only for FEM analyses |
+| SWIG | 4 | only for python bindings |
 
 ## Building
 

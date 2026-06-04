@@ -1,3 +1,86 @@
+# Overview of the Project InsightCAE
+
+## Concept and Parts of the Project
+
+The InsightCAE builds on top of available open-source engineering
+analysis tools (though closed-source tools could be used as well). The
+most used tool by far is the CFD software OpenFOAM.
+
+For certain tasks, custom extensions to these tools are required.
+InsightCAE contains a selection of extensions, which are included in the
+distribution packages, when these are created.
+
+The core of the project is the toolkit library. It contains the
+implementation of core classes in workflow management as the parameter
+set storage and tools and result set storage classes and handling tools.
+The toolkit library also maintains a list of available analysis modules,
+which is dynamically extensible by loadable add-ons.
+
+Finally, on top of the toolkit library, custom analysis modules can be
+created. The InsightCAE base distribution contains a number of generic
+analysis modules as the \"Numerical Wind Tunnel\" module and some
+generic test case analyses like flat plate, channel flow, pipe flow and
+so on. These might serve as examples for custom implementations.
+
+![Structure of the InsightCAE project](insightcae-structure.svg){#fig:insightcae-structure width="75%"}
+
+## Terms and Definitions
+
+#### Simulation App, Analysis
+
+InsightCAE bundles tools to create automated simulation procedures.
+These procedures can be written in Python or C++. The term **analysis**,
+**workflow module** or **Simulation App** is used for such a procedure.
+
+Actually, an analysis is like a function in programming: it gets input
+parameters, executed some actions (e.g. a numeric simulation) and
+returns a results data structure.
+
+InsightCAE provides a GUI to edit the parameter sets and also tools to
+work with the result sets. E.g. convert the result set into a PDF
+report.
+
+#### Parameter Set
+
+The analysis modules need input data, i.e. parameters. All parameters
+for a module are grouped together in a parameter set. Parameter sets are
+stored in XML files in human readable format (extension \*.ist). They
+can also be edited in a GUI editor (application workbench).
+
+Many analysis modules need external files (like CAD data in STL or any
+other format). These files can simply be referred in a parameter set by
+their relative path (relative to the \*.ist-file containing the
+reference) or absolute path. It is also possible to embed the external
+files into the XML file in an base64-encoded form. This simplifies
+transfer of analysis setup from one computer to another, e.g. for remote
+execution.
+
+#### Result Set
+
+The result of an analysis is returned in a **result set**. This is a
+hierarchical data structure which contains nodes like scalar values,
+charts, contour plots, images, tables or similar entities. It can be
+stored on disk in XML format. There is also a renderer which converts a
+result set into a PDF report.
+
+#### Case Element
+
+The setup of CFD-runs is put together from a number of so-called **case
+elements**. Each case element represents some functional feature. It
+might be a boundary condition or a turbulence model or something
+similar. A case element is not necessarily associated with a certain
+configuration file but can modify multiple configuration files of a CFD
+case configuration.
+
+There is also an editor for composing OpenFOAM cases from the available
+case elements: the OpenFOAM Case Builder.
+
+-   Solver extensions
+
+-   OpenFOAM Case Builder
+
+-   Workbench
+
 # Workflow Automation
 
 ## Simulation Apps
@@ -6,9 +89,7 @@
 
 #### Input: Parameter Sets {#sec:parametersets}
 
-Parameter sets are a hierarchical collection of parameters. Parameters can be of different type, see table
-[2](#tab:parameters){reference-type="ref" reference="tab:parameters"}
-for a list.
+Parameter sets are a hierarchical collection of parameters. Parameters can be of different type, see the [table below](#tab:parameters) for a list.
 
 A parameter set constitutes the full input data set for an analysis.
 
@@ -32,21 +113,19 @@ subsections are separated by slashes. For example, the parameter `evaluateonly` 
 For arrays elements, the index of the element is inserted after the array parameter name. For example, the parameter `mesh/refinementZones/0/lx` refers to the parameter `lx` inside the
 first array element of the array of subsections `refinementZones` in the subsection `mesh`.
 
-::: {#tab:parameters}
-  Type            Description
-  --------------- -------------------------------------------------
-  `double`        a scalar floating point value
-  `int`           an integer value
-  `bool`          a boolean value
-  `vector`        a 3-tuple of doubles
-  `string`        a simple text
-  `selection`     a selection from a predefined set
-  `path`          a file path, relative to the input file
-  `matrix`        a matrix with arbitrary number of rows and cols
-  `doublerange`   an array of double values
+| Type | Description |
+|---|---|
+| `double` | a scalar floating point value |
+| `int` | an integer value |
+| `bool` | a boolean value |
+| `vector` | a 3-tuple of doubles |
+| `string` | a simple text |
+| `selection` | a selection from a predefined set |
+| `path` | a file path, relative to the input file |
+| `matrix` | a matrix with arbitrary number of rows and cols |
+| `doublerange` | an array of double values |
 
-  : Available primitive parameter types in a parameter set
-:::
+**Table:** Available primitive parameter types in a parameter set {#tab:parameters}
 
 #### Output: Results Sets
 
@@ -58,7 +137,7 @@ The procedure of a simulation is contained in a so-called analyses or workflow m
 type of simulation. It is essentially a program. Oftentimes, people create scripts or macros for speeding up their simulation workflows. The
 InsightCAE workflow modules serve a similar purpose, though the intention is to fully cover the whole simulation including all pre and post processing steps.
 
-There is a GUI available which provides an editor for the input parameter set (see section [1.2.1](#sec:workbench){reference-type="ref" reference="sec:workbench"}). The GUI is also capable of displaying a 3D preview of the involved geometry and other elements, which are displayable. The analysis module is responsible of creating the 3D preview elements. Creation of the preview is optional and not every analysis module produces a preview.
+There is a GUI available which provides an editor for the input parameter set (see section [1.2.1](#sec:workbench)). The GUI is also capable of displaying a 3D preview of the involved geometry and other elements, which are displayable. The analysis module is responsible of creating the 3D preview elements. Creation of the preview is optional and not every analysis module produces a preview.
 
 The GUI also includes a viewer for the result set. From that viewer, the reports may be exported.
 
@@ -120,7 +199,7 @@ The GUI for editing analysis parameters, run analyses and monitor their progress
 
 It can be started from the command line by executing
 
-``` {.bash language="bash"}
+```bash
 $ workbench
 ```
 
@@ -134,7 +213,7 @@ The analysis form has three tabs. From left to right: the input parameter edit t
 
 ##### Editing the Input Parameters
 
-The parameter input tab is shown in figure [9](#fig:workbench_parameters){reference-type="ref" reference="fig:workbench_parameters"}. On the left, there is a tree view showing all the available parameters of the analysis. The font display style of the parameter entry denotes the importance of the parameter:
+The parameter input tab is shown in figure [9](#fig:workbench_parameters). On the left, there is a tree view showing all the available parameters of the analysis. The font display style of the parameter entry denotes the importance of the parameter:
 
 - highlighted yellow background: these parameters have no reasonable default values and need to be changed for every case. The displayed default values are only chosen to demonstrate some functional value, e.g. for speeds or rpms. But for parameters like file names, for example, there is no reasonable default at all.
 
@@ -164,7 +243,7 @@ Once all parameters are edited, the parameter set can be saved to a file. Very o
 
 ##### Running the Analysis
 
-With a properly edited parameter set, the analysis run can be started. This is achieved by clicking on the button \"Run\" on the right side or by selecting in the menu. This analysis form switches automatically to the \"Run\" tab (see figure [10](#fig:workbench_progress){reference-type="ref" reference="fig:workbench_progress"}). In the lower half, the log message
+With a properly edited parameter set, the analysis run can be started. This is achieved by clicking on the button \"Run\" on the right side or by selecting in the menu. This analysis form switches automatically to the \"Run\" tab (see figure [10](#fig:workbench_progress)). In the lower half, the log message
 are displayed. Sometimes, errors in an external program occur and are not correctly reported. It is therefore a good practice to watch the log messages for errors or warnings.
 
 When the simulation solver runs, InsightCAE shows progress variables graphically. The plots are shown above the log widget. The number and meaning of the progress variables depend on the analysis conducted.
@@ -187,7 +266,7 @@ To cancel a simulation run, click on the button \"Kill\" on the right side or by
 
 ##### Viewing the Results
 
-Once the simulation run is finished (that means that the solver has finished and that all post processing steps are done), a result set is created and loaded into the workbench. It is displayed in the \"output\" tab (see figure [11](#fig:workbench_result){reference-type="ref" reference="fig:workbench_result"}). The result set can be rendered into a report ().
+Once the simulation run is finished (that means that the solver has finished and that all post processing steps are done), a result set is created and loaded into the workbench. It is displayed in the \"output\" tab (see figure [11](#fig:workbench_result)). The result set can be rendered into a report ().
 
 ##### Rendering Results into a Report {#par:workbench:create_report}
 
@@ -195,7 +274,7 @@ Once the simulation run is finished (that means that the solver has finished and
 
 ##### Creating a New Analysis {#par:workbench:new_analysis}
 
-A new analysis is created by selecting in the menu . Then a new dialog appears, in which the list of available analyses is displayed (figure [8](#fig:workbench_new_analysis){reference-type="ref" reference="fig:workbench_new_analysis"}). The required analysis should be selected and confirmed by clicking \"Ok\".
+A new analysis is created by selecting in the menu . Then a new dialog appears, in which the list of available analyses is displayed (figure [8](#fig:workbench_new_analysis)). The required analysis should be selected and confirmed by clicking \"Ok\".
 
 ![Dialog for selection of the type of a new analysis](workbench_new_analysis.png){#fig:workbench_new_analysis width="50%"}
 
@@ -223,19 +302,19 @@ Depending on the state of the data, the behavior will be as follows:
 
 Depending on where the interruption happened, the state might be inconsistent and invalid behavior might result. For example:
 
--   the interruption appeared within a meshing procedure which includes intermediate meshes $\Rightarrow$ a mesh will be present but invalid
+-   the interruption appeared within a meshing procedure which includes intermediate meshes → a mesh will be present but invalid
 
--   the interruption appeared during the field initialization  $\Rightarrow$ a time directory is present but the fields are invalid,
+-   the interruption appeared during the field initialization  → a time directory is present but the fields are invalid,
 
--   the interruption appeared during writing of a time directory $\Rightarrow$ a time directory is present but invalid and the solver restart will fail.
+-   the interruption appeared during writing of a time directory → a time directory is present but invalid and the solver restart will fail.
 
-If you are unsure about the validity of the case data, please consider to clean the case directory first and restart everything from the beginning (see [1.2.2.2](#sec:cleancase){reference-type="ref" reference="sec:cleancase"}).
+If you are unsure about the validity of the case data, please consider to clean the case directory first and restart everything from the beginning (see [1.2.2.2](#sec:cleancase)).
 
 ###### Cleaning the Case Directory {#sec:cleancase}
 
-When an OpenFOAM-based simulation run was performed, a number of directories and files are created in the working directory. If another run shall be performed and no restart is desired, then these directories and files need to be removed first. For this task, there is the standalone tool `isofCleanCase`, see section [3.4](#sec:isofcleancase){reference-type="ref" reference="sec:isofcleancase"}.
+When an OpenFOAM-based simulation run was performed, a number of directories and files are created in the working directory. If another run shall be performed and no restart is desired, then these directories and files need to be removed first. For this task, there is the standalone tool `isofCleanCase`, see section [3.4](#sec:isofcleancase).
 
-This tool can be launched in the selected workspace directory from within the GUI via the button \"Clean\" on the right side of the analysis form. Please see section [3.4](#sec:isofcleancase){reference-type="ref" reference="sec:isofcleancase"} for details on the usage.
+This tool can be launched in the selected workspace directory from within the GUI via the button \"Clean\" on the right side of the analysis form. Please see section [3.4](#sec:isofcleancase) for details on the usage.
 
 In some OpenFOAM-based simulation apps, auxiliary OpenFOAM case are created in subdirectories of the workspace directory. Currently, these can only be deleted or cleaned manually via a file manager and the command line tool `isofCleanCase`.
 
@@ -257,17 +336,17 @@ Please note, that all parameters in the input file are assumed to match the simu
 
 To inspect the results of a OpenFOAM simulation beyond the figure which the InsightCAE simulation extracts automatically from the simulation case, the independent graphical postprocessor Paraview can be used.
 
-It can be launched from the command line using a script as explained in [3.5.1.3](#par:isPVpy){reference-type="ref" reference="par:isPVpy"}.
+It can be launched from the command line using a script as explained in [3.5.1.3](#par:isPVpy).
 
 Alternatively, this can be done also from the workbench. On the right border of the analysis form, there is a button labelled \"ParaView\". For OpenFOAM-based simulation apps, this is enabled. Once it is pressed, Paraview will be launched in the selected working directory. If a local run is configured, it will just read the case from the selected working directory. If a remote run is selected, a client-server pair will be launched and the connection to the remote side is set up via SSH tunnels.
 
 #### Console on Headless Computers: analyze {#sec:analyze}
 
-It is possible to launch an analysis from an existing input file (\*.ist) without the graphical user interface in a batch mode. This is useful to integrate InsightCAE into workflows with other third-party software. The input file can be saved from the workbench (see [1.2.1.2](#par:save_parameters){reference-type="ref" reference="par:save_parameters"}) or created by a script or with any text editor.
+It is possible to launch an analysis from an existing input file (\*.ist) without the graphical user interface in a batch mode. This is useful to integrate InsightCAE into workflows with other third-party software. The input file can be saved from the workbench (see [1.2.1.2](#par:save_parameters)) or created by a script or with any text editor.
 
 To launch a simulation in batch mode, the executable `analyze` is available. It can be launched like this from the command line:
 
-``` {.bash language="bash"}
+```bash
 $ analyze inputfile.ist
 ```
 
@@ -298,10 +377,9 @@ The values of parameters in the input file can be overridden from the command li
 -   `-i [ –int ] arg`\
     integer variable assignment
 
-The argument `arg` for all these options has the form: `path:value`. The path is the file path-like specification of the parameter (see [1.1.1](#sec:parametersets){reference-type="ref"
-reference="sec:parametersets"}) and the value is appended to the name, separated by a colon. If any spaces are inside the value, e.g. when strings or path names are to be specified, then the entire `arg` should be set in qoutes at the command line. For example:
+The argument `arg` for all these options has the form: `path:value`. The path is the file path-like specification of the parameter (see [1.1.1](#sec:parametersets)) and the value is appended to the name, separated by a colon. If any spaces are inside the value, e.g. when strings or path names are to be specified, then the entire `arg` should be set in qoutes at the command line. For example:
 
-``` {.bash language="bash"}
+```bash
 $ analyze --path "run/mapFrom:/a/path/with spaces" inputfile.ist
 ```
 
@@ -349,7 +427,7 @@ Result sets are displayed in the \"output\" tab of the workbench. When there are
 
 Whether a PDF report is rendered or a ISR file is written, depends on the file extension which is entered in the file dialog.
 
-A report can also be rendered from a ISR file on disk. Therefore the executable `isResultTool` exists. Once the program is started, select in the menu and select the ISR file in the file selection dialog. The result elements are then shown in the tree view on the left side of the window ([12](#fig:isresulttoolmainwindow){reference-type="ref" reference="fig:isresulttoolmainwindow"}b). To render the result elements into a PDF, select in the menu and enter a file path to the desired output PDF file. Optionally, some result set elements can be omitted from the PDF rendering by applying filters, see [2.0.0.2](#sec:resultsetfiltering){reference-type="ref" reference="sec:resultsetfiltering"}.
+A report can also be rendered from a ISR file on disk. Therefore the executable `isResultTool` exists. Once the program is started, select in the menu and select the ISR file in the file selection dialog. The result elements are then shown in the tree view on the left side of the window ([12](#fig:isresulttoolmainwindow)b). To render the result elements into a PDF, select in the menu and enter a file path to the desired output PDF file. Optionally, some result set elements can be omitted from the PDF rendering by applying filters, see [2.0.0.2](#sec:resultsetfiltering).
 
 ![Main window of the `isResultTool`. a) bottom left: filters to be applied to the currently loaded result set, b) top left: content directory of the loaded result set (with the filters applied), c) right side: details of the result element that is selected in the top left tree view.](InsightCAE_Result_Set_Viewer.png){#fig:isresulttoolmainwindow width="100%"}
 
@@ -359,7 +437,7 @@ Alternatively, the tool `isResultTool` can be executed with the command line arg
 
 #### Applying Filters during Rendering {#sec:resultsetfiltering}
 
-A set of filters can be defined to render a report with some result elements excluded. A filter is just a path-like text which represents the location of the result element in the result set hierarchy. The concept is very similar to the specification of parameters, see section [1.1.1](#sec:parametersets){reference-type="ref" reference="sec:parametersets"} above. Every result element, where the label path matches one of the filter expressions, is excluded. The filter expressions, which are already defined, are shown in the list in the bottom left corner of the Result Set Viewer window, see figure [12](#fig:isresulttoolmainwindow){reference-type="ref" reference="fig:isresulttoolmainwindow"}a. The result set content directory, which is displayed in figure [12](#fig:isresulttoolmainwindow){reference-type="ref" reference="fig:isresulttoolmainwindow"}b, shows the result set contents with all filters already applied.
+A set of filters can be defined to render a report with some result elements excluded. A filter is just a path-like text which represents the location of the result element in the result set hierarchy. The concept is very similar to the specification of parameters, see section [1.1.1](#sec:parametersets) above. Every result element, where the label path matches one of the filter expressions, is excluded. The filter expressions, which are already defined, are shown in the list in the bottom left corner of the Result Set Viewer window, see figure [12](#fig:isresulttoolmainwindow)a. The result set content directory, which is displayed in figure [12](#fig:isresulttoolmainwindow)b, shows the result set contents with all filters already applied.
 
 To add filter expressions, click on the button \"Add\...\". The result element paths to filter out can be directly typed into the text field, one per line. Instead of typing, result elements can be select from the full content of the result set after clicking the \"\...\" button.
 
@@ -501,7 +579,7 @@ Here, it is described how to extract feature curves using the open source softwa
 
     Then select \"Selection\" to create the new part from the current selection.
 
-    Once the selection is split off, another chain of edges can be selected by repeating the steps from [\[pt:begin_sel\]](#pt:begin_sel){reference-type="ref" reference="pt:begin_sel"}.
+    Once the selection is split off, another chain of edges can be selected by repeating the steps from [\[pt:begin_sel\]](#pt:begin_sel).
 
     ![image](08_export_selection.png){width="75%"}
 
