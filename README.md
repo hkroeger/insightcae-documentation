@@ -2,7 +2,7 @@
 
 InsightCAE is free software; you can redistribute it and/or modify it under the terms of version 2 of the GNU General Public License[^1] as published by the Free Software Foundation. You accept the terms of this license by distributing or using this software.
 
-This manual is Copyright (c) 2017-2021 silentdynamics GmbH.
+This manual is Copyright (c) 2017-2026 silentdynamics GmbH.
 
 Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled "GNU Free Documentation License".
 
@@ -74,8 +74,8 @@ Here are two useful hints to solve this issue:
 1. The KDE file manager **dolphin** offers the possibility to display a console in the lower half of the window. The working directory is synchronized with the directory shown in the graphical window by injection of **cd** commands. Vice versa, when the working directory
     is changed in the shell, the graphical display is updated as well.
     
-    ![Dolphin file manager with embedded terminal](figs/intro/dolphin_with_terminal.png){#fig:dolphin}
+    ![Dolphin file manager with embedded terminal](dolphin_with_terminal.png){#fig:dolphin}
 
 2. There is a Norton-Commander-like file manager named **krusader**. It offers the same functionality regarding the embedded terminal but a more flexible way of displaying multiple folders. In addition to the two list view on the left and right, multiple tabs for folders can be added in each list view. And there is also a rich interface to define custom commands and file associations.
 
-![Dolphin file manager with embedded terminal](figs/intro/krusader_with_terminal.png){#fig:krusader}
+![Krusader file manager with embedded terminal](krusader_with_terminal.png){#fig:krusader}

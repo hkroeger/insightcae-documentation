@@ -197,16 +197,13 @@ Once the simulation run is finished (that means that the solver has finished and
 
 A new analysis is created by selecting in the menu . Then a new dialog appears, in which the list of available analyses is displayed (figure [8](#fig:workbench_new_analysis){reference-type="ref" reference="fig:workbench_new_analysis"}). The required analysis should be selected and confirmed by clicking \"Ok\".
 
-![Dialog for selection of the type of a new analysis](../figs/workbench/workbench_new_analysis.png){#fig:workbench_new_analysis
-width="0.5\\linewidth"}
+![Dialog for selection of the type of a new analysis](workbench_new_analysis.png){#fig:workbench_new_analysis width="50%"}
 
-![Parameter editing tab of the workbench](../figs/workbench/workbench_airfoil_parameters.png){#fig:workbench_parameters
-width="\\linewidth"}
+![Parameter editing tab of the workbench](workbench_airfoil_parameters.png){#fig:workbench_parameters width="100%"}
 
-![Solution progress tab of the workbench](../figs/workbench/workbench_airfoil_run.png){#fig:workbench_progress
-width="\\linewidth"}
+![Solution progress tab of the workbench](workbench_airfoil_run.png){#fig:workbench_progress width="100%"}
 
-![Result explorer tab of the workbench](../figs/workbench/workbench_airfoil_result.png){#fig:workbench_result}
+![Result explorer tab of the workbench](workbench_airfoil_result.png){#fig:workbench_result}
 
 ##### Special Features for OpenFOAM-based Simulation Apps
 
@@ -354,7 +351,7 @@ Whether a PDF report is rendered or a ISR file is written, depends on the file e
 
 A report can also be rendered from a ISR file on disk. Therefore the executable `isResultTool` exists. Once the program is started, select in the menu and select the ISR file in the file selection dialog. The result elements are then shown in the tree view on the left side of the window ([12](#fig:isresulttoolmainwindow){reference-type="ref" reference="fig:isresulttoolmainwindow"}b). To render the result elements into a PDF, select in the menu and enter a file path to the desired output PDF file. Optionally, some result set elements can be omitted from the PDF rendering by applying filters, see [2.0.0.2](#sec:resultsetfiltering){reference-type="ref" reference="sec:resultsetfiltering"}.
 
-![Main window of the `isResultTool`. a) bottom left: filters to be applied to the currently loaded result set, b) top left: content directory of the loaded result set (with the filters applied), c) right side: details of the result element that is selected in the top left tree view.](../figs/isresulttool/InsightCAE_Result_Set_Viewer.png){#fig:isresulttoolmainwindow width="\\textwidth"}
+![Main window of the `isResultTool`. a) bottom left: filters to be applied to the currently loaded result set, b) top left: content directory of the loaded result set (with the filters applied), c) right side: details of the result element that is selected in the top left tree view.](InsightCAE_Result_Set_Viewer.png){#fig:isresulttoolmainwindow width="100%"}
 
 Alternatively, the tool `isResultTool` can be executed with the command line argument `–render`:
 
@@ -440,17 +437,17 @@ The OpenFOAM cases can be loaded into Paraview as soon as they were created by o
 
     When all settings are right, click on \"Apply\".
 
-    ![image](../figs/paraview_of/paraview_load_case.png){width="0.75\\linewidth"}
+    ![image](paraview_load_case.png){width="75%"}
 
 -   Next, jump to the latest time step:
 
-    ![image](../figs/paraview_of/jump_to_latest_timestep.png){width="0.75\\linewidth"}
+    ![image](jump_to_latest_timestep.png){width="75%"}
 
 -   Now, the scene can be set up using all the Paraview filters[^8].
 
     Often, fields on boundary regions (e.g. walls) are of interest. These can be extracted using the \"Extract Block\" filter. To apply this filter, select from the menu . Make sure that the OpenFOAM case source is selected in the pipeline browser when the filter is added. When all the boundaries of interest are selected, click on \"Apply\".
 
-    ![image](../figs/paraview_of/paraview_extract_block.png){width="0.75\\linewidth"}
+    ![image](paraview_extract_block.png){width="75%"}
 
 ##### Meshing
 
@@ -464,23 +461,23 @@ Here, it is described how to extract feature curves using the open source softwa
 
     select in menu
 
-    ![image](../../figs/feature_edges_blender/01_import_stl_1.png){width="0.75\\linewidth"}
+    ![image](01_import_stl_1.png){width="75%"}
 
 2.  select the STL file
 
-    ![image](../figs/feature_edges_blender/02_import_stl_2.png){width="0.75\\linewidth"}
+    ![image](02_import_stl_2.png){width="75%"}
 
 3.  make sure, the object is selected (orange line around the selected object is displayed)
 
     Objects can be selected by left click them with mouse.
 
-    ![image](../figs/feature_edges_blender/03_stl_imported.png){width="0.75\\linewidth"}
+    ![image](03_stl_imported.png){width="75%"}
 
 4.  switch to \"Edit Mode\", either by pressing the \"Tab\" key or by  selecting the mode in the combo box in the upper left corner.
 
     Next, switch to edge selection mode (second button right from the edit mode combo box)
 
-    ![image](../figs/feature_edges_blender/04_edit_mode.png){width="0.75\\linewidth"}
+    ![image](04_edit_mode.png){width="75%"}
 
     In this example, we want to select a line (chain of edges) along the left roof rail.
 
@@ -488,17 +485,17 @@ Here, it is described how to extract feature curves using the open source softwa
 
     select the first edge with a left click on it.
 
-    ![image](../figs/feature_edges_blender/05_select_first_edge.png){width="0.75\\linewidth"}
+    ![image](05_select_first_edge.png){width="75%"}
 
 6.  select another edge on the feature line: zoom to the next location and press Ctrl + Left click
 
     The shortest path from the last selected edge and the current clicked edge will be added to the selection. To select edges as precise as possible, it might be required to click a number of intermediate locations. If a mistake is made, the last step can be undone by typing Ctrl+Z.
 
-    ![image](../figs/feature_edges_blender/06_select_second_edge.png){width="0.75\\linewidth"}
+    ![image](06_select_second_edge.png){width="75%"}
 
 7.  repeat the last step until the end of the feature line is reached.
 
-    ![image](../figs/feature_edges_blender/07_select_last_edge.png){width="0.75\\linewidth"}
+    ![image](07_select_last_edge.png){width="75%"}
 
 8.  next create a new object from the selected edges by typing the key \"P\".
 
@@ -506,7 +503,7 @@ Here, it is described how to extract feature curves using the open source softwa
 
     Once the selection is split off, another chain of edges can be selected by repeating the steps from [\[pt:begin_sel\]](#pt:begin_sel){reference-type="ref" reference="pt:begin_sel"}.
 
-    ![image](../figs/feature_edges_blender/08_export_selection.png){width="0.75\\linewidth"}
+    ![image](08_export_selection.png){width="75%"}
 
 9.  switch back to \"Object Mode\"
 
@@ -516,7 +513,7 @@ Here, it is described how to extract feature curves using the open source softwa
 
     Note: the mouse should be over the 3D viewport for Blender to accept the keyboard shortcut.
 
-    ![image](../figs/feature_edges_blender/09_view_result.png){width="0.75\\linewidth"}
+    ![image](09_view_result.png){width="75%"}
 
 10. export the edges into an OBJ file.
 
@@ -524,7 +521,7 @@ Here, it is described how to extract feature curves using the open source softwa
 
     Then open the menu .
 
-    ![image](../figs/feature_edges_blender/10_export_obj.png){width="0.75\\linewidth"}
+    ![image](10_export_obj.png){width="75%"}
 
 11. check the export settings. Make sure, the following is set:
 
@@ -536,11 +533,11 @@ Here, it is described how to extract feature curves using the open source softwa
 
         (Otherwise the geometry will be wrongly oriented after export)
 
-    ![image](../figs/feature_edges_blender/11_export_setup.png){width="0.75\\linewidth"}
+    ![image](11_export_setup.png){width="75%"}
 
 12. the resulting OBJ files can be loaded into Paraview and checked
 
-    ![image](../figs/feature_edges_blender/12_view_paraview.png){width="0.75\\linewidth"}
+    ![image](12_view_paraview.png){width="75%"}
 
 13. Finally, the OBJ files can be converted into OpenFOAM's eMesh format. There is a tool called \"surfaceFeatureConvert\" in the OpenFOAM toolbox, which can perform this task. The file type is recognized from the extension. If not already done, the OpenFOAM environment needs to be loaded (here using the alias of1806):
 

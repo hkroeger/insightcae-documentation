@@ -72,7 +72,7 @@ Upon the first launch, two things need to be completed:
     The executables are searched in the executable search path defined by the system. Some will not be found since their location is not
     included in the executable search path environment variable PATH. If some of the required executables are not found, the configuration dialog shown below is brought up. Click on a row, where no "Path to executable_ is printed and click on _Select path\..._. In the dialog box, find the appropriate executable and click _ok_. Repeat this for every executable, which was not found.
 
-    ![Configuration dialog to set the paths to commonly used third party executables](../figs/workbench/set_paths.png){#fig:set_paths}
+    ![Configuration dialog to set the paths to commonly used third party executables](set_paths.png){#fig:set_paths}
 
 2. The presence and the version of the WSL backend is checked.
 
@@ -81,7 +81,7 @@ Upon the first launch, two things need to be completed:
 
     If there is no WSL existing, a message appears and the user should select _Create_ to create one. The form as shown in the figure below should appear.
 
-    ![Create WSL backend form](../figs/workbench/create_wsl.png){#fig:create_wsl}
+    ![Create WSL backend form](create_wsl.png){#fig:create_wsl}
 
     The URL should be properly preset according from which source the installer was downloaded. For support customers, it is important to enter their credentials into the appropriate fields.
 
@@ -99,12 +99,12 @@ MikTeX is independent from InsightCAE and used by InsightCAE for generating PDF 
 
 1. Open the MikTeX console, e.g. by typing the Windows key and then the command _miktex console_ until the icon appears.
 
-  ![Updating MikTeX, finding the MikTeX console](../figs/update/miktex1.png){#fig:update_miktex1}
+  ![Updating MikTeX, finding the MikTeX console](miktex1.png){#fig:update_miktex1}
 
 2. Change to the tab _Updates_. First click on _Search for Updates_. When updates are found, click on _Update Now_ and
     follow the instructions. 
     
-    ![Updating MikTeX, executing the update](../figs/update/miktex3.png){#fig:update_miktex2}
+    ![Updating MikTeX, executing the update](miktex3.png){#fig:update_miktex2}
 
 # Building from Sources
 
