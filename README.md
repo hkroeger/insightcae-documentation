@@ -27,7 +27,6 @@ Some common use cases are:
 The following people have so far contributed to InsightCAE:
 
 - Hannes Kröger (silentdynamics GmbH)
-- Johann Turnow (silentdynamics GmbH)
 
 If you want to get involved in the development, please feel invited to do so! We greatly appreciate any contribution and we would very much like to add you to the above list.
 
