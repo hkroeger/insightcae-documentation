@@ -169,7 +169,7 @@ There are datums predefined in each model. They are listed in table [6](#tab:isc
 A very simple example is given below. It consists of two primitive features (cylinder) and a boolean operation (subtraction).
 
 ```cpp
-tool = Cylinder(-10*EY, 10*EY, 2);
+tool = Cylinder(-10*EY, 10*EY, 3);
 
 pierced_cylinder:
 Cylinder(O, 20*EX, 10, centered)
