@@ -1,4 +1,6 @@
-# Structure of the InsightCAE Project
+# Developer Guide
+
+## Structure of the InsightCAE Project
 
 The core of InsightCAE consists of a number of libraries. There is a core library (libtoolkit) which contains the basic functions. Other, optional features are found in a number of other libraries which differ in their build dependencies.
 
@@ -40,11 +42,11 @@ There are different developer perspectives:
 
     Now, modifying the InsightCAE project requires to build the project from its sources. Please see section [2](#sec:insightcae_dev) for a guide to set up a self-built working copy of the sources.
 
-# Plug-In Development {#sec:plugins}
+## Plug-In Development {#sec:plugins}
 
-# InsightCAE Development {#sec:insightcae_dev}
+## InsightCAE Development {#sec:insightcae_dev}
 
-## Dependencies
+### Dependencies
 
 The InsightCAE toolkit requires a number of dependencies. Not all versions have been tested, of course. The following list contains the major dependencies along with the versions, which are currently utilized in binary packages:
 
@@ -70,11 +72,11 @@ The InsightCAE toolkit requires a number of dependencies. Not all versions have 
 
 -   Code_Aster
 
-# Building InsightCAE from the Sources
+## Building InsightCAE from the Sources
 
 The InsightCAE sources are prepared to be built in a Posix environment. The developers use Ubuntu Linux in the latest LTS version. The Windows version is cross-compiled using the MXE cross compiling suite.
 
-## Building in Linux
+### Building in Linux
 
 Some prerequisites:
 
@@ -86,7 +88,7 @@ Some prerequisites:
     $ sudo apt install insightcae-dependencies
     ```
 
-### CMake Configuration and Building
+#### CMake Configuration and Building
 
 An out-of-source build is recommended. If the aforementioned dependencies package is used, the following variables need to be added to the CMake configuration:
 
@@ -106,7 +108,7 @@ $ ninja
 
 depending on the chosen generator.
 
-### Execution
+#### Execution
 
 Once built, the InsightCAE programs can be executed directly from the build folder, provided that the environment is set.
 
@@ -116,11 +118,11 @@ To setup the environment, add the appropriate script to the beginning of the  /
 source /path/to/build/directory/bin/insight_setenv.sh
 ```
 
-## Building for Windows
+### Building for Windows
 
 The Windows version so far has only been created using a cross compiler.
 
-### MXE Cross-Compiler
+#### MXE Cross-Compiler
 
 First, an installation of MXE is required. There is Ubuntu installation package in the InsightCAE development repository (see section [3](#obtaining_insightcae)). It contains all the required dependencies plus some additional packages (i.e. dxflib and python 3.6) and a number of patches. It can be installed using:
 
@@ -134,7 +136,7 @@ On other Linux distributions, MXE probably needs to be built from its sources. T
 $ make -j10 MXE_TARGETS=i686-w64-mingw32.shared MXE_PLUGIN_DIRS="plugins/gcc10 plugins/boost_1_66_0" pe-util cgal gettext gcc glew glfw3 mesa harfbuzz armadillo boost dxflib freetype libgcrypt glib gsl hdf5 libiconv libidn libidn2 vtk oce openssl jpeg qt5 cryptopp poppler libntlm openssl wt tiff libgsasl
 ```
 
-### Setup QtCreator IDE
+#### Setup QtCreator IDE
 
 First, edit the "Kit" settings in QtCreator and create a Kit for MXE. Therefore, add:
 
@@ -148,7 +150,7 @@ First, edit the "Kit" settings in QtCreator and create a Kit for MXE. Therefore,
 
 5.  Finally add a Kit "Desktop MXE32 shared" and select all the previously added entities
 
-### Configure the Project for MXE
+#### Configure the Project for MXE
 
 Some variables need to be added to the CMake configuration:
 
@@ -168,7 +170,7 @@ Some variables need to be added to the CMake configuration:
 
 With these variables manually added, it should be possible to build the project with QtCreator.
 
-### Executing the Built Binaries in a Windows Machine
+#### Executing the Built Binaries in a Windows Machine
 
 Install a SAMBA server and export the following paths as shares:
 
@@ -235,11 +237,11 @@ To run flow simulations or finite element analyses, the Windows installation nee
 
 Note: File I/O from within the WSL container is slowed down considerably by the Windows Defender Services. To improve performance, consider to disable this service and/or add exceptions where possible.
 
-# Creating and Distributing Snapshots of a Build
+## Creating and Distributing Snapshots of a Build
 
-## Linux Build
+### Linux Build
 
-### Creation
+#### Creation
 
 Move into the build directory and execute CPack, e.g.:
 
@@ -248,7 +250,7 @@ $ cd ~/Projekte/build-insight-Desktop_superbuild-Debug
 $ cpack -G TGZ
 ```
 
-### Installation
+#### Installation
 
 The resulting archive has to be copied to the target and unpacked. For example:
 
@@ -266,9 +268,9 @@ source <UNPACK PATH>/insightcae_5.0.139-gf41a2d2c~ubuntu24.04_amd64/usr/local/bi
 
 A new shell needs to be opened to apply the changes.
 
-## Windows Build using MXE
+### Windows Build using MXE
 
-### Creation
+#### Creation
 
 There is a script for creating the MSI installer which also copied the required dependencies from the MXE installation. It is intended to be executed from the build directory. For example:
 
@@ -281,8 +283,8 @@ cd ~/Projekte/build-insight-Desktop_MXE32_shared-Release
 
 This will yield an installation package "insightcae.msi".
 
-### Installation
+#### Installation
 
 The resulting MSI package has to be copied to the target and installed using the Windows tools (double click in the explorer window on the file).
 
-# Creating Custom OpenFOAM Analyses
+## Creating Custom OpenFOAM Analyses

@@ -1,8 +1,10 @@
-# OpenFOAM
+# Extensions to Backend Tools
+
+## OpenFOAM
 
 InsightCAE bundles a number of extensions to OpenFOAM which are used in cases created by the toolkit.
 
-## FieldDataProvider {#sec:FieldDataProvider}
+### FieldDataProvider {#sec:FieldDataProvider}
 
 The FieldDataProvider class provides a swiss-army-knife-like source for field data. It is used in a number of places, where field data is required as a parameter. Some examples are described in the next section.
 
@@ -20,7 +22,7 @@ The keywords `unsteady` or `steady` select whether the input is time dependent. 
 
 These provider types are known:
 
-### uniform
+#### uniform
 
 The value data is single value.
 
@@ -30,7 +32,7 @@ Example:
 uniform (1 0 0)
 ```
 
-### nonuniform
+#### nonuniform
 
 The value data is a list of values. The required number of entries is dependent on the context in which the FieldDataProvider is used. For a boundary condition for example, it needs to match the number of faces.
 
@@ -40,7 +42,7 @@ Example:
 nonuniform 7(0 0 0 1 1 2 3)
 ```
 
-### linearProfile
+#### linearProfile
 
 The value data is the name of a file which contains table of coordinate/value pairs, one per row. Between the lines is linearly interpolated.
 
@@ -67,9 +69,9 @@ This defines a linear profile starting at the global origin and the coordinate r
 -1 0 0 0
 ```
 
-### radialProfile
+#### radialProfile
 
-### circumferentialProfile
+#### circumferentialProfile
 
 The input for each instant is a file containing a table of components vs. angle. The coordinate system specification requires the base point, the axis direction and the direction of angle 0. The mapping is done this way: for each face, the angle is computed, the values for the angle are interpolated from the table and applied to the boundary. If the value is a tensor, it is transformed according to the current angle.
 
@@ -81,9 +83,9 @@ circumferentialProfile (0 0 0) (0 0 1)  (1 0 0) steady "$FOAM_CASE/T_vs_phi.txt"
 
 In this example, die coordinate system has its origin at (0 0 0)^T, the axis points along the global Z direction and the angle 0 is along the global X direction. The profile points are read from the file `T_vs_phi.txt` in the case directory.
 
-### fittedProfile
+#### fittedProfile
 
-### vtkField
+#### vtkField
 
 The data is read from a VTK file and interpolated to the CFD grid. The VTK grid needs to geometricall coincide with the target CFD mesh. There may be many fields in the VTK dataset and the one to be used has to be specified.
 
@@ -93,7 +95,7 @@ Example:
 vtkField "$FOAM_CASE/data.vtk" "U"
 ```
 
-## extendedFixedValue
+### extendedFixedValue
 
 The `extendedFixedValue` boundary condition uses the `FieldDataProvider` class (see section [4.1.1](#sec:FieldDataProvider)) to apply the provided fields as a Dirichlet boundary condition in OpenFOAM cases.
 

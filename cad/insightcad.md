@@ -1,10 +1,12 @@
-# Introduction
+# InsightCAD — Script-Based CAD
+
+## Introduction
 
 InsightCAD is a script-based tool for creating three-dimensional geometry models. All geometric operations are based on the OpenCASCADE geometry kernel. It uses the boundary representation approach (BREP) for treating the geometry. Thus it is possible to import and export the common exchange formats IGES and STEP.
 
 Although the primary intention of InsightCAD is creation of fully parameterized CAD models for systematic numerical simulations, it can also be used for mechanical design purposes. It therefore provides the possibility to export projections and sections of the created models in DXF format for use in drawings. Additionally, there is support for a library of parametric standard parts.
 
-# Basic Concept
+## Basic Concept
 
 The basic entity in InsightCAD is a "model". A model is described by a script and stored in an ASCII script file (extension ".iscad"). Inside a model script, symbols are defined, which can represent the following data types:
 
@@ -24,7 +26,7 @@ Beyond their geometry representation, geometry feature objects are containers fo
 
 In a model script, after the definition of the aforementioned symbols, an optional section with postprocessing actions can follow. These can be e.g. file export, drawing export or others.
 
-### General CAD Model Script Syntax
+#### General CAD Model Script Syntax
 
 The general model script layout begins with a mandatory symbol defining section, followed by an optional postprocessing section, started by "@post":
 
@@ -40,13 +42,13 @@ The general model script layout begins with a mandatory symbol defining section,
 
 Comments are lines starting with "#" or text regions enclosed by "/\*" and "\*/" (C-style).
 
-# Submodels and Subassemblies
+## Submodels and Subassemblies
 
 It is possible to load another model into the current one by the "loadmodel" command (see section "Features"). In this case, the loaded model represents a subassembly, i.e. a compound of features. Since not all defined geometry objects in the submodel may represent assembly components, marking of components is supported by the feature definition syntax and needs to be utilized properly in the definition script of the submodel. Also, when loading models (subassemblies), parameters can be passed to the submodel. These can be scalars, vectors, datums or features.
 
-# Symbol Definition
+## Symbol Definition
 
-## Scalars
+### Scalars
 
 Example:
 
@@ -87,7 +89,7 @@ Supported operations are listed in table [3](#tab:iscad_algebra).
 
 There are scalars predefined in each model. They are included in table [6](#tab:iscad_datums).
 
-## Vectors
+### Vectors
 
 Example:
 
@@ -118,7 +120,7 @@ Supported operations are listed in table [4](#tab:iscad_vectorOps).
 
 There are vectors predefined in each model. They are included in table [6](#tab:iscad_datums).
 
-## Datums
+### Datums
 
 Some simple examples are given below.
 
@@ -162,7 +164,7 @@ There are datums predefined in each model. They are listed in table [6](#tab:isc
 
 **Table:** Predefined symbols (scalars, vectors and datums) in ISCAD scripts {#tab:iscad_datums}
 
-## Features
+### Features
 
 A very simple example is given below. It consists of two primitive features (cylinder) and a boolean operation (subtraction).
 
@@ -188,11 +190,11 @@ Geometry symbols can be defined by a "=" or a ":" operator. The difference comes
 
 **Table:** Feature operations in ISCAD scripts {#tab:iscad_datum}
 
-# Feature Commands
+## Feature Commands
 
 In this section, an incomplete subset of the avilable feature commands is described in detail. For a complete list, please refer to the online documentation in the iscad editor (press Ctrl+F).
 
-## Transformation
+### Transformation
 
 `Transform(<feature:f>, <vector:delta>, <vector:phi>)`
 
@@ -202,7 +204,7 @@ Transformation of feature f. Translation by vector delta and rotation around axi
 
 Places the feature f in a new coordinate system. The new origin is at point p_0, the new x-axis along vector e_x and the new z-direction is e_z.
 
-## Import
+### Import
 
 `import(<path>)`
 
@@ -228,9 +230,9 @@ The model filename has to be "<modelname>.iscad". It is searched for in the foll
 
 Optionally, a list of symbols is inserted into the namespace of the submodel (additional optional parameters).
 
-## Geometry Construction
+### Geometry Construction
 
-### Primitives
+#### Primitives
 
 There are commands for creation of several different geometrical primitives, e.g.
 
@@ -248,11 +250,11 @@ Extrude the feature f with direction and length vector L. When the keyword "cent
 
 Creates a revolution of the planar feature f. The rotation axis is specified by origin point p_0 and the direction vector axis. Revolution angle is specified by phi. By giving the keyword "centered", the revolution is created symmetrically around the base feature.
 
-### Other Feature Commands
+#### Other Feature Commands
 
 There are more features available. A comprehensive list is obtained by pressing Ctrl+F in the iscad editor.
 
-# Lower Dimensional Shape Selection
+## Lower Dimensional Shape Selection
 
 ISCAD supports rule based selection of lower dimensional features (i.e. edges or faces of a solid). The selection is generated by a selection command: a question mark, followed by the type of shape to query. The result is a selection object:
 
@@ -299,7 +301,7 @@ Quantity functions available for all kinds of lower dimensional shapes are liste
 
 **Table:** General quantity functions available for all kinds of lower dimensional shape {#tab:iscad_feat_general_qty}
 
-## Vertices
+### Vertices
 
 There are no special boolean functions or operators for vertices.
 
@@ -311,7 +313,7 @@ The available quantity functions for vertices are listed in table [10](#tab:isca
 
 **Table:** Quantity functions available for vertex selections {#tab:iscad_feat_vertex_qty}
 
-## Edges
+### Edges
 
 Boolean functions for edges are listed in table [11](#tab:iscad_feat_edges_bool).
 
@@ -346,7 +348,7 @@ The available quantity functions for edges are listed in table [12](#tab:iscad_f
 
 **Table:** Quantity functions available for edge selections {#tab:iscad_feat_edges_qty}
 
-## Faces
+### Faces
 
 Boolean functions for faces are listed in table [13](#tab:iscad_feat_faces_bool).
 
@@ -382,7 +384,7 @@ The available quantity functions for faces are listed in table [14](#tab:iscad_f
 
 **Table:** Quantity functions available for face selections {#tab:iscad_feat_faces_qty}
 
-## Solids
+### Solids
 
 There are no special boolean functions or operators for solids.
 
@@ -395,9 +397,9 @@ The available quantity functions for solids are listed in table [15](#tab:iscad_
 
 **Table:** Quantity functions available for solid selections {#tab:iscad_feat_solids_qty}
 
-# Postprocessing Actions
+## Postprocessing Actions
 
-## Drawing Export
+### Drawing Export
 
 `DXF(<path:outputfile>) <<`` `` <feature:f> <view_definition> [, <view_definition>, ... ]`
 
@@ -436,7 +438,7 @@ DXF("c.dxf") << c
 ;
 ```
 
-## Mesh Creation
+### Mesh Creation
 
 `gmsh(<path:outputfile>) <<`` <feature:f> as <identifier:l> `<`mesh_parameters`>
 
@@ -483,7 +485,7 @@ Result: ISCAD model (left) and resulting mesh (right):
 ![image](gmsh_example_iscad.png){width="45%"}
 ![image](gmsh_example_mesh.png){width="45%"}
 
-# Graphical Editor ISCAD
+## Graphical Editor ISCAD
 
 ISCAD is a graphical editor for InsightCAD scripts. It consists of a text editor for editing the script contents and a 3D view and some other elements for inspecting the resulting model. A screenshot is shown in the figure below.
 
@@ -501,9 +503,9 @@ After parsing the model, the following results are displayed:
 
 ![image](screenshot_iscad.png){width="100%"}
 
-## 3D Graphics Display
+### 3D Graphics Display
 
-### View Manipulation
+#### View Manipulation
 
 -   Dragging: Shift + mouse move
 
@@ -511,7 +513,7 @@ After parsing the model, the following results are displayed:
 
 -   Rotating: Alt + mouse move
 
-### Model Navigation
+#### Model Navigation
 
 When hoovering the mouse pointer over a displayed feature in the 3D geometry window, it is highlighted. The highlighted feature is the one, which would be selected during subsequent mouse clicks.
 
@@ -529,7 +531,7 @@ The context menu provides these functions:
 
 -   "Export\...": Export the feature geometry to a file (BREP, STP, IGES, STL)
 
-## Text Editor
+### Text Editor
 
 When script code is entered into the text editor window, it is parsed in the background. Once this has been done successfully, some extensions of the context menu is available:
 

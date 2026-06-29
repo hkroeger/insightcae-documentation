@@ -1,4 +1,6 @@
-# License and Copyright
+# About InsightCAE
+
+## License and Copyright
 
 InsightCAE is free software; you can redistribute it and/or modify it under the terms of version 2 of the GNU General Public License[^1] as published by the Free Software Foundation. You accept the terms of this license by distributing or using this software.
 
@@ -6,7 +8,7 @@ This manual is Copyright (c) 2017-2026 silentdynamics GmbH.
 
 Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license is included in the section entitled "GNU Free Documentation License".
 
-# About InsightCAE
+## About InsightCAE
 
 InsightCAE is a framework for building automated analysis and design workflows in Computer-Aided Engineering with a preference for open source tools.
 
@@ -20,7 +22,7 @@ Some common use cases are:
 - assist in creation of OpenFOAM cases InsightCAE contains a GUI (called "Case Builder") to build OpenFOAM cases by putting features together into an OpenFOAM case.
 - build parametric, script-based CAD models InsightCAE contains an interpreter for script-based CAD models. The underlying CAD kernel is OpenCASCADE (a BREP kernel). This utilized to produce geometry in the course of optimizations, for example.
 
-# Contributors
+## Contributors
 
 The following people have so far contributed to InsightCAE:
 
@@ -31,7 +33,7 @@ If you want to get involved in the development, please feel invited to do so! We
 
 If you made some modification or addition to the code, which you would like to be merged into the main development line, please consider to send us a pull request.
 
-# Features and Highlights
+## Features and Highlights
 
 InsightCAE’s objective is to create automated analysis workflows. The high level API resides in the core "toolkit" library. Automated workflows usually involve different external programs and utilities. For the realization of automated workflows, it is sometimes required, to create add-ons to these external programs. Thus InsightCAE is also a container for add-ons to other programs.
 
@@ -42,25 +44,25 @@ InsightCAE’s objective is to create automated analysis workflows. The high lev
 * Pre- & Postprocessing tool (OpenFOAM Case Builder)
 * analysis workflow automation tools (GUI)
 
-# Sources of Information
+## Sources of Information
 
-## In the Web
+### In the Web
 
 - Source Code Repository [at GitHub](https://github.com/hkroeger/insightcae)
 - Issue Tracker [at GitHub](https://github.com/hkroeger/insightcae/issues)
 - Web Forum [at Google Groups](https://groups.google.com/forum/#!forum/insightcae)
 
-## Reporting Bugs and Feature Requests
+### Reporting Bugs and Feature Requests
 
 Please use the [issue tracker](https://github.com/hkroeger/insightcae/issues) to report any bugs.
 
 We also monitor the [web forum](https://groups.google.com/forum/#!forum/insightcae) for questions or feature requests.
 
-## Getting Professional Help and Support
+### Getting Professional Help and Support
 
 Beyond the web resources above, [silentdynamics GmbH](https://silentdynamics.de) offers commercial support for professional users of InsightCAE. Automated analyses according to customer needs and specifications are implemented by creating new specialized modules for Insight CAE. Typical support contracts include also user training and continuous customization and updating of InsightCAE and its add-ons.
 
-# Recommendations for Working with Shell-based Tools in Linux
+## Recommendations for Working with Shell-based Tools in Linux
 
 Sometimes it is necessary to execute tools in a bash shell, e.g. because no GUI for it is available. And often it is easier to keep an overview in graphical file manager. Having a console window open together with a file manager window at the same time is an obvious solution but to do so for many cases at a time may easily confuse the desktop.
 
