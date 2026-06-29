@@ -16,15 +16,6 @@ sudo apt-get install insightcae
 
 After installation, continue with [Setting up the Environment](#setting-up-the-environment).
 
-### Development Version
-
-Besides the standard repository at `http://downloads.silentdynamics.de/ubuntu` (built from
-the _master_ branch), a second repository provides packages built from the _next-release_
-branch. To use it, replace the URL in the commands above with:
-
-```
-http://downloads.silentdynamics.de/ubuntu_dev
-```
 
 ### Customer Packages
 
