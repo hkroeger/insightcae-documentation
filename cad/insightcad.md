@@ -461,7 +461,7 @@ An example is given below:
 
 ```cpp
 c:
-Cylinder(O, 100*EX, 20)
+Cylinder(O, 100*EX, 25)
  |
 Cylinder(100*EX, ax 100*EX, 50)
 ;
