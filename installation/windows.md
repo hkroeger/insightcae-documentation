@@ -20,7 +20,6 @@ from one of these locations:
 | Version | URL |
 |---|---|
 | Stable (_master_ branch) | `http://downloads.silentdynamics.de/ubuntu/` |
-| Development (_next-release_ branch) | `http://downloads.silentdynamics.de/ubuntu_dev/` |
 
 !!! note "Customer installations"
     For supported customer deployments the installer is downloaded from a dedicated
