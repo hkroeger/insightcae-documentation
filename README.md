@@ -74,4 +74,4 @@ Here are two useful hints to solve this issue:
 
 2. There is a Norton-Commander-like file manager named **krusader**. It offers the same functionality regarding the embedded terminal but a more flexible way of displaying multiple folders. In addition to the two list view on the left and right, multiple tabs for folders can be added in each list view. And there is also a rich interface to define custom commands and file associations.
 
-![Krusader file manager with embedded terminal](krusader_with_terminal.png){#fig:krusader}
+    ![Krusader file manager with embedded terminal](krusader_with_terminal.png){#fig:krusader}
