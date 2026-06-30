@@ -7,9 +7,7 @@ site_author: silentdynamics GmbH
 repo_url: https://github.com/hkroeger/insightcae
 repo_name: hkroeger/insightcae
 
-docs_dir: .
-exclude_docs: |
-  _readthedocs/
+docs_dir: documents
 
 theme:
   name: material
