@@ -1,6 +1,6 @@
 This documentation consists of the following parts:
 
-1. [Introduction](README.md)
+1. [Introduction](introduction.md)
 2.  Installation:
       - [Linux (Package)](installation/linux.md)
       - [Windows](installation/windows.md)
