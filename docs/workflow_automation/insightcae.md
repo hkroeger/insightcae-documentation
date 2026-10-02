@@ -219,6 +219,99 @@ Especially for OpenFOAM-bases analyses, a number of quantities are extracted fro
 
 - execution time (per timestep)
 
+###### Executing an Analysis on a Remote Host
+
+Instead of running locally, an analysis can be executed on another computer: a Linux server, which is reachable via SSH, or a WSL (Windows Subsystem for Linux) distribution on the local Windows computer. The workbench stays the front end: parameters are edited locally, and progress, log messages and results are displayed as in a local run.
+
+**How a remote run works**
+
+On the remote host, the console program `analyze` (see section [Console on Headless Computers: analyze](#sec:analyze)) is started in server mode (`analyze --server --port <port>`). The workbench communicates with it through a small HTTP interface. A remote run passes through the following steps:
+
+1. *Setting up the remote workspace:* the remote working directory is created, if it does not exist (or a temporary one is created), and a free network port is determined on the remote host.
+2. *Upload of the input file:* the current parameter set is written as `param.ist` into the remote working directory. External files should be embedded into the parameter set (see [Saving Parameters](#par:save_parameters)), so that they are available on the remote side.
+3. *Launch of the remote analysis server:* `analyze` is started in the background on the remote host. Its output is written to `analyze.log` in the remote working directory.
+4. *Establishing contact:* the port of the remote server is made accessible on the local computer (for SSH hosts through an SSH tunnel; WSL ports are reachable directly), and the workbench waits until the server answers.
+5. *Monitoring:* the workbench polls the progress and log messages and displays them in the "Run" tab.
+6. *Fetching the results:* when the analysis has finished, the result set is transferred and loaded into the "Output" tab. Then the remote server is stopped.
+7. *Download (optional):* if "Download when finished" is checked, the remote working directory is copied into the local working directory (using `rsync`).
+8. *Cleanup:* a temporary remote working directory is removed.
+
+If any of these steps fails, the steps performed so far are rolled back: the remote server process is terminated, including all its child processes (e.g. solvers), and a temporary remote directory is removed. The error message shows the reason, and in case of a failure of the remote server, also the last lines of its log file `analyze.log`.
+
+**Configuration of the remote hosts**
+
+The available remote hosts are defined in files called `remoteservers.list`. They are read from the InsightCAE share directories:
+
+- the user-specific directory `~/.insight/share` (on Windows `%USERPROFILE%\.insight\share`, or the directory given in the environment variable `INSIGHT_USERSHAREDDIR`),
+- the global directories (`/usr/share/insight` or the directories listed in the environment variable `INSIGHT_GLOBALSHAREDDIRS`).
+
+All files are combined. If the same label is defined in the user-specific and in a global file, the user-specific definition is used. The list can be edited in the workbench via *Settings → Remote servers...*. There, a host can also be marked as the preferred one.
+
+The file has the following structure:
+
+```xml
+<root>
+  <!-- Linux server, reachable via passwordless SSH -->
+  <remoteServer label="cluster1" type="SSHLinux"
+                host="cluster1.example.com" baseDirectory="/scratch/myuser" np="32"/>
+
+  <!-- WSL distribution on the local Windows computer -->
+  <remoteServer label="wsl" type="WSLLinux"
+                distributionLabel="Ubuntu-22.04" baseDirectory="/home/myuser/runs"/>
+
+  <preferredServer label="cluster1"/>
+</root>
+```
+
+Attributes:
+
+- `label`: name, under which the host appears in the workbench,
+- `type`: `SSHLinux` or `WSLLinux`,
+- `host` (SSH only): host name, as it is passed to `ssh` (aliases from `~/.ssh/config` can be used),
+- `distributionLabel` (WSL only): name of the WSL distribution, as listed by `wsl --list`,
+- `baseDirectory`: directory on the remote host, below which the temporary working directories are created,
+- `np` (optional, default 1): number of processors available on the host.
+
+For hosts, which are created on demand (e.g. virtual machines), the attributes `creationCommand` and `destructionCommand` can be given. These are executed locally, when the host is needed but not reachable, and when it is no longer needed, respectively. After the creation command, the workbench waits until the host becomes reachable (attribute `creationTimeout` in seconds, default 300). If it does not become reachable in time, the destruction command is executed and the run fails with an error. A group of such hosts can be defined with an element `remoteServerPool` with the additional attributes `maxSize` and `np`. In this case, the placeholder `%d` in `host`, `creationCommand` and `destructionCommand` is replaced by the instance number.
+
+Requirements on the remote host:
+
+- the same version of InsightCAE is installed, and `analyze` is found in the `PATH` of a non-interactive login shell (`bash -lc`). This also applies to the helper script `isPVFindPort.sh` and to `rsync`.
+- SSH hosts: login via SSH without password (e.g. by public key authentication). On the local computer, `ssh` and `rsync` need to be available.
+- WSL: the distribution is installed and InsightCAE is installed inside it (the WSL setup wizard of InsightCAE can be used for this).
+
+**Selecting remote execution for an analysis**
+
+The execution location is configured in the analysis form by clicking "Setup..." in the "Execution" area. In the dialog "Setup Workspace":
+
+- the local working directory is selected (or left as temporary directory). For remote runs, a local directory is auto-created, if none is selected, but it is not removed afterwards.
+- "Execute on remote host" is checked and the host is selected from the configured list.
+- the remote working directory can be selected via "...". If it is left at "(auto create)", a temporary directory is created below the `baseDirectory` of the host, which is removed after the run.
+
+If an analysis can not be executed on the local operating system (e.g. an OpenFOAM-based analysis on Windows), remote execution is preselected and can not be deselected.
+
+The selected remote location is stored in the file `meta.foam` in the local working directory. When the analysis is opened again from this directory, the remote location is restored.
+
+**Controls during and after a remote run**
+
+Once remote execution is configured, the analysis form shows the host and the remote directory ("Run on remote host ... in ...") and offers these buttons:
+
+- "Run": starts the remote run as described above.
+- "Kill": cancels the run. The analysis on the remote host is interrupted, the remote server is stopped and a temporary remote directory is removed.
+- "Disconnect": detaches the workbench from a running remote analysis without stopping it. The analysis continues on the remote host. The workbench may even be closed.
+- "Resume": reconnects to a remote analysis, which was disconnected before, and continues monitoring it (also after reopening the analysis from its working directory).
+- "Download when finished": if checked, the remote working directory is copied to the local working directory after the run has finished.
+- "Upload to remote location" / "Download from remote location": copy the contents of the working directory manually between the local and the remote side.
+- "Remove remote": deletes the remote working directory including its contents (only possible, while no remote run is active).
+
+For OpenFOAM-based analyses, the buttons for triggering immediate output, for cleaning the case and for launching ParaView also work on the remote working directory. ParaView is then started as client-server pair (see "Launching Graphical Postprocessor ParaView" below).
+
+**Troubleshooting**
+
+- *"The remote analysis server has exited during its startup"* or *"... has exited unexpectedly"*: the message contains the last lines of `analyze.log` from the remote working directory, including the exit code of `analyze`. Frequent reasons are: `analyze` not found in the `PATH` of the remote login shell ("command not found", exit code 127), or a different InsightCAE version on the remote host (unknown parameters in the input file).
+- *"The log file ... does not exist"*: the server process was not started at all. Check, whether the remote working directory is writable and whether the remote host is reachable (`ssh <host> true` or `wsl -d <distribution> --exec bash -lc true`).
+- *"Could not contact analysis server after launching it"*: the server was started, but its port could not be reached, e.g. because of a broken SSH tunnel or a firewall.
+
 ###### Cancel a Simulation
 
 To cancel a simulation run, click on the button "Kill" on the right side or by select in the menu.
