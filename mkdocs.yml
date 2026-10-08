@@ -44,7 +44,9 @@ nav:
       - Building from Source: installation/from-source.md
   - User Guide:
       - Workflow Automation: workflow_automation/insightcae.md
-      - CAD (ISCAD): cad/insightcad.md
+      - CAD (ISCAD):
+          - Language Guide: cad/insightcad.md
+          - Command Reference: cad/iscad-reference.md
       - Extensions to Backend Tools: extensions_to_tools/insightcae-extensions.md
   - Tutorials: tutorials/insightcae-tutorials.md
   - Developer Guide: api/insightcae-api.md
