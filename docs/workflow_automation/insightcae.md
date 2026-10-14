@@ -272,7 +272,19 @@ Attributes:
 - `baseDirectory`: directory on the remote host, below which the temporary working directories are created,
 - `np` (optional, default 1): number of processors available on the host.
 
-For hosts, which are created on demand (e.g. virtual machines), the attributes `creationCommand` and `destructionCommand` can be given. These are executed locally, when the host is needed but not reachable, and when it is no longer needed, respectively. After the creation command, the workbench waits until the host becomes reachable (attribute `creationTimeout` in seconds, default 300). If it does not become reachable in time, the destruction command is executed and the run fails with an error. A group of such hosts can be defined with an element `remoteServerPool` with the additional attributes `maxSize` and `np`. In this case, the placeholder `%d` in `host`, `creationCommand` and `destructionCommand` is replaced by the instance number.
+For hosts, which are launched on demand (e.g. virtual machines), the attributes `launchCommand` and `shutdownCommand` can be given. They can also be entered in the server configuration dialog of the workbench (*Settings → Remote servers...*). These are executed locally, when the host is needed but not reachable, and when it is no longer needed, respectively. After the launch command, the workbench waits until the host becomes reachable (attribute `launchTimeout` in seconds, default 300). If it does not become reachable in time, the shutdown command is executed and the run fails with an error. A group of such hosts can be defined with an element `remoteServerPool` with the additional attributes `maxSize` and `np`. In this case, the placeholder `%d` in `host`, `launchCommand` and `shutdownCommand` is replaced by the instance number.
+
+*Note:* in earlier versions, `launchCommand`, `shutdownCommand` and `launchTimeout` were called `creationCommand`, `destructionCommand` and `creationTimeout`. These names now have a different meaning (see below): existing server lists have to be adapted.
+
+Cloud instances usually have to be created before they can be launched, and deleted when they are no longer needed. For this, the attributes `creationCommand`, `destructionCommand` and `existenceCheckCommand` can be given (all three or none):
+
+* `existenceCheckCommand` checks, if the instance exists: an exit code of 0 means, it exists, any other exit code means, it does not exist.
+* `creationCommand` is executed, when the host is needed, is not reachable and does not exist. Afterwards, the workbench waits until the host becomes reachable (`launchTimeout`). If it does not, the `launchCommand` is executed (if given) and the workbench waits again. If the host still does not become reachable, the created instance is disposed again.
+* `destructionCommand` deletes the instance. When disposing a running host, the `shutdownCommand` is executed before (if given).
+
+In all five commands, the placeholders `%{serverLabel}` and `%{host}` are replaced by the label of the server and its host name, before the command is executed.
+
+All commands can also be entered in the server configuration dialog of the workbench (*Settings → Remote servers...*). In this dialog, servers can also be launched (including the creation of their instance), shut down and disposed (*Shutdown & Dispose*). For a remote run, the execution panel offers the actions after completion: download of the results, removal of the remote directory, shutdown and disposal of the host.
 
 Requirements on the remote host:
 
