@@ -8,7 +8,8 @@ The latest Ubuntu LTS release is specifically supported.
 The packages are held in the silentdynamics apt repository. Add it and install InsightCAE:
 
 ```bash
-sudo apt-key adv --fetch-keys http://downloads.silentdynamics.de/SD_REPOSITORIES_PUBLIC_KEY.gpg
+curl -fsSL http://downloads.silentdynamics.de/SD_REPOSITORIES_PUBLIC_KEY.gpg | \
+  sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/silentdynamics.gpg
 sudo add-apt-repository http://downloads.silentdynamics.de/ubuntu
 sudo apt-get update
 sudo apt-get install insightcae

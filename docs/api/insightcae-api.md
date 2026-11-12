@@ -286,5 +286,154 @@ This will yield an installation package "insightcae.msi".
 #### Installation
 
 The resulting MSI package has to be copied to the target and installed using the Windows tools (double click in the explorer window on the file).
+## InsightCAE Toolkit
+### Dealing with Coordinate Systems
+
+Points and vectors are traditionally passed around as bare `arma::mat` objects (3x1 column vectors, e.g. created by `vec3(x,y,z)`). Nothing in such a variable tells in which coordinate system (frame of reference) its components are expressed. Errors from combining coordinates of different frames, or from transforming a direction vector like a point (i.e. including the translation), are easy to make and hard to find.
+
+The header `base/framedvector.h` therefore provides frame-tagged point and vector types. Similar to how `boost::units` ties a unit to a number, these types tie a frame to the coordinates. The frame is a compile-time tag, so that:
+
+* combining points or vectors from different frames does not compile,
+* geometrically meaningless operations (adding two points, scaling a point) do not compile,
+* changing the frame is only possible through an explicit, typed transformation.
+
+The tagged types are thin wrappers around `arma::mat` and `SpatialTransformation`; there is no runtime overhead. The untagged API of `SpatialTransformation` and `CoordinateSystem` remains available, so tagged and untagged code can be mixed and existing code can be migrated gradually.
+
+#### Overview of the Types
+
+| Type | Meaning |
+|---|---|
+| `GlobalFrame` | predefined tag for the global coordinate system |
+| `INSIGHT_DECLARE_FRAME(Tag)` | macro to declare a new frame tag (at namespace scope) |
+| `PointIn<F>` | a location, expressed in frame `F`. Affected by translation. |
+| `VectorIn<F>` | a direction or displacement, expressed in frame `F`. Not affected by translation. |
+| `FrameTransformation<From,To>` | maps points and vectors from frame `From` into frame `To`. Wraps a `SpatialTransformation`. |
+
+The untagged base classes are:
+
+* `SpatialTransformation` (`base/spatialtransformation.h`): translation, rotation and scaling, applied in this order. `trsfPt()` transforms points, `trsfVec()` transforms vectors (without translation).
+* `CoordinateSystem` (same header): a coordinate system given by its `origin` and the axes `ex`, `ey`, `ez`. `localToGlobal()` and `globalToLocal()` return the corresponding `SpatialTransformation`.
+
+#### Frame Tags
+
+A frame tag is an empty struct. It only names the *role* of a coordinate system in the code, e.g. "the local beam coordinate system" or "the CAD model coordinate system". The actual position and orientation of the frame is usually known only at runtime (e.g. from analysis parameters). It is bound to the tag by creating a `FrameTransformation` (see below).
+
+```cpp
+#include "base/framedvector.h"
+
+using namespace insight;
+
+INSIGHT_DECLARE_FRAME(BeamLocal);
+INSIGHT_DECLARE_FRAME(SensorFrame);
+```
+
+#### Points and Vectors
+
+```cpp
+PointIn<GlobalFrame> p1(1, 2, 3), p2(4, 6, 3);
+VectorIn<GlobalFrame> ex(1, 0, 0);
+
+VectorIn<GlobalFrame> d = p2 - p1;          // point - point  -> vector
+PointIn<GlobalFrame>  p3 = p1 + 0.5*d;      // point + vector -> point
+PointIn<GlobalFrame>  p4 = p2 - ex;         // point - vector -> point
+
+double l = norm(d);                         // 5
+double s = distance(p1, p2);                // 5
+VectorIn<GlobalFrame> n = normalized(cross(d, ex));
+double c = dot(n, ex);
+
+double x = p1.x();                          // components: x(), y(), z() or p1(0), ...
+```
+
+The following does not compile:
+
+```cpp
+PointIn<BeamLocal> pl(0, 0, 1);
+
+auto e1 = p1 - pl;     // error: points/vectors are expressed in different frames
+auto e2 = p1 + p2;     // error: adding two points is not meaningful
+auto e3 = 2.*p1;       // error: scaling a point is not meaningful
+```
+
+#### Interfacing with Untagged Code
+
+Untagged `arma::mat` data is tagged with the explicit constructors. The constructor checks that the input has three components; row vectors are accepted and stored as columns. The untagged components are returned by `raw()`:
+
+```cpp
+arma::mat legacyPoint = vec3(1, 2, 3);
+
+PointIn<GlobalFrame> p(legacyPoint);        // tag explicitly
+// PointIn<GlobalFrame> q = legacyPoint;    // does not compile: implicit tagging is not allowed
+
+someLegacyFunction( p.raw() );              // const arma::mat& (3x1)
+```
+
+The explicit tagging is deliberate. Every place where untagged data enters the tagged world is visible in the code and states which frame the data is assumed to be in.
+
+#### Transformations between Frames
+
+A `FrameTransformation<From,To>` is created from a `SpatialTransformation`. It applies the translation to points, but not to vectors:
+
+```cpp
+FrameTransformation<SensorFrame,BeamLocal> sensorToBeam(
+    SpatialTransformation(
+        vec3(0, 3, 0),      // translation
+        vec3(-45, 0, 90)    // roll, pitch, yaw in degrees
+    ) );
+
+PointIn<SensorFrame>  ps(0.3, -1, 4);
+VectorIn<SensorFrame> vs(1, 1, 0);
+
+PointIn<BeamLocal>  pb = sensorToBeam(ps);  // uses trsfPt
+VectorIn<BeamLocal> vb = sensorToBeam(vs);  // uses trsfVec (no translation)
+
+// auto e = sensorToBeam(pb);  // error: point is not expressed in the source frame of this transformation
+```
+
+Transformations can be inverted and chained. The chain is checked at compile time: `FrameTransformation<B,C> * FrameTransformation<A,B>` yields `FrameTransformation<A,C>`. As with matrices, the right operand is applied first:
+
+```cpp
+FrameTransformation<BeamLocal,SensorFrame> beamToSensor = sensorToBeam.inverted();
+
+FrameTransformation<BeamLocal,GlobalFrame> beamToGlobal = /* ... */;
+FrameTransformation<SensorFrame,GlobalFrame> sensorToGlobal = beamToGlobal * sensorToBeam;
+
+// auto e = sensorToBeam * beamToGlobal;  // error: cannot compose transformations
+```
+
+The underlying untagged transformation is available through `spatialTransformation()`, e.g. to pass it to VTK or OpenFOAM utilities.
+
+Note: if the `SpatialTransformation` contains a scale factor other than 1, vectors are scaled too, i.e. unit vectors do not remain unit vectors.
+
+#### Binding a CoordinateSystem to a Frame Tag
+
+Coordinate systems are typically constructed at runtime as a `CoordinateSystem`, e.g. from parameters like origin, X- and Z-direction. The functions `localToParent<Local,Parent>` and `parentToLocal<Local,Parent>` create the typed transformations from it. `Parent` is the frame in which the `CoordinateSystem` itself is defined; it defaults to `GlobalFrame`. The functions `originOf`, `exOf`, `eyOf` and `ezOf` return its origin and axes as tagged quantities in the parent frame.
+
+```cpp
+// beam axis along global Y, starting at (1,2,3)
+CoordinateSystem beamCS( vec3(1, 2, 3), vec3(0, 1, 0), vec3(0, 0, 1) );
+
+auto beamToGlobal = localToParent<BeamLocal>(beamCS);   // FrameTransformation<BeamLocal,GlobalFrame>
+auto globalToBeam = parentToLocal<BeamLocal>(beamCS);   // FrameTransformation<GlobalFrame,BeamLocal>
+
+PointIn<BeamLocal> pTip(L, 0, 0);                       // tip of a beam of length L
+PointIn<GlobalFrame> pTipGlobal = beamToGlobal(pTip);   // == (1, 2+L, 3)
+
+VectorIn<GlobalFrame> r = pTipGlobal - originOf<GlobalFrame>(beamCS);
+VectorIn<GlobalFrame> axis = exOf<GlobalFrame>(beamCS);
+
+// a force given in global coordinates, expressed in the beam CS
+VectorIn<GlobalFrame> F(0, 0, -1000);
+VectorIn<BeamLocal> Fbeam = globalToBeam(F);
+```
+
+#### Recommended Usage
+
+* Use `PointIn`/`VectorIn` in interfaces (function arguments, return values, class members) where the frame matters. Inside numerical inner loops, plain `arma::mat` may still be used.
+* Declare one tag per role of a coordinate system, not per instance. Bind the runtime transformation to the tag at one place.
+* Distinguish points and vectors consistently. A direction or a difference of positions is a `VectorIn`, a location is a `PointIn`.
+* Keep `raw()` and the explicit constructors at the boundaries to untagged code.
+
+The tagged types are currently not wrapped for Python.
 
 ## Creating Custom OpenFOAM Analyses

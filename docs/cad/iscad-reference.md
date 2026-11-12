@@ -450,6 +450,7 @@ Creates a parametric 2D sketch on a datum plane, consisting of geometric entitie
 | `HorizontalConstraint(<label>, <line>)` | line is parallel to sketch x-axis |
 | `VerticalConstraint(<label>, <line>)` | line is parallel to sketch y-axis |
 | `TangentConstraint(<label>, <curve>, <curve>)` | two curves are tangent |
+| `PerpendicularConstraint(<label>, <curve>, <curve>)` | two curves are perpendicular at their common point |
 | `PointOnCurveConstraint(<label>, <point>, <curve>)` | point lies on a curve |
 | `DistanceConstraint(<label>, <point>, <point> [, along <vector>])` | distance between points (value stored in sketch) |
 | `Distance(<label>, <point>, <point>, <scalar>)` | distance between points, given by a model expression |
