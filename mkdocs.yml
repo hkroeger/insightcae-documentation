@@ -47,6 +47,7 @@ nav:
       - CAD (ISCAD):
           - Language Guide: cad/insightcad.md
           - Command Reference: cad/iscad-reference.md
+          - Chat Assistant: cad/iscad-assistant.md
       - Extensions to Backend Tools: extensions_to_tools/insightcae-extensions.md
   - Tutorials: tutorials/insightcae-tutorials.md
   - Developer Guide: api/insightcae-api.md

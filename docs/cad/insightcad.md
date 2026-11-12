@@ -683,6 +683,8 @@ After parsing the model, the following results are displayed:
 
 ![image](screenshot_iscad.png){width="100%"}
 
+The editor contains a chat assistant, which creates and changes the script on request using a language model. It is described in [Chat Assistant](iscad-assistant.md).
+
 ### Menu Functions and Shortcuts
 
 | Menu entry | Shortcut | Function |
