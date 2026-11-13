@@ -84,6 +84,7 @@ The environment variable `ANTHROPIC_API_KEY` takes precedence over the key enter
 | Model | the model name as known to the server. **Fetch models** queries the list of available models. |
 | API key | optional (the environment variable `OPENAI_API_KEY` takes precedence) |
 | Max. output tokens | limit per response, 0: server default |
+| Context length | context window of the model on the server in tokens (Ollama: `OLLAMA_CONTEXT_LENGTH`, shown by `ollama ps`), 0: unknown. The assistant warns, when the conversation comes close to it. |
 | Prices | USD per million input, cached input and output tokens, for the cost display (leave at 0 for local models) |
 | The model accepts images | enables the `view_model` tool. Only check this for models with image input, otherwise the requests fail. |
 
@@ -93,10 +94,20 @@ The model must support tool calling (function calling).
 
 | Setting | Description |
 |---|---|
-| System prompt | how much of the ISCAD documentation is given to the model: the full language and command reference (about 20000 tokens), the language reference without the command list (about 10000 tokens), or none (the model then relies on `command_help`) |
-| Tools | all tools, or a basic set (read, edit, write, rebuild, command help, inspect) for small models, which are confused by many tools |
+| System prompt | how much of the ISCAD documentation is given to the model: the full language and command reference (about 20000 tokens), the language reference without the command list (about 11000 tokens), none (the model then relies on `command_help`), or **on demand**: only the essentials of the language and a table of contents of the documentation (about 4500 tokens); the model reads further sections with the tool `read_reference` when it needs them |
+| Tools | all tools, or a basic set (read, edit, write, rebuild, command help, inspect, read reference) for small models, which are confused by many tools |
+| Show the system prompt in the chat | shows the instructions and documentation given to the model, and the offered tools, at the beginning of a conversation (in small, light gray text). Off by default. |
 
-With Claude, use the full reference: it is cached after the first request and costs little. For local models with a small context window, use the shorter reference.
+With Claude, use the full reference: it is cached after the first request and costs little. For local models with a small context window, use the on-demand reference.
+
+### Context window warnings
+
+A model only sees as much of the conversation as fits into its context window. Local servers like Ollama silently cut off the rest, and the model then loses its instructions or earlier results. The assistant shows a warning in the chat
+
+- when the input of the model became shorter than in the previous step (the conversation only grows, so the server has cut off a part), and
+- when the conversation uses more than 90 % of the configured context length.
+
+Start a new conversation, choose a shorter reference, or increase the context window of the server.
 
 ## Local Models
 
@@ -114,7 +125,7 @@ The model has to fit into the memory of the graphics card together with the cont
 
 Mixture-of-experts models have many parameters but only use a small part of them (about 3 billion) per generated token. Therefore, they run at acceptable speed, even if most of their weights reside in system RAM.
 
-Settings in the assistant for small local models: tools **basic**, system prompt **language reference without command list** (or **none** with a context of 8k tokens), images off.
+Settings in the assistant for small local models: tools **basic**, system prompt **on demand** (or **none** with a context of 8k tokens), images off.
 
 ### Ollama
 
@@ -150,6 +161,10 @@ With each request, the following data is sent to the configured server: the ISCA
 
 When using a hosted service, this data leaves your computer. Check whether this is permitted for the model you are working on. With a local server, all data stays on your computer.
 
+### Network connection
+
+The assistant connects through libcurl, with the TLS library and certificate store of the operating system. A proxy is taken from the usual environment variables (`https_proxy`, `http_proxy`, `no_proxy`). If you use a local server, add it to `no_proxy`, e.g. `no_proxy=localhost,127.0.0.1,myserver`.
+
 ## Evaluation of Models
 
 The program `iscad-assistant-eval` runs a set of modeling tasks with a language model without the graphical editor, builds the resulting scripts and checks the geometry automatically. It is used to compare models, settings and changes of the assistant's instructions.
@@ -176,16 +191,19 @@ iscad-assistant-eval --provider openai --base-url http://localhost:11434/v1 \
 | `--model`, `--base-url`, `--api-key` | model and server (as in the settings dialog) |
 | `--effort <level>` | Anthropic: effort |
 | `--max-tokens`, `--price-input`, `--price-output`, `--price-cached` | OpenAI compatible server: output limit and prices |
-| `--reference full\|basic\|none` | documentation in the system prompt |
+| `--context-length <n>` | OpenAI compatible server: context window of the model, for the warnings |
+| `--reference full\|basic\|ondemand\|none` | documentation in the system prompt |
+| `--print-system-prompt` | print the system prompt of the selected reference level and exit |
 | `--tools full\|basic` | tool set |
 | `--repeat <n>` | run every task n times (results vary between runs) |
 | `--max-steps <n>` | maximum number of model responses per task (default 40) |
 | `--timeout <s>` | maximum time per task (default 900 s; increase for slow local models) |
+| `--build-timeout <s>` | maximum time of a single model build or inspection (default 120 s); degenerate geometry can make the geometry kernel hang |
 | `--out <prefix>` | output file names |
 
 The images of the 3D view are not available without the graphical editor; the `view_model` tool is therefore always disabled in the evaluation.
 
-Each run writes two reports: `<prefix>.md` with the pass rate per task category and a table of all tasks (steps, tool calls, tokens, cost, time, failed checks), and `<prefix>.json` with all results including the complete conversations and final scripts. The conversations show, where a model fails, e.g. because of wrong ISCAD syntax or because it loses track of the task.
+Each run writes two reports: `<prefix>.md` with the pass rate per task category and a table of all tasks (steps, tool calls, tokens, largest input of a single step, cost, time, failed checks and context window warnings), and `<prefix>.json` with all results including the complete conversations and final scripts. The conversations show, where a model fails, e.g. because of wrong ISCAD syntax or because it loses track of the task.
 
 ### Tasks
 
